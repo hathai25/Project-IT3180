@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2022 at 02:38 PM
+-- Generation Time: Nov 08, 2022 at 03:57 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `mysql_db_2`
+-- Database: `mysql_db`
 --
 
 -- --------------------------------------------------------
@@ -184,6 +184,13 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`userId`, `username`, `password`, `role`) VALUES
+(1, 'admin', '12112312f12917a1571a51a714318914a10e14a18011f1c3', 'totruong');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -245,6 +252,12 @@ ALTER TABLE `nhankhau`
 --
 ALTER TABLE `sohokhau`
   MODIFY `STT` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
