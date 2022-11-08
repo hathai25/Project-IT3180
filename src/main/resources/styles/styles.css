@@ -1,0 +1,8 @@
+.menuButton {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: transparent;
+}
+
+.menuButton:hover {
+    -fx-text-fill: #1cc5e9;
+}
