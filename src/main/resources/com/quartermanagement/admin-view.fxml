@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quartermanagement.AdminController">
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="188.0" style="-fx-background-color: #3f4d67;" BorderPane.alignment="CENTER">
          <children>
@@ -49,16 +49,15 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <TableView layoutX="38.0" layoutY="125.0" prefHeight="414.0" prefWidth="633.0">
+            <TableView fx:id="tableView" layoutX="38.0" layoutY="125.0" prefHeight="414.0" prefWidth="633.0">
               <columns>
-                <TableColumn prefWidth="75.0" style="-fx-background-color: #3f4d67; -fx-text-background-color: white;" text="STT" />
-                  <TableColumn prefWidth="75.0" style="-fx-background-color: #3f4d67; -fx-text-background-color: white;" text="Thông tin" />
-                  <TableColumn prefWidth="75.0" style="-fx-background-color: #3f4d67; -fx-text-background-color: white;" text="Thông tin" />
-                  <TableColumn prefWidth="75.0" style="-fx-background-color: #3f4d67; -fx-text-background-color: white;" text="Thông tin" />
-                  <TableColumn prefWidth="75.0" style="-fx-background-color: #3f4d67; -fx-text-background-color: white;" text="Thông tin" />
-                  <TableColumn prefWidth="75.0" style="-fx-background-color: #3f4d67; -fx-text-background-color: white;" text="Thông tin" />
-                  <TableColumn prefWidth="75.0" style="-fx-background-color: #3f4d67; -fx-text-background-color: white;" text="Thông tin" />
-                  <TableColumn prefWidth="106.39998779296877" style="-fx-background-color: #3f4d67; -fx-text-background-color: white;" text="Thao tác" />
+                <TableColumn fx:id="sttColumn" prefWidth="75.0" style="-fx-background-color: #3f4d67; -fx-text-background-color: white;" text="STT" />
+                  <TableColumn fx:id="hoVaTenColumn" prefWidth="75.0" style="-fx-background-color: #3f4d67; -fx-text-background-color: white;" text="Họ và tên" />
+                  <TableColumn fx:id="cccdColumn" prefWidth="75.0" style="-fx-background-color: #3f4d67; -fx-text-background-color: white;" text="CCCD" />
+                  <TableColumn fx:id="gioiTinhColumn" prefWidth="75.0" style="-fx-background-color: #3f4d67; -fx-text-background-color: white;" text="Giới tính" />
+                  <TableColumn fx:id="danTocColumn" prefWidth="75.0" style="-fx-background-color: #3f4d67; -fx-text-background-color: white;" text="Dân tộc" />
+                  <TableColumn fx:id="nguyenQuanColumn" prefWidth="128.00003051757812" style="-fx-background-color: #3f4d67; -fx-text-background-color: white;" text="Nguyên quán" />
+                  <TableColumn fx:id="maHoKhauColumn" prefWidth="127.99996337890627" style="-fx-background-color: #3f4d67; -fx-text-background-color: white;" text="Mã hộ khẩu" />
               </columns>
             </TableView>
             <Text layoutX="41.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-style: bold;" text="Tiêu đề" textAlignment="CENTER" wrappingWidth="98.9140625">
