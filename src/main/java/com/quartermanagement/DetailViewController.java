@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.sql.*;
+import static com.quartermanagement.DBConstants.*;
 
 public class DetailViewController {
     @FXML
@@ -65,8 +66,6 @@ public class DetailViewController {
         try {
             Connection conn;
             PreparedStatement preparedStatement = null;
-            final String DATABASE = "jdbc:mysql://localhost:3306/quan_ly_to",
-                    USERNAME="root", PASSWORD = "";
             String UPDATE_QUERY = "UPDATE `nhankhau` SET `STT`=?,`HoTen`=?,`BiDanh`=?,`NgaySinh`=?,`CCCD`=?,`NoiSinh`=?," +
                     "`GioiTinh`=?,`NguyenQuan`=?,`DanToc`=?,`NoiThuongTru`=?,`TonGiao`=?,`QuocTich`=?,`DiaChiHienNay`=?," +
                     "`NgheNghiep`=?,`MaHoKhau`=? WHERE `CCCD`=?";
@@ -105,8 +104,6 @@ public class DetailViewController {
         try {
             Connection conn;
             PreparedStatement preparedStatement = null;
-            final String DATABASE = "jdbc:mysql://localhost:3306/quan_ly_to",
-                    USERNAME="root", PASSWORD = "";
             String INSERT_QUERY = "INSERT INTO nhankhau VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
             conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
