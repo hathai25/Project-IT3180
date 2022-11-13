@@ -1,4 +1,4 @@
-package com.quartermanagement;
+package com.quartermanagement.model;
 
 public class NhanKhau {
     private int STT, MaHoKhau;

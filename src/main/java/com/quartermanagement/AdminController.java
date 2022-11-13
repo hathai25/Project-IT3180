@@ -1,5 +1,6 @@
 package com.quartermanagement;
 
+import com.quartermanagement.model.NhanKhau;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,19 +13,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
+
+import static com.quartermanagement.DBConstants.*;
 
 public class AdminController implements Initializable {
-
-    @FXML
-    private Button buttonMenu;
     @FXML
     private TableView<NhanKhau> tableView;
     @FXML
@@ -57,54 +57,69 @@ public class AdminController implements Initializable {
     private TableColumn<NhanKhau, String> ngheNghiepColumn;
     @FXML
     private TableColumn<NhanKhau, Integer> maHoKhauColumn;
-
+    @FXML
+    private Button signUpUserButton;
+    @FXML
+    private AnchorPane basePane;
     private ObservableList<NhanKhau> nhanKhauList = FXCollections.observableArrayList();
     // Connect to database
     private Connection conn;
     private PreparedStatement preparedStatement = null;
-    private final String DATABASE = "jdbc:mysql://localhost:3306/quan_ly_to",
-            USERNAME="root", PASSWORD = "";
+    //Save user role
+    private Preferences userPreferences = Preferences.userRoot();
+    private String userRole = userPreferences.get("role", "");
+    private Utils utils = new Utils();
 
+    public void switchToSignUp() throws IOException {
+        utils.changeAnchorPane(basePane, "sign-up-user-view.fxml");
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        if (userRole.equals("totruong")) {
+            signUpUserButton.setVisible(true);
+        } else {
+            signUpUserButton.setVisible(false);
+        }
+
         sttColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, Integer>("STT"));
         hoVaTenColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("HoTen"));
         biDanhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("BiDanh"));
-        ngaySinhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau,String>("NgaySinh"));
+        ngaySinhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NgaySinh"));
         cccdColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("CCCD"));
-        noiSinhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau,String>("NoiSinh"));
+        noiSinhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NoiSinh"));
         gioiTinhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("GioiTinh"));
         nguyenQuanColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NguyenQuan"));
         danTocColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("DanToc"));
-        noiThuongTruColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau,String>("NoiThuongTru"));
-        tonGiaoColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau,String>("TonGiao"));
-        quocTichColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau,String>("QuocTich"));
-        diaChiHienNayColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau,String>("DiaChiHienNay"));
-        ngheNghiepColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau,String>("NgheNghiep"));
+        noiThuongTruColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NoiThuongTru"));
+        tonGiaoColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("TonGiao"));
+        quocTichColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("QuocTich"));
+        diaChiHienNayColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("DiaChiHienNay"));
+        ngheNghiepColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NgheNghiep"));
         maHoKhauColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, Integer>("MaHoKhau"));
-    try {
-        // Connecting Database
-        String SELECT_QUERY = "SELECT * FROM nhankhau";
-        conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-        preparedStatement = conn.prepareStatement(SELECT_QUERY);
-        ResultSet result = preparedStatement.executeQuery();
+        try {
+            // Connecting Database
+            String SELECT_QUERY = "SELECT * FROM nhankhau";
+            conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+            preparedStatement = conn.prepareStatement(SELECT_QUERY);
+            ResultSet result = preparedStatement.executeQuery();
 
-        // Loop the list of nhankhau
-        while (result.next()) {
-            nhanKhauList.add(new NhanKhau(result.getInt("STT"), result.getString("HoTen"), result.getString("BiDanh"),
-                    result.getString("NgaySinh"), result.getString("CCCD"), result.getString("NoiSinh"),
-                    result.getString("GioiTinh"), result.getString("NguyenQuan"), result.getString("DanToc"),
-                    result.getString("NoiThuongTru"), result.getString("TonGiao"), result.getString("QuocTich"),
-                    result.getString("DiaChiHienNay"), result.getString("NgheNghiep"), result.getInt("MaHoKhau")
-            ));
-          }
-        // Add nhankhau to table
-        tableView.setItems(nhanKhauList);
-        }   catch (SQLException e) {}
+            // Loop the list of nhankhau
+            while (result.next()) {
+                nhanKhauList.add(new NhanKhau(result.getInt("STT"), result.getString("HoTen"), result.getString("BiDanh"),
+                        result.getString("NgaySinh"), result.getString("CCCD"), result.getString("NoiSinh"),
+                        result.getString("GioiTinh"), result.getString("NguyenQuan"), result.getString("DanToc"),
+                        result.getString("NoiThuongTru"), result.getString("TonGiao"), result.getString("QuocTich"),
+                        result.getString("DiaChiHienNay"), result.getString("NgheNghiep"), result.getInt("MaHoKhau")
+                ));
+            }
+            // Add nhankhau to table
+            tableView.setItems(nhanKhauList);
+        } catch (SQLException e) {
+        }
     }
 
-    public void add (ActionEvent event) throws IOException {
+    public void add(ActionEvent event) throws IOException {
 //        // change scene and get new information
 //        Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
 //        FXMLLoader loader = new FXMLLoader();
@@ -145,7 +160,7 @@ public class AdminController implements Initializable {
     }
 
 
-    public void delete (ActionEvent event){
+    public void delete(ActionEvent event) {
         NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
         nhanKhauList.remove(selected);
         // Delete in Database
@@ -155,15 +170,16 @@ public class AdminController implements Initializable {
             preparedStatement = conn.prepareStatement(DELETE_QUERY);
             preparedStatement.setString(1, selected.getCCCD());
             int result = preparedStatement.executeUpdate();
-            if (result==1) System.out.println("OKE");
+            if (result == 1) System.out.println("OKE");
             else System.out.println("KO OKE");
             System.out.println(DELETE_QUERY);
-        }   catch (SQLException e){}
-
-
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-    public void detail (ActionEvent event) throws IOException {
-        Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+
+    public void detail(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("detail-view.fxml"));
         Parent studentViewParent = loader.load();
@@ -171,6 +187,7 @@ public class AdminController implements Initializable {
         DetailViewController controller = loader.getController();
         NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
         controller.setNhanKhau(selected);
+        //utils.changeAnchorPane(basePane, "detail-view.fxml");
         stage.setScene(scene);
     }
 }

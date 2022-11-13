@@ -1,15 +1,16 @@
 package com.quartermanagement;
-
+//import libs
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import java.io.IOException;
 import java.sql.*;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import java.util.prefs.Preferences;
+
+//import constants
+import static com.quartermanagement.DBConstants.*;
 
 public class HomeController {
     @FXML
@@ -17,26 +18,22 @@ public class HomeController {
     //Khai bao ket noi sql
     private Connection conn;
     private PreparedStatement preparedStatement = null;
-    private final String DATABASE = "jdbc:mysql://localhost:3306/quan_ly_to",
-                    USERNAME="root", PASSWORD = "";
-    //Khai bao chuyen view
-    private Stage stage;
-    private Scene scene;
-    private Parent root = null;
 
     @FXML
     private Button loginButton;
+
     public void handleLogin(ActionEvent event) {
         String SELECT_QUERY = "SELECT * FROM user WHERE username = ? AND password = ?";
         String Username = inputUsername.getText();
         Utils utils = new Utils();
         String Password = utils.hashPassword(inputPassword.getText());
         if (Username.trim().equals("") || Password.trim().equals("")) {
-            Alert warning = new Alert(Alert.AlertType.WARNING);
-            warning.setTitle("Cảnh báo!");
-            warning.setHeaderText("Khoan nào cán bộ!");
-            warning.setContentText("Vui lòng nhập đầy đủ username và password!");
-            warning.show();
+            utils.createDialog(
+                    Alert.AlertType.WARNING,
+                    "Cảnh báo!",
+                    "Khoan nào cán bộ!",
+                    "Vui lòng nhập đầy đủ username và password!"
+            );
         }   else {
             try {
                 conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
@@ -45,12 +42,16 @@ public class HomeController {
                 preparedStatement.setString(2, Password);
                 ResultSet result = preparedStatement.executeQuery();
                 if (result.next()) {
+                    Preferences userPreferences = Preferences.userRoot();
+                    userPreferences.put("role", result.getString(4));
                     utils.changeScene(event, "admin-view.fxml");
                 }   else {
-                    Alert warning = new Alert(Alert.AlertType.ERROR);
-                    warning.setHeaderText("Khoan nào cán bộ!");
-                    warning.setContentText("Sai username hoặc password!");
-                    warning.show();
+                    utils.createDialog(
+                            Alert.AlertType.ERROR,
+                            "Cảnh báo!",
+                            "Khoan nào cán bộ!",
+                            "Sai username hoặc password!"
+                    );
                 }
             }   catch (SQLException e) {
                 e.printStackTrace();

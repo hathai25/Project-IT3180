@@ -12,7 +12,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quartermanagement.AdminController">
    <left>
-      <AnchorPane prefHeight="400.0" prefWidth="188.0" style="-fx-background-color: #3f4d67;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="606.0" prefWidth="190.0" style="-fx-background-color: #3f4d67;" BorderPane.alignment="CENTER">
          <children>
             <Text fill="WHITE" layoutX="1.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-style: bold;" text="Navigation" textAlignment="CENTER" wrappingWidth="186.9140625">
                <font>
@@ -41,13 +41,18 @@
                         <Font name="Segoe UI" size="14.0" />
                      </font>
                   </Button>
+                  <Button fx:id="signUpUserButton" mnemonicParsing="false" onAction="#switchToSignUp" prefHeight="48.0" prefWidth="191.0" style="-fx-background-color: transparent;" styleClass="menuButton" text="Đăng ký người dùng" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="14.0" />
+                     </font>
+                  </Button>
                </children>
             </VBox>
          </children>
       </AnchorPane>
    </left>
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="basePane" prefHeight="600.0" prefWidth="710.0" BorderPane.alignment="CENTER">
          <children>
             <TableView fx:id="tableView" layoutX="38.0" layoutY="125.0" prefHeight="414.0" prefWidth="633.0" tableMenuButtonVisible="true">
               <columns>
