@@ -5,11 +5,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.*;
 
 public class Utils {
     public String hashPassword(String password) {
@@ -39,6 +42,20 @@ public class Utils {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void changeAnchorPane(AnchorPane currentPane, String viewSource) throws IOException {
+        Node node;
+        node = (Node)FXMLLoader.load(getClass().getResource(viewSource));
+        currentPane.getChildren().setAll(node);
+    }
+
+    public void createDialog(Alert.AlertType type, String title, String headerText, String contentText) {
+        Alert warning = new Alert(type);
+        warning.setTitle(title);
+        warning.setHeaderText(headerText);
+        warning.setContentText(contentText);
+        warning.show();
     }
 }
 
