@@ -17,7 +17,7 @@ public class HomeController {
     //Khai bao ket noi sql
     private Connection conn;
     private PreparedStatement preparedStatement = null;
-    private final String DATABASE = "jdbc:mysql://localhost:3306/mysql_db",
+    private final String DATABASE = "jdbc:mysql://localhost:3306/quan_ly_to",
                     USERNAME="root", PASSWORD = "";
     //Khai bao chuyen view
     private Stage stage;
