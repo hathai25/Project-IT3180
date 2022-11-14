@@ -18,6 +18,10 @@ public class HomeController {
     //Khai bao ket noi sql
     private Connection conn;
     private PreparedStatement preparedStatement = null;
+
+    @FXML
+    private Button loginButton;
+
     public void handleLogin(ActionEvent event) {
         String SELECT_QUERY = "SELECT * FROM user WHERE username = ? AND password = ?";
         String Username = inputUsername.getText();

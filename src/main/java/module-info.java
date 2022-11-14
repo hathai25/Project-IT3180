@@ -7,4 +7,6 @@ module comz.quartermanagement {
 
     opens com.quartermanagement to javafx.fxml;
     exports com.quartermanagement;
+    exports com.quartermanagement.model;
+    opens com.quartermanagement.model to javafx.fxml;
 }
