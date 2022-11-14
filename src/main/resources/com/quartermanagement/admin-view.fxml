@@ -56,7 +56,7 @@
          <children>
             <TableView fx:id="tableView" layoutX="38.0" layoutY="125.0" prefHeight="414.0" prefWidth="633.0" tableMenuButtonVisible="true">
               <columns>
-                <TableColumn fx:id="sttColumn" prefWidth="75.0" style="-fx-background-color: ; -fx-text-background-color: ;" text="STT" />
+                <TableColumn fx:id="indexColumn" prefWidth="75.0" style="-fx-background-color: ; -fx-text-background-color: ;" text="STT" />
                   <TableColumn fx:id="hoVaTenColumn" prefWidth="75.0" text="Họ và tên" />
                   <TableColumn fx:id="biDanhColumn" prefWidth="88.80001220703127" text="Bí danh" />
                   <TableColumn fx:id="ngaySinhColumn" prefWidth="88.80001220703127" text="Ngày sinh" />

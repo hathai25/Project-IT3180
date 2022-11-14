@@ -1,7 +1,7 @@
 package com.quartermanagement.model;
 
 public class NhanKhau {
-    private int STT, MaHoKhau;
+    private int MaHoKhau;
     private String HoTen, BiDanh, NgaySinh, CCCD, NoiSinh,
             GioiTinh, NguyenQuan, DanToc, NoiThuongTru, TonGiao, QuocTich, DiaChiHienNay, NgheNghiep;
 
@@ -9,10 +9,9 @@ public class NhanKhau {
     public NhanKhau(){
     }
 
-    public NhanKhau(int STT, String hoTen, String biDanh, String ngaySinh, String CCCD,
+    public NhanKhau(String hoTen, String biDanh, String ngaySinh, String CCCD,
                     String noiSinh, String gioiTinh, String nguyenQuan, String danToc, String noiThuongTru,
                     String tonGiao, String quocTich, String diaChiHienNay, String ngheNghiep, int maHoKhau) {
-        this.STT = STT;
         MaHoKhau = maHoKhau;
         HoTen = hoTen;
         BiDanh = biDanh;
@@ -30,13 +29,6 @@ public class NhanKhau {
     }
 
     // Getter and setter
-    public int getSTT() {
-        return STT;
-    }
-
-    public void setSTT(int STT) {
-        this.STT = STT;
-    }
 
     public int getMaHoKhau() {
         return MaHoKhau;

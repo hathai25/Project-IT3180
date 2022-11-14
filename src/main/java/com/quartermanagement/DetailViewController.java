@@ -11,8 +11,6 @@ import static com.quartermanagement.DBConstants.*;
 
 public class DetailViewController {
     @FXML
-    private TextField sttTextField;
-    @FXML
     private TextField hoVaTenTextField;
     @FXML
     private TextField biDanhTextField;
@@ -41,7 +39,6 @@ public class DetailViewController {
     @FXML
     private TextField maHoKhauTextField;
     public void setNhanKhau(NhanKhau nhanKhau){
-        sttTextField.setText(String.valueOf(nhanKhau.getSTT()));
         hoVaTenTextField.setText(nhanKhau.getHoTen());
         biDanhTextField.setText(nhanKhau.getBiDanh());
         ngaySinhTextField.setText(nhanKhau.getNgaySinh());
@@ -66,27 +63,26 @@ public class DetailViewController {
         try {
             Connection conn;
             PreparedStatement preparedStatement = null;
-            String UPDATE_QUERY = "UPDATE `nhankhau` SET `STT`=?,`HoTen`=?,`BiDanh`=?,`NgaySinh`=?,`CCCD`=?,`NoiSinh`=?," +
+            String UPDATE_QUERY = "UPDATE `nhankhau` SET `HoTen`=?,`BiDanh`=?,`NgaySinh`=?,`CCCD`=?,`NoiSinh`=?," +
                     "`GioiTinh`=?,`NguyenQuan`=?,`DanToc`=?,`NoiThuongTru`=?,`TonGiao`=?,`QuocTich`=?,`DiaChiHienNay`=?," +
                     "`NgheNghiep`=?,`MaHoKhau`=? WHERE `CCCD`=?";
             conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
             preparedStatement = conn.prepareStatement(UPDATE_QUERY);
-            preparedStatement.setString(1, sttTextField.getText());
-            preparedStatement.setString(2, hoVaTenTextField.getText());
-            preparedStatement.setString(3, biDanhTextField.getText());
-            preparedStatement.setString(4, ngaySinhTextField.getText());
-            preparedStatement.setString(5, cccdTextField.getText());
-            preparedStatement.setString(6, noiSinhTextField.getText());
-            preparedStatement.setString(7, gioiTinhTextField.getText());
-            preparedStatement.setString(8, nguyenQuanTextField.getText());
-            preparedStatement.setString(9, danTocTextField.getText());
-            preparedStatement.setString(10, noiThuongTruTextField.getText());
-            preparedStatement.setString(11, tonGiaoTextField.getText());
-            preparedStatement.setString(12, quocTichTextField.getText());
-            preparedStatement.setString(13, diaChiHienNayTextField.getText());
-            preparedStatement.setString(14, ngheNghiepTextField.getText());
-            preparedStatement.setString(15, maHoKhauTextField.getText());
-            preparedStatement.setString(16, cccdTextField.getText());
+            preparedStatement.setString(1, hoVaTenTextField.getText());
+            preparedStatement.setString(2, biDanhTextField.getText());
+            preparedStatement.setString(3, ngaySinhTextField.getText());
+            preparedStatement.setString(4, cccdTextField.getText());
+            preparedStatement.setString(5, noiSinhTextField.getText());
+            preparedStatement.setString(6, gioiTinhTextField.getText());
+            preparedStatement.setString(7, nguyenQuanTextField.getText());
+            preparedStatement.setString(8, danTocTextField.getText());
+            preparedStatement.setString(9, noiThuongTruTextField.getText());
+            preparedStatement.setString(10, tonGiaoTextField.getText());
+            preparedStatement.setString(11, quocTichTextField.getText());
+            preparedStatement.setString(12, diaChiHienNayTextField.getText());
+            preparedStatement.setString(13, ngheNghiepTextField.getText());
+            preparedStatement.setString(14, maHoKhauTextField.getText());
+            preparedStatement.setString(15, cccdTextField.getText());
             int result = preparedStatement.executeUpdate();
             System.out.println(UPDATE_QUERY);
             if (result == 1) {
@@ -104,25 +100,24 @@ public class DetailViewController {
         try {
             Connection conn;
             PreparedStatement preparedStatement = null;
-            String INSERT_QUERY = "INSERT INTO nhankhau VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            String INSERT_QUERY = "INSERT INTO nhankhau VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
             conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
             preparedStatement = conn.prepareStatement(INSERT_QUERY);
-            preparedStatement.setString(1, sttTextField.getText());
-            preparedStatement.setString(2, hoVaTenTextField.getText());
-            preparedStatement.setString(3, biDanhTextField.getText());
-            preparedStatement.setString(4, ngaySinhTextField.getText());
-            preparedStatement.setString(5, cccdTextField.getText());
-            preparedStatement.setString(6, noiSinhTextField.getText());
-            preparedStatement.setString(7, gioiTinhTextField.getText());
-            preparedStatement.setString(8, nguyenQuanTextField.getText());
-            preparedStatement.setString(9, danTocTextField.getText());
-            preparedStatement.setString(10, noiThuongTruTextField.getText());
-            preparedStatement.setString(11, tonGiaoTextField.getText());
-            preparedStatement.setString(12, quocTichTextField.getText());
-            preparedStatement.setString(13, diaChiHienNayTextField.getText());
-            preparedStatement.setString(14, ngheNghiepTextField.getText());
-            preparedStatement.setString(15, maHoKhauTextField.getText());
+            preparedStatement.setString(1, hoVaTenTextField.getText());
+            preparedStatement.setString(2, biDanhTextField.getText());
+            preparedStatement.setString(3, ngaySinhTextField.getText());
+            preparedStatement.setString(4, cccdTextField.getText());
+            preparedStatement.setString(5, noiSinhTextField.getText());
+            preparedStatement.setString(6, gioiTinhTextField.getText());
+            preparedStatement.setString(7, nguyenQuanTextField.getText());
+            preparedStatement.setString(8, danTocTextField.getText());
+            preparedStatement.setString(9, noiThuongTruTextField.getText());
+            preparedStatement.setString(10, tonGiaoTextField.getText());
+            preparedStatement.setString(11, quocTichTextField.getText());
+            preparedStatement.setString(12, diaChiHienNayTextField.getText());
+            preparedStatement.setString(13, ngheNghiepTextField.getText());
+            preparedStatement.setString(14, maHoKhauTextField.getText());
             int result = preparedStatement.executeUpdate();
             System.out.println(INSERT_QUERY);
             if (result == 1) {
@@ -139,14 +134,6 @@ public class DetailViewController {
 
     // Getter and setter methods for all
 
-
-    public TextField getSttTextField() {
-        return sttTextField;
-    }
-
-    public void setSttTextField(TextField sttTextField) {
-        this.sttTextField = sttTextField;
-    }
 
     public TextField getHoVaTenTextField() {
         return hoVaTenTextField;

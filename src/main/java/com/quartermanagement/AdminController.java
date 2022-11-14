@@ -1,6 +1,7 @@
 package com.quartermanagement;
 
 import com.quartermanagement.model.NhanKhau;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -21,6 +23,11 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
+import javafx.util.Callback;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 
 import static com.quartermanagement.DBConstants.*;
 
@@ -28,7 +35,7 @@ public class AdminController implements Initializable {
     @FXML
     private TableView<NhanKhau> tableView;
     @FXML
-    private TableColumn<NhanKhau, Integer> sttColumn;
+    private TableColumn indexColumn;
     @FXML
     private TableColumn<NhanKhau, String> hoVaTenColumn;
     @FXML
@@ -82,7 +89,24 @@ public class AdminController implements Initializable {
             signUpUserButton.setVisible(false);
         }
 
-        sttColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, Integer>("STT"));
+        indexColumn.setCellValueFactory((Callback<CellDataFeatures<NhanKhau, NhanKhau>, ObservableValue<NhanKhau>>) p -> new ReadOnlyObjectWrapper(p.getValue()));
+
+        indexColumn.setCellFactory(new Callback<TableColumn<NhanKhau, NhanKhau>, TableCell<NhanKhau, NhanKhau>>() {
+            @Override public TableCell<NhanKhau, NhanKhau> call(TableColumn<NhanKhau, NhanKhau> param) {
+                return new TableCell<NhanKhau, NhanKhau>() {
+                    @Override protected void updateItem(NhanKhau item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (this.getTableRow() != null && item != null) {
+                            setText(this.getTableRow().getIndex()+1+"");
+                        } else {
+                            setText("");
+                        }
+                    }
+                };
+            }
+        });
+        indexColumn.setSortable(false);
         hoVaTenColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("HoTen"));
         biDanhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("BiDanh"));
         ngaySinhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NgaySinh"));
@@ -106,7 +130,7 @@ public class AdminController implements Initializable {
 
             // Loop the list of nhankhau
             while (result.next()) {
-                nhanKhauList.add(new NhanKhau(result.getInt("STT"), result.getString("HoTen"), result.getString("BiDanh"),
+                nhanKhauList.add(new NhanKhau(result.getString("HoTen"), result.getString("BiDanh"),
                         result.getString("NgaySinh"), result.getString("CCCD"), result.getString("NoiSinh"),
                         result.getString("GioiTinh"), result.getString("NguyenQuan"), result.getString("DanToc"),
                         result.getString("NoiThuongTru"), result.getString("TonGiao"), result.getString("QuocTich"),
@@ -120,41 +144,6 @@ public class AdminController implements Initializable {
     }
 
     public void add(ActionEvent event) throws IOException {
-//        // change scene and get new information
-//        Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-//        FXMLLoader loader = new FXMLLoader();
-//        loader.setLocation(getClass().getResource("detail-view.fxml"));
-//        Parent studentViewParent = loader.load();
-//        Scene scene = new Scene(studentViewParent);
-//        DetailViewController controller = loader.getController();
-//        stage.setScene(scene);
-//
-//        //
-//        NhanKhau nhan_khau_moi = new NhanKhau();
-//        nhan_khau_moi.setSTT(Integer.parseInt(controller.getSttTextField().getText()));
-//        nhan_khau_moi.setHoTen(controller.getHoVaTenTextField().getText());
-//        nhan_khau_moi.setBiDanh(controller.getBiDanhTextField().getText());
-//        nhan_khau_moi.setNgaySinh(controller.getNgaySinhTextField().getText());
-//        nhan_khau_moi.setCCCD(controller.getCccdTextField().getText());
-//        nhan_khau_moi.setNoiSinh(controller.getNoiSinhTextField().getText());
-//        nhan_khau_moi.setGioiTinh(controller.getGioiTinhTextField().getText());
-//        nhan_khau_moi.setNguyenQuan(controller.getNguyenQuanTextField().getText());
-//        nhan_khau_moi.setDanToc(controller.getDanTocTextField().getText());
-//        nhan_khau_moi.setNoiThuongTru(controller.getNoiThuongTruTextField().getText());
-//        nhan_khau_moi.setTonGiao(controller.getTonGiaoTextField().getText());
-//        nhan_khau_moi.setQuocTich(controller.getQuocTichTextField().getText());
-//        nhan_khau_moi.setDiaChiHienNay(controller.getDiaChiHienNayTextField().getText());
-//        nhan_khau_moi.setNgheNghiep(controller.getNgheNghiepTextField().getText());
-//        nhan_khau_moi.setMaHoKhau(Integer.parseInt(controller.getMaHoKhauTextField().getText()));
-//        nhanKhauList.add(nhan_khau_moi);
-//        // Add in Database
-//        try {
-//            String INSERT_QUERY = "INSERT INTO nhankhau VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-//
-//            conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-//            preparedStatement = conn.prepareStatement(INSERT_QUERY);
-//            ResultSet result = preparedStatement.executeQuery();
-//        } catch (SQLException e) {}
         Utils utils = new Utils();
         utils.changeScene(event, "detail-view.fxml");
     }
