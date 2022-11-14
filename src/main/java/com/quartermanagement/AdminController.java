@@ -144,8 +144,15 @@ public class AdminController implements Initializable {
     }
 
     public void add(ActionEvent event) throws IOException {
-        Utils utils = new Utils();
-        utils.changeScene(event, "detail-view.fxml");
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("detail-view.fxml"));
+        Parent studentViewParent = loader.load();
+        Scene scene = new Scene(studentViewParent);
+        DetailViewController controller = loader.getController();
+        controller.hide_update_btn();
+        //utils.changeAnchorPane(basePane, "detail-view.fxml");
+        stage.setScene(scene);
     }
 
 
@@ -176,6 +183,7 @@ public class AdminController implements Initializable {
         DetailViewController controller = loader.getController();
         NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
         controller.setNhanKhau(selected);
+        controller.hide_add_btn();
         //utils.changeAnchorPane(basePane, "detail-view.fxml");
         stage.setScene(scene);
     }
