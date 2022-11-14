@@ -184,6 +184,7 @@ public class AdminController implements Initializable {
         NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
         controller.setNhanKhau(selected);
         controller.hide_add_btn();
+        controller.setTitle("Cập nhật nhân khẩu mới");
         //utils.changeAnchorPane(basePane, "detail-view.fxml");
         stage.setScene(scene);
     }

@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.sql.*;
@@ -43,6 +44,8 @@ public class DetailViewController {
     private Button add_btn ;
     @FXML
     private Button update_btn;
+    @FXML
+    private Text title;
 
     public void setNhanKhau(NhanKhau nhanKhau){
         hoVaTenTextField.setText(nhanKhau.getHoTen());
@@ -264,5 +267,9 @@ public class DetailViewController {
 
     public void setMaHoKhauTextField(TextField maHoKhauTextField) {
         this.maHoKhauTextField = maHoKhauTextField;
+    }
+
+    public void setTitle(String title){
+        this.title.setText(title);
     }
 }
