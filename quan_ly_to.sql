@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 15, 2022 at 08:24 AM
+-- Generation Time: Nov 15, 2022 at 03:53 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -107,7 +107,7 @@ INSERT INTO `lichhoatdong` (`MaHoatDong`, `TenHoatDong`, `ThoiGianBatDau`, `Thoi
 
 CREATE TABLE `nhankhau` (
   `HoTen` text NOT NULL,
-  `BiDanh` text NOT NULL,
+  `BiDanh` text DEFAULT NULL,
   `NgaySinh` date NOT NULL,
   `CCCD` varchar(12) NOT NULL,
   `NoiSinh` text NOT NULL,
@@ -115,10 +115,10 @@ CREATE TABLE `nhankhau` (
   `NguyenQuan` text NOT NULL,
   `DanToc` text NOT NULL,
   `NoiThuongTru` text NOT NULL,
-  `TonGiao` text NOT NULL,
-  `QuocTich` text NOT NULL,
+  `TonGiao` text DEFAULT NULL,
+  `QuocTich` text DEFAULT 'Việt Nam',
   `DiaChiHienNay` text NOT NULL,
-  `NgheNghiep` text NOT NULL,
+  `NgheNghiep` text DEFAULT NULL,
   `MaHoKhau` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -127,8 +127,8 @@ CREATE TABLE `nhankhau` (
 --
 
 INSERT INTO `nhankhau` (`HoTen`, `BiDanh`, `NgaySinh`, `CCCD`, `NoiSinh`, `GioiTinh`, `NguyenQuan`, `DanToc`, `NoiThuongTru`, `TonGiao`, `QuocTich`, `DiaChiHienNay`, `NgheNghiep`, `MaHoKhau`) VALUES
-('Trần Tuấn Anh ', 'người dân 2', '2002-03-23', '123443215678', 'Phường Cửa Nam, thành phố Vinh, Nghệ An', 'Nam', 'vinh, nghệ an', 'Kinh', 'cửa nam, thành phố vinh, nghệ an', 'Hindu giáo', 'Việt Nam', 'phố 7 phường La Khê', 'Sinh viên', 123434567),
-('Hà Thành', 'adf', '2022-11-15', '13241341', 'à', 'nam', 'adf', 'ads', 'adsf', 'adf', 'adsf', 'ádf', 'ads', 123434567),
+('Hà Thái', '', '2022-11-22', '0896535235', 'Hà Nội', 'Nam', 'x', 'Kinh chưa kinh chưa', 'y', '', '', 'z', '', 123434567),
+('Trần Tuấn Anh ', 'người dân 2', '2002-03-23', '123443215678', 'Phường Cửa Nam, thành phố Vinh, Nghệ An', 'Nam', 'vinh, nghệ an', 'Kinh', 'cửa nam, thành phố vinh, nghệ an', 'Hindu giáo', '', 'phố 7 phường La Khê', 'Sinh viên', 123434567),
 ('Thái Thị Hồng Nhung', 'phó bí thư', '1992-06-22', '234554324567', 'Lam sơn, Thanh Hóa', 'Nữ', 'Lam Sơn, Thanh Hóa', 'Kinh', 'Trung đô, Lam sơn, thanh hóa', 'Ấn Độ giáo', 'Việt Nam', 'phố 7 phường La Khê', 'Giáo viên', 234565679),
 ('Thái Đình Đức', 'nguoi dan 1', '1990-06-11', '245676866712', 'Anh Sơn, Nghệ An', 'Nam', 'Anh Sơn, Nghệ An', 'Kinh', 'Vinh, Nghệ An', 'Không', 'Việt Nam', 'phố 7 phường La Khê', 'Công nhân', 245738373);
 

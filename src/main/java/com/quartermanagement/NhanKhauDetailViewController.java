@@ -4,20 +4,15 @@ import com.quartermanagement.model.NhanKhau;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
-
 import javafx.scene.control.Alert;
-
 import javafx.scene.control.Button;
-
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-
 import java.io.IOException;
 import java.sql.*;
-
 import static com.quartermanagement.DBConstants.*;
 
-public class DetailViewController {
+public class NhanKhauDetailViewController {
     @FXML
     private TextField hoVaTenTextField;
     @FXML
@@ -93,10 +88,9 @@ public class DetailViewController {
         String ngheNghiep = ngheNghiepTextField.getText();
         String maHoKhau = maHoKhauTextField.getText();
 
-        if (hoVaTen.trim().equals("") || biDanh.trim().equals("") || ngaySinh.trim().equals("") || cccd.trim().equals("") ||
+        if (hoVaTen.trim().equals("") || ngaySinh.trim().equals("") || cccd.trim().equals("") ||
                 noiSinh.trim().equals("") || gioiTinh.trim().equals("") || nguyenQuan.trim().equals("") || danToc.trim().equals("") ||
-                noiThuongTru.trim().equals("") || tonGiao.trim().equals("") || quocTich.trim().equals("") || diaChiHienNay.trim().equals("") ||
-                ngheNghiep.trim().equals("") || maHoKhau.trim().equals("")) {
+                noiThuongTru.trim().equals("") || diaChiHienNay.trim().equals("") || maHoKhau.trim().equals("")) {
 
             utils.createDialog(
                     Alert.AlertType.WARNING,
@@ -166,10 +160,9 @@ public class DetailViewController {
         String diaChiHienNay = diaChiHienNayTextField.getText();
         String ngheNghiep = ngheNghiepTextField.getText();
         String maHoKhau = maHoKhauTextField.getText();
-        if (hoVaTen.trim().equals("") || biDanh.trim().equals("") || ngaySinh.trim().equals("") || cccd.trim().equals("") ||
+        if (hoVaTen.trim().equals("") || ngaySinh.trim().equals("") || cccd.trim().equals("") ||
                 noiSinh.trim().equals("") || gioiTinh.trim().equals("") || nguyenQuan.trim().equals("") || danToc.trim().equals("") ||
-                noiThuongTru.trim().equals("") || tonGiao.trim().equals("") || quocTich.trim().equals("") || diaChiHienNay.trim().equals("") ||
-                ngheNghiep.trim().equals("") || maHoKhau.trim().equals("")) {
+                noiThuongTru.trim().equals("") || diaChiHienNay.trim().equals("") || maHoKhau.trim().equals("")) {
 
             utils.createDialog(
                     Alert.AlertType.WARNING,
