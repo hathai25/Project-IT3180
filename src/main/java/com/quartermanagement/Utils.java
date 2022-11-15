@@ -14,8 +14,16 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Utils {
+    public static LocalDate LOCAL_DATE(String dateString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return LocalDate.parse(dateString, formatter);
+    }
+
+
     public String hashPassword(String password) {
         String generatedPassword = null;
         try {
@@ -57,6 +65,13 @@ public class Utils {
         warning.setHeaderText(headerText);
         warning.setContentText(contentText);
         warning.show();
+    }
+
+    public static String convertDate(String date){
+        String result;
+        String[] date_split = date.split("-");
+        result = date_split[2]+"/"+date_split[1]+"/"+date_split[0];
+        return result;
     }
 
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -38,11 +39,6 @@
             <Font name="Segoe UI" size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="ngaySinhTextField" layoutX="181.0" layoutY="100.0" prefHeight="30.0" prefWidth="127.0" promptText="Ngày sinh" style="-fx-border-color: #3f4d67; -fx-border-radius: 10px; -fx-background-color: transparent;">
-         <font>
-            <Font name="Segoe UI Italic" size="14.0" />
-         </font>
-      </TextField>
       <Text layoutX="387.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-style: bold;" text="CCCD" wrappingWidth="56.5140380859375">
          <font>
             <Font name="Segoe UI" size="18.0" />
@@ -168,5 +164,6 @@
             <Font name="Segoe UI" size="18.0" />
          </font>
       </Text>
+      <DatePicker fx:id="ngaySinhDatePicker" layoutX="182.0" layoutY="103.0" prefHeight="26.0" prefWidth="127.0" />
    </children>
 </AnchorPane>

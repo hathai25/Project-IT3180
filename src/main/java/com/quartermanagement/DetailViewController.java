@@ -3,6 +3,7 @@ package com.quartermanagement;
 import com.quartermanagement.model.NhanKhau;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.DatePicker;
 
 import javafx.scene.control.Alert;
 
@@ -22,7 +23,7 @@ public class DetailViewController {
     @FXML
     private TextField biDanhTextField;
     @FXML
-    private TextField ngaySinhTextField;
+    private DatePicker ngaySinhDatePicker;
     @FXML
     private TextField cccdTextField;
     @FXML
@@ -55,7 +56,7 @@ public class DetailViewController {
     public void setNhanKhau(NhanKhau nhanKhau) {
         hoVaTenTextField.setText(nhanKhau.getHoTen());
         biDanhTextField.setText(nhanKhau.getBiDanh());
-        ngaySinhTextField.setText(nhanKhau.getNgaySinh());
+        ngaySinhDatePicker.setValue(Utils.LOCAL_DATE(nhanKhau.getNgaySinh()));
         cccdTextField.setText(nhanKhau.getCCCD());
         noiSinhTextField.setText(nhanKhau.getNoiSinh());
         gioiTinhTextField.setText(nhanKhau.getGioiTinh());
@@ -73,11 +74,13 @@ public class DetailViewController {
         utils.changeScene(event, "admin-view.fxml");
     }
 
+
+
     public void update(ActionEvent event) throws IOException {
         Utils utils = new Utils();
         String hoVaTen = hoVaTenTextField.getText();
         String biDanh = biDanhTextField.getText();
-        String ngaySinh = ngaySinhTextField.getText();
+        String ngaySinh = ngaySinhDatePicker.getValue().toString();
         String cccd = cccdTextField.getText();
         String noiSinh = noiSinhTextField.getText();
         String gioiTinh = gioiTinhTextField.getText();
@@ -130,7 +133,7 @@ public class DetailViewController {
                     utils.createDialog(
                             Alert.AlertType.CONFIRMATION,
                             "Thành công",
-                            "", "Đồng chí vất cả rồi!"
+                            "", "Đồng chí vất vả rồi!"
                     );
                 } else {
                     utils.createDialog(
@@ -151,7 +154,7 @@ public class DetailViewController {
         Utils utils = new Utils();
         String hoVaTen = hoVaTenTextField.getText();
         String biDanh = biDanhTextField.getText();
-        String ngaySinh = ngaySinhTextField.getText();
+        String ngaySinh = ngaySinhDatePicker.getValue().toString();
         String cccd = cccdTextField.getText();
         String noiSinh = noiSinhTextField.getText();
         String gioiTinh = gioiTinhTextField.getText();
@@ -244,13 +247,6 @@ public class DetailViewController {
         this.biDanhTextField = biDanhTextField;
     }
 
-    public TextField getNgaySinhTextField() {
-        return ngaySinhTextField;
-    }
-
-    public void setNgaySinhTextField(TextField ngaySinhTextField) {
-        this.ngaySinhTextField = ngaySinhTextField;
-    }
 
     public TextField getCccdTextField() {
         return cccdTextField;

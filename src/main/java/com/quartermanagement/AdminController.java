@@ -130,7 +130,7 @@ public class AdminController implements Initializable {
             // Loop the list of nhankhau
             while (result.next()) {
                 nhanKhauList.add(new NhanKhau(result.getString("HoTen"), result.getString("BiDanh"),
-                        result.getString("NgaySinh"), result.getString("CCCD"), result.getString("NoiSinh"),
+                        Utils.convertDate(result.getString("NgaySinh")), result.getString("CCCD"), result.getString("NoiSinh"),
                         result.getString("GioiTinh"), result.getString("NguyenQuan"), result.getString("DanToc"),
                         result.getString("NoiThuongTru"), result.getString("TonGiao"), result.getString("QuocTich"),
                         result.getString("DiaChiHienNay"), result.getString("NgheNghiep"), result.getInt("MaHoKhau")
