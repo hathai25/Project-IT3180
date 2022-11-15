@@ -1,11 +1,15 @@
 package com.quartermanagement;
 
 import com.quartermanagement.model.NhanKhau;
-//import com.sun.javafx.charts.Legend;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+
 import javafx.scene.control.Alert;
+
+import javafx.scene.control.Button;
+
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.sql.*;
@@ -41,6 +45,12 @@ public class DetailViewController {
     private TextField ngheNghiepTextField;
     @FXML
     private TextField maHoKhauTextField;
+    @FXML
+    private Button add_btn;
+    @FXML
+    private Button update_btn;
+    @FXML
+    private Text title;
 
     public void setNhanKhau(NhanKhau nhanKhau) {
         hoVaTenTextField.setText(nhanKhau.getHoTen());
@@ -58,7 +68,6 @@ public class DetailViewController {
         ngheNghiepTextField.setText(nhanKhau.getNgheNghiep());
         maHoKhauTextField.setText(String.valueOf(nhanKhau.getMaHoKhau()));
     }
-
     public void goBack(ActionEvent event) throws IOException {
         Utils utils = new Utils();
         utils.changeScene(event, "admin-view.fxml");
@@ -91,8 +100,7 @@ public class DetailViewController {
                     "Đồng chí giữ bình tĩnh",
                     "", "Vui lòng nhập đủ thông tin!")
             ;
-        } else
-
+        } else {
             try {
                 Connection conn;
                 PreparedStatement preparedStatement = null;
@@ -135,7 +143,8 @@ public class DetailViewController {
                 conn.close();
             } catch (SQLException e) {
             }
-        utils.changeScene(event, "admin-view.fxml");
+            utils.changeScene(event, "admin-view.fxml");
+        }
     }
 
     public void addnew(ActionEvent event) throws IOException {
@@ -209,10 +218,16 @@ public class DetailViewController {
         }
     }
 
+    public void hide_add_btn() {
+        add_btn.setVisible(false);
+    }
+
+    public void hide_update_btn() {
+        update_btn.setVisible(false);
+        add_btn.setTranslateX(100);
+    }
 
     // Getter and setter methods for all
-
-
     public TextField getHoVaTenTextField() {
         return hoVaTenTextField;
     }
@@ -323,5 +338,9 @@ public class DetailViewController {
 
     public void setMaHoKhauTextField(TextField maHoKhauTextField) {
         this.maHoKhauTextField = maHoKhauTextField;
+    }
+
+    public void setTitle(String title) {
+        this.title.setText(title);
     }
 }

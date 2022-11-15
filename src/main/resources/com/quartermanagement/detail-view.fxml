@@ -6,9 +6,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quartermanagement.DetailViewController">
+<AnchorPane prefHeight="600.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quartermanagement.DetailViewController">
    <children>
-      <Button layoutX="500.0" layoutY="558.0" mnemonicParsing="false" onAction="#update" style="-fx-background-color: #3f4d67;" text="Cập nhật" textFill="WHITE">
+      <Button fx:id="update_btn" layoutX="500.0" layoutY="558.0" mnemonicParsing="false" onAction="#update" style="-fx-background-color: #3f4d67;" text="Cập nhật" textFill="WHITE">
          <font>
             <Font name="Segoe UI" size="14.0" />
          </font>
@@ -153,7 +153,7 @@
             <Font name="Segoe UI Italic" size="14.0" />
          </font>
       </TextField>
-      <Button layoutX="397.0" layoutY="558.0" mnemonicParsing="false" onAction="#addnew" prefHeight="28.0" prefWidth="74.0" style="-fx-background-color: #3f4d67;" text="Thêm" textFill="WHITE">
+      <Button fx:id="add_btn" layoutX="397.0" layoutY="558.0" mnemonicParsing="false" onAction="#addnew" prefHeight="28.0" prefWidth="74.0" style="-fx-background-color: #3f4d67;" text="Thêm" textFill="WHITE">
          <font>
             <Font name="Segoe UI" size="14.0" />
          </font>
@@ -163,7 +163,7 @@
             <Font name="Segoe UI" size="14.0" />
          </font>
       </Button>
-      <Text layoutX="264.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-style: bold;" text="Thêm nhân khẩu mới" textAlignment="CENTER" wrappingWidth="225.31402587890625">
+      <Text fx:id="title" layoutX="264.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-style: bold;" text="Thêm nhân khẩu mới" textAlignment="CENTER" wrappingWidth="225.31402587890625">
          <font>
             <Font name="Segoe UI" size="18.0" />
          </font>

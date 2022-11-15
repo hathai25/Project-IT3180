@@ -11,10 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -25,8 +22,6 @@ import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 import javafx.util.Callback;
 import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 
 import static com.quartermanagement.DBConstants.*;
@@ -144,8 +139,14 @@ public class AdminController implements Initializable {
     }
 
     public void add(ActionEvent event) throws IOException {
-        Utils utils = new Utils();
-        utils.changeScene(event, "detail-view.fxml");
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("detail-view.fxml"));
+        Parent studentViewParent = loader.load();
+        Scene scene = new Scene(studentViewParent);
+        DetailViewController controller = loader.getController();
+        controller.hide_update_btn();
+        stage.setScene(scene);
     }
 
 
@@ -175,8 +176,12 @@ public class AdminController implements Initializable {
         Scene scene = new Scene(studentViewParent);
         DetailViewController controller = loader.getController();
         NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
-        controller.setNhanKhau(selected);
-        //utils.changeAnchorPane(basePane, "detail-view.fxml");
-        stage.setScene(scene);
+        if(selected == null) utils.createDialog(Alert.AlertType.WARNING, "Từ từ đã đồng chí", "","Vui lòng chọn một nhân khẩu");
+        else {
+            controller.setNhanKhau(selected);
+            controller.hide_add_btn();
+            controller.setTitle("Cập nhật nhân khẩu mới");
+            stage.setScene(scene);
+        }
     }
 }
