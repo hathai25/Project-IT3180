@@ -3,6 +3,7 @@ package com.quartermanagement;
 import com.quartermanagement.model.NhanKhau;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ public class DetailViewController {
     @FXML
     private TextField biDanhTextField;
     @FXML
-    private TextField ngaySinhTextField;
+    private DatePicker ngaySinhDatePicker;
     @FXML
     private TextField cccdTextField;
     @FXML
@@ -41,7 +42,7 @@ public class DetailViewController {
     public void setNhanKhau(NhanKhau nhanKhau){
         hoVaTenTextField.setText(nhanKhau.getHoTen());
         biDanhTextField.setText(nhanKhau.getBiDanh());
-        ngaySinhTextField.setText(nhanKhau.getNgaySinh());
+        ngaySinhDatePicker.setValue(Utils.LOCAL_DATE(nhanKhau.getNgaySinh()));
         cccdTextField.setText(nhanKhau.getCCCD());
         noiSinhTextField.setText(nhanKhau.getNoiSinh());
         gioiTinhTextField.setText(nhanKhau.getGioiTinh());
@@ -70,7 +71,7 @@ public class DetailViewController {
             preparedStatement = conn.prepareStatement(UPDATE_QUERY);
             preparedStatement.setString(1, hoVaTenTextField.getText());
             preparedStatement.setString(2, biDanhTextField.getText());
-            preparedStatement.setString(3, ngaySinhTextField.getText());
+            preparedStatement.setString(3, ngaySinhDatePicker.getValue().toString());
             preparedStatement.setString(4, cccdTextField.getText());
             preparedStatement.setString(5, noiSinhTextField.getText());
             preparedStatement.setString(6, gioiTinhTextField.getText());
@@ -106,7 +107,7 @@ public class DetailViewController {
             preparedStatement = conn.prepareStatement(INSERT_QUERY);
             preparedStatement.setString(1, hoVaTenTextField.getText());
             preparedStatement.setString(2, biDanhTextField.getText());
-            preparedStatement.setString(3, ngaySinhTextField.getText());
+            preparedStatement.setString(3, ngaySinhDatePicker.getValue().toString());
             preparedStatement.setString(4, cccdTextField.getText());
             preparedStatement.setString(5, noiSinhTextField.getText());
             preparedStatement.setString(6, gioiTinhTextField.getText());
@@ -151,13 +152,6 @@ public class DetailViewController {
         this.biDanhTextField = biDanhTextField;
     }
 
-    public TextField getNgaySinhTextField() {
-        return ngaySinhTextField;
-    }
-
-    public void setNgaySinhTextField(TextField ngaySinhTextField) {
-        this.ngaySinhTextField = ngaySinhTextField;
-    }
 
     public TextField getCccdTextField() {
         return cccdTextField;
