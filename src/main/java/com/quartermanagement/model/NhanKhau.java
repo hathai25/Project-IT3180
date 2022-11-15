@@ -1,5 +1,8 @@
 package com.quartermanagement.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 public class NhanKhau {
     private int STT, MaHoKhau;
     private String HoTen, BiDanh, NgaySinh, CCCD, NoiSinh,
@@ -62,13 +65,12 @@ public class NhanKhau {
         BiDanh = biDanh;
     }
 
-    public String getNgaySinh() {
-        return NgaySinh;
-    }
+    public String getNgaySinh() {return NgaySinh; }
 
     public void setNgaySinh(String ngaySinh) {
-        NgaySinh = ngaySinh;
+        this.NgaySinh = ngaySinh;
     }
+
 
     public String getCCCD() {
         return CCCD;

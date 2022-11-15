@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.text.ParseException;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
@@ -107,7 +108,7 @@ public class AdminController implements Initializable {
             // Loop the list of nhankhau
             while (result.next()) {
                 nhanKhauList.add(new NhanKhau(result.getInt("STT"), result.getString("HoTen"), result.getString("BiDanh"),
-                        result.getString("NgaySinh"), result.getString("CCCD"), result.getString("NoiSinh"),
+                        Utils.convertDate(result.getString("NgaySinh")), result.getString("CCCD"), result.getString("NoiSinh"),
                         result.getString("GioiTinh"), result.getString("NguyenQuan"), result.getString("DanToc"),
                         result.getString("NoiThuongTru"), result.getString("TonGiao"), result.getString("QuocTich"),
                         result.getString("DiaChiHienNay"), result.getString("NgheNghiep"), result.getInt("MaHoKhau")
@@ -178,7 +179,7 @@ public class AdminController implements Initializable {
         }
     }
 
-    public void detail(ActionEvent event) throws IOException {
+    public void detail(ActionEvent event) throws IOException, ParseException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("detail-view.fxml"));
