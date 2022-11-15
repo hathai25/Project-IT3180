@@ -3,7 +3,9 @@ package com.quartermanagement;
 import com.quartermanagement.model.NhanKhau;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.sql.*;
@@ -38,6 +40,13 @@ public class DetailViewController {
     private TextField ngheNghiepTextField;
     @FXML
     private TextField maHoKhauTextField;
+    @FXML
+    private Button add_btn ;
+    @FXML
+    private Button update_btn;
+    @FXML
+    private Text title;
+
     public void setNhanKhau(NhanKhau nhanKhau){
         hoVaTenTextField.setText(nhanKhau.getHoTen());
         biDanhTextField.setText(nhanKhau.getBiDanh());
@@ -85,6 +94,9 @@ public class DetailViewController {
             preparedStatement.setString(15, cccdTextField.getText());
             int result = preparedStatement.executeUpdate();
             System.out.println(UPDATE_QUERY);
+
+
+
             if (result == 1) {
                 System.out.println("OKE");
             }
@@ -120,6 +132,7 @@ public class DetailViewController {
             preparedStatement.setString(14, maHoKhauTextField.getText());
             int result = preparedStatement.executeUpdate();
             System.out.println(INSERT_QUERY);
+
             if (result == 1) {
                 System.out.println("OKE");
             }
@@ -131,10 +144,15 @@ public class DetailViewController {
         utils.changeScene(event,"admin-view.fxml");
     }
 
+    public void hide_add_btn(){
+        add_btn.setVisible(false);
+    }
 
+    public void hide_update_btn(){
+        update_btn.setVisible(false);
+        add_btn.setTranslateX(100);
+    }
     // Getter and setter methods for all
-
-
     public TextField getHoVaTenTextField() {
         return hoVaTenTextField;
     }
@@ -245,5 +263,9 @@ public class DetailViewController {
 
     public void setMaHoKhauTextField(TextField maHoKhauTextField) {
         this.maHoKhauTextField = maHoKhauTextField;
+    }
+
+    public void setTitle(String title){
+        this.title.setText(title);
     }
 }
