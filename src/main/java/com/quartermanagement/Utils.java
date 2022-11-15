@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -65,11 +66,13 @@ public class Utils {
         warning.setContentText(contentText);
         warning.show();
     }
+
     public static String convertDate(String date){
         String result;
         String[] date_split = date.split("-");
         result = date_split[2]+"/"+date_split[1]+"/"+date_split[0];
         return result;
     }
+
 }
 
