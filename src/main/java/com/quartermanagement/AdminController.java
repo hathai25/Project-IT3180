@@ -25,8 +25,6 @@ import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 import javafx.util.Callback;
 import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 
 import static com.quartermanagement.DBConstants.*;
@@ -151,7 +149,6 @@ public class AdminController implements Initializable {
         Scene scene = new Scene(studentViewParent);
         DetailViewController controller = loader.getController();
         controller.hide_update_btn();
-        //utils.changeAnchorPane(basePane, "detail-view.fxml");
         stage.setScene(scene);
     }
 

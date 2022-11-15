@@ -146,17 +146,13 @@ public class DetailViewController {
 
     public void hide_add_btn(){
         add_btn.setVisible(false);
-        update_btn.setVisible(true);
     }
 
     public void hide_update_btn(){
-        add_btn.setVisible(true);
         update_btn.setVisible(false);
         add_btn.setTranslateX(100);
     }
     // Getter and setter methods for all
-
-
     public TextField getHoVaTenTextField() {
         return hoVaTenTextField;
     }
