@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -179,10 +180,12 @@ public class AdminController implements Initializable {
         Scene scene = new Scene(studentViewParent);
         DetailViewController controller = loader.getController();
         NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
-        controller.setNhanKhau(selected);
-        controller.hide_add_btn();
-        controller.setTitle("Cập nhật nhân khẩu mới");
-        //utils.changeAnchorPane(basePane, "detail-view.fxml");
-        stage.setScene(scene);
+        if(selected == null) utils.createDialog(Alert.AlertType.WARNING, "Từ từ đã đồng chí", "","Vui lòng chọn một nhân khẩu");
+        else {
+            controller.setNhanKhau(selected);
+            controller.hide_add_btn();
+            controller.setTitle("Cập nhật nhân khẩu mới");
+            stage.setScene(scene);
+        }
     }
 }
