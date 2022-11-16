@@ -195,7 +195,8 @@ public class NhanKhauDetailViewController {
                 preparedStatement.setString(8, danToc);
                 preparedStatement.setString(9, noiThuongTru);
                 preparedStatement.setString(10, tonGiao);
-                preparedStatement.setString(11, quocTich);
+                if(quocTich == "") preparedStatement.setString(11, "Việt Nam");
+                else preparedStatement.setString(11, quocTich);
                 preparedStatement.setString(12, diaChiHienNay);
                 preparedStatement.setString(13, ngheNghiep);
                 preparedStatement.setString(14, maHoKhau);
