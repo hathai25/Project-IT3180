@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-import static com.quartermanagement.FXMLConstants.HOME_VIEW_FXML;
+import static com.quartermanagement.Constants.FXMLConstants.HOME_VIEW_FXML;
 
 public class HomeApplication extends Application {
     @Override

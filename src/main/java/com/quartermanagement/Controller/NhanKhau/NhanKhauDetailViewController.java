@@ -1,6 +1,7 @@
-package com.quartermanagement;
+package com.quartermanagement.Controller.NhanKhau;
 
-import com.quartermanagement.model.NhanKhau;
+import com.quartermanagement.Model.NhanKhau;
+import com.quartermanagement.Utils.ViewUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
@@ -11,8 +12,9 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import java.sql.*;
 
-import static com.quartermanagement.DBConstants.*;
-import static com.quartermanagement.FXMLConstants.NHAN_KHAU_VIEW_FXML;
+import static com.quartermanagement.Constants.DBConstants.*;
+import static com.quartermanagement.Utils.Utils.LOCAL_DATE;
+import static com.quartermanagement.Utils.Utils.createDialog;
 
 public class NhanKhauDetailViewController {
     @FXML
@@ -53,7 +55,7 @@ public class NhanKhauDetailViewController {
     public void setNhanKhau(NhanKhau nhanKhau) {
         hoVaTenTextField.setText(nhanKhau.getHoTen());
         biDanhTextField.setText(nhanKhau.getBiDanh());
-        ngaySinhDatePicker.setValue(Utils.LOCAL_DATE(nhanKhau.getNgaySinh()));
+        ngaySinhDatePicker.setValue(LOCAL_DATE(nhanKhau.getNgaySinh()));
         cccdTextField.setText(nhanKhau.getCCCD());
         noiSinhTextField.setText(nhanKhau.getNoiSinh());
         gioiTinhTextField.setText(nhanKhau.getGioiTinh());
@@ -67,14 +69,14 @@ public class NhanKhauDetailViewController {
         maHoKhauTextField.setText(String.valueOf(nhanKhau.getMaHoKhau()));
     }
     public void goBack(ActionEvent event) throws IOException {
-        Utils utils = new Utils();
-        utils.switchToNhanKhau_Admin_view(event,NHAN_KHAU_VIEW_FXML);
+        ViewUtils viewUtils = new ViewUtils();
+        viewUtils.switchToNhanKhau_Admin_view(event);
     }
 
 
 
     public void update(ActionEvent event) throws IOException {
-        Utils utils = new Utils();
+        ViewUtils viewUtils = new ViewUtils();
         String hoVaTen = hoVaTenTextField.getText();
         String biDanh = biDanhTextField.getText();
         String ngaySinh = ngaySinhDatePicker.getValue().toString();
@@ -94,7 +96,7 @@ public class NhanKhauDetailViewController {
                 noiSinh.trim().equals("") || gioiTinh.trim().equals("") || nguyenQuan.trim().equals("") || danToc.trim().equals("") ||
                 noiThuongTru.trim().equals("") || diaChiHienNay.trim().equals("") || maHoKhau.trim().equals("")) {
 
-            utils.createDialog(
+            createDialog(
                     Alert.AlertType.WARNING,
                     "Đồng chí giữ bình tĩnh",
                     "", "Vui lòng nhập đủ thông tin!")
@@ -126,13 +128,13 @@ public class NhanKhauDetailViewController {
 
                 int result = preparedStatement.executeUpdate();
                 if (result == 1) {
-                    utils.createDialog(
+                    createDialog(
                             Alert.AlertType.CONFIRMATION,
                             "Thành công",
                             "", "Đồng chí vất vả rồi!"
                     );
                 } else {
-                    utils.createDialog(
+                    createDialog(
                             Alert.AlertType.ERROR,
                             "Thất bại",
                             "", "Oops, mời đồng chí nhập lại thông tin!"
@@ -143,12 +145,12 @@ public class NhanKhauDetailViewController {
             } catch (SQLException e) {
             }
 //          swtich to admin-nhankhau-view
-            utils.switchToNhanKhau_Admin_view(event,NHAN_KHAU_VIEW_FXML);
+            viewUtils.switchToNhanKhau_Admin_view(event);
         }
     }
 
     public void addnew(ActionEvent event) throws IOException {
-        Utils utils = new Utils();
+        ViewUtils viewUtils = new ViewUtils();
         String hoVaTen = hoVaTenTextField.getText();
         String biDanh = biDanhTextField.getText();
         String ngaySinh = ngaySinhDatePicker.getValue().toString();
@@ -167,7 +169,7 @@ public class NhanKhauDetailViewController {
                 noiSinh.trim().equals("") || gioiTinh.trim().equals("") || nguyenQuan.trim().equals("") || danToc.trim().equals("") ||
                 noiThuongTru.trim().equals("") || diaChiHienNay.trim().equals("") || maHoKhau.trim().equals("")) {
 
-            utils.createDialog(
+            createDialog(
                     Alert.AlertType.WARNING,
                     "Đồng chí giữ bình tĩnh",
                     "", "Vui lòng nhập đủ thông tin!")
@@ -197,13 +199,13 @@ public class NhanKhauDetailViewController {
                 preparedStatement.setString(14, maHoKhau);
                 int result = preparedStatement.executeUpdate();
                 if (result == 1) {
-                    utils.createDialog(
+                    createDialog(
                             Alert.AlertType.CONFIRMATION,
                             "Thành công",
                             "", "Đồng chí vất cả rồi!"
                     );
                 } else {
-                    utils.createDialog(
+                    createDialog(
                             Alert.AlertType.ERROR,
                             "Thất bại",
                             "", "Oops, mời đồng chí nhập lại thông tin!"
@@ -214,7 +216,7 @@ public class NhanKhauDetailViewController {
             } catch (SQLException e) {
             }
 //          swtich to admin-nhankhau-view
-            utils.switchToNhanKhau_Admin_view(event,NHAN_KHAU_VIEW_FXML);
+            viewUtils.switchToNhanKhau_Admin_view(event);
         }
     }
 

@@ -1,4 +1,4 @@
-package com.quartermanagement;
+package com.quartermanagement.Constants;
 
 public class DBConstants {
     public DBConstants() {}

@@ -1,4 +1,4 @@
-package com.quartermanagement;
+package com.quartermanagement.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,7 +11,9 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 
-import static com.quartermanagement.DBConstants.*;
+import static com.quartermanagement.Constants.DBConstants.*;
+import static com.quartermanagement.Utils.Utils.hashPassword;
+import static com.quartermanagement.Utils.Utils.createDialog;
 
 public class SignUpController implements Initializable {
     @FXML
@@ -23,13 +25,12 @@ public class SignUpController implements Initializable {
     private PreparedStatement preparedStatement = null;
 
     public void handleSignUp(ActionEvent event) {
-        Utils utils = new Utils();
         String inputUsername = signUpUsername.getText();
         String inputPassword = signUpPassword.getText();
         String role = "";
 
         if (inputUsername.trim().equals("") || inputPassword.trim().equals("")) {
-            utils.createDialog(
+            createDialog(
                     Alert.AlertType.WARNING,
                     "Khoan nào cán bộ",
                     "", "Vui lòng nhập đủ username và password!"
@@ -37,7 +38,7 @@ public class SignUpController implements Initializable {
 
         }   else {
             if (!isOfficer.isSelected() && !isAdmin.isSelected()) {
-                utils.createDialog(
+                createDialog(
                         Alert.AlertType.WARNING,
                         "Khoan nào cán bộ",
                         "", "Vui lòng chọn role cho username!"
@@ -50,7 +51,7 @@ public class SignUpController implements Initializable {
                     conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
                     preparedStatement = conn.prepareStatement(CREATE_QUERY);
                     preparedStatement.setString(1, inputUsername);
-                    preparedStatement.setString(2, utils.hashPassword(inputPassword));
+                    preparedStatement.setString(2, hashPassword(inputPassword));
                     preparedStatement.setString(3, role);
                     int result = preparedStatement.executeUpdate();
                     if (result == 1) {
@@ -58,13 +59,13 @@ public class SignUpController implements Initializable {
                         signUpUsername.clear();
                         isAdmin.setSelected(false);
                         isOfficer.setSelected(false);
-                        utils.createDialog(
+                        createDialog(
                                 Alert.AlertType.CONFIRMATION,
                                 "Thành công",
                                 "", "Đăng ký người dùng mới thành công!"
                         );
                     }   else {
-                        utils.createDialog(
+                        createDialog(
                                 Alert.AlertType.ERROR,
                                 "Thất bại",
                                 "", "Đăng ký người dùng mới thất bại!"

@@ -1,5 +1,7 @@
-package com.quartermanagement;
+package com.quartermanagement.Controller;
 
+import com.quartermanagement.Utils.Utils;
+import com.quartermanagement.Utils.ViewUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -9,8 +11,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
-import static com.quartermanagement.FXMLConstants.NHAN_KHAU_VIEW_FXML;
-import static com.quartermanagement.FXMLConstants.SIGN_UP_USER_VIEW_FXML;
+import static com.quartermanagement.Constants.FXMLConstants.NHAN_KHAU_VIEW_FXML;
+import static com.quartermanagement.Constants.FXMLConstants.SIGN_UP_USER_VIEW_FXML;
 
 public class AdminController implements Initializable {
     @FXML
@@ -21,14 +23,14 @@ public class AdminController implements Initializable {
     //Save user role
     private Preferences userPreferences = Preferences.userRoot();
     private String userRole = userPreferences.get("role", "");
-    private Utils utils = new Utils();
+    private ViewUtils viewUtils = new ViewUtils();
 
     public void switchToSignUp() throws IOException {
-        utils.changeAnchorPane(basePane, SIGN_UP_USER_VIEW_FXML);
+        viewUtils.changeAnchorPane(basePane, SIGN_UP_USER_VIEW_FXML);
     }
 
     public void switchToNhanKhau() throws IOException {
-       utils.changeAnchorPane(basePane, NHAN_KHAU_VIEW_FXML);
+        viewUtils.changeAnchorPane(basePane, NHAN_KHAU_VIEW_FXML);
     }
 
     @Override

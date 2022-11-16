@@ -1,6 +1,6 @@
-package com.quartermanagement;
+package com.quartermanagement.Controller.NhanKhau;
 
-import com.quartermanagement.model.NhanKhau;
+import com.quartermanagement.Model.NhanKhau;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -21,8 +21,10 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 
-import static com.quartermanagement.DBConstants.*;
-import static com.quartermanagement.FXMLConstants.DETAIL_NHAN_KHAU_VIEW_FXML;
+import static com.quartermanagement.Constants.DBConstants.*;
+import static com.quartermanagement.Utils.Utils.convertDate;
+import static com.quartermanagement.Utils.Utils.createDialog;
+import static com.quartermanagement.Constants.FXMLConstants.DETAIL_NHAN_KHAU_VIEW_FXML;
 
 public class NhanKhauController implements Initializable {
     @FXML
@@ -62,7 +64,6 @@ public class NhanKhauController implements Initializable {
     // Connect to database
     private Connection conn;
     private PreparedStatement preparedStatement = null;
-    private Utils utils = new Utils();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -108,7 +109,7 @@ public class NhanKhauController implements Initializable {
             // Loop the list of nhankhau
             while (result.next()) {
                 nhanKhauList.add(new NhanKhau(result.getString("HoTen"), result.getString("BiDanh"),
-                        Utils.convertDate(result.getString("NgaySinh")), result.getString("CCCD"), result.getString("NoiSinh"),
+                        convertDate(result.getString("NgaySinh")), result.getString("CCCD"), result.getString("NoiSinh"),
                         result.getString("GioiTinh"), result.getString("NguyenQuan"), result.getString("DanToc"),
                         result.getString("NoiThuongTru"), result.getString("TonGiao"), result.getString("QuocTich"),
                         result.getString("DiaChiHienNay"), result.getString("NgheNghiep"), result.getInt("MaHoKhau")
@@ -134,7 +135,7 @@ public class NhanKhauController implements Initializable {
 
     public void delete(ActionEvent event) {
         NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
-        if(selected == null) utils.createDialog(Alert.AlertType.WARNING,
+        if(selected == null) createDialog(Alert.AlertType.WARNING,
                 "Cảnh báo",
                 "Vui lòng chọn nhân khẩu để tiếp tục","");
         else {
@@ -154,8 +155,8 @@ public class NhanKhauController implements Initializable {
                         preparedStatement = conn.prepareStatement(DELETE_QUERY);
                         preparedStatement.setString(1, selected.getCCCD());
                         int result = preparedStatement.executeUpdate();
-                        if(result ==1) utils.createDialog(Alert.AlertType.INFORMATION,"Thông báo","Xóa thành công!","");
-                        else utils.createDialog(Alert.AlertType.WARNING,"Thông báo","Có lỗi, thử lại sau!","");
+                        if(result ==1) createDialog(Alert.AlertType.INFORMATION,"Thông báo","Xóa thành công!","");
+                        else createDialog(Alert.AlertType.WARNING,"Thông báo","Có lỗi, thử lại sau!","");
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -176,7 +177,7 @@ public class NhanKhauController implements Initializable {
         Scene scene = new Scene(studentViewParent);
         NhanKhauDetailViewController controller = loader.getController();
         NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
-        if(selected == null) utils.createDialog(Alert.AlertType.WARNING, "Từ từ đã đồng chí", "","Vui lòng chọn một nhân khẩu");
+        if(selected == null) createDialog(Alert.AlertType.WARNING, "Từ từ đã đồng chí", "","Vui lòng chọn một nhân khẩu");
         else {
             controller.setNhanKhau(selected);
             controller.hide_add_btn();
