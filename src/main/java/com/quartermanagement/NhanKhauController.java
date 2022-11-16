@@ -133,21 +133,39 @@ public class NhanKhauController implements Initializable {
 
     public void delete(ActionEvent event) {
         NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
-        nhanKhauList.remove(selected);
-        // Delete in Database
-        try {
-            String DELETE_QUERY = "DELETE FROM nhankhau WHERE `CCCD`= ?";
-            conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-            preparedStatement = conn.prepareStatement(DELETE_QUERY);
-            preparedStatement.setString(1, selected.getCCCD());
-            int result = preparedStatement.executeUpdate();
-            if (result == 1) System.out.println("OKE");
-            else System.out.println("KO OKE");
-            System.out.println(DELETE_QUERY);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if(selected == null) utils.createDialog(Alert.AlertType.WARNING,
+                "Cảnh báo",
+                "Vui lòng chọn nhân khẩu để tiếp tục","");
+        else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Xác nhận xóa nhân khẩu");
+            alert.setContentText("Đồng chí muốn xóa nhân khẩu này?");
+            ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+            ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+            alert.getButtonTypes().setAll(okButton, noButton);
+            alert.showAndWait().ifPresent(type -> {
+                if (type == okButton) {
+                    nhanKhauList.remove(selected);
+                    // Delete in Database
+                    try {
+                        String DELETE_QUERY = "DELETE FROM nhankhau WHERE `CCCD`= ?";
+                        conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+                        preparedStatement = conn.prepareStatement(DELETE_QUERY);
+                        preparedStatement.setString(1, selected.getCCCD());
+                        int result = preparedStatement.executeUpdate();
+                        if(result ==1) utils.createDialog(Alert.AlertType.INFORMATION,"Thông báo","Xóa thành công!","");
+                        else utils.createDialog(Alert.AlertType.WARNING,"Thông báo","Có lỗi, thử lại sau!","");
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                } else if (type == noButton) {
+                } else {
+                }
+            });
         }
     }
+
+
 
     public void detail(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
