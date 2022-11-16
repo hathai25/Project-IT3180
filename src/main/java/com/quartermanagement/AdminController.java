@@ -1,7 +1,9 @@
 package com.quartermanagement;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
@@ -25,7 +27,8 @@ public class AdminController implements Initializable {
     }
 
     public void switchToNhanKhau() throws IOException {
-        utils.changeAnchorPane(basePane, "nhankhau-view.fxml");
+       utils.changeAnchorPane(basePane, "nhankhau-view.fxml");
+
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.quartermanagement;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -72,6 +73,20 @@ public class Utils {
         String[] date_split = date.split("-");
         result = date_split[2]+"/"+date_split[1]+"/"+date_split[0];
         return result;
+    }
+
+    public void switchToNhanKhau_Admin_view(Event event, String viewSource) throws IOException {
+        Stage stage;
+        Scene scene;
+        Parent root = null;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("admin-view.fxml"));
+        root = loader.load();
+        AdminController controller = loader.getController();
+        controller.switchToNhanKhau();
+        scene = new Scene(root);
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 
 }
