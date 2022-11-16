@@ -8,4 +8,5 @@ public class FXMLConstants {
     public static String HOME_VIEW_FXML = "/com/quartermanagement/views/home-view.fxml";
     public static String SIGN_UP_USER_VIEW_FXML = "/com/quartermanagement/views/sign-up-user-view.fxml";
     public static String NHAN_KHAU_VIEW_FXML = "/com/quartermanagement/views/nhankhau-view.fxml";
+    public static String SO_HO_KHAU_VIEW_FXML = "/com/quartermanagement/views/sohokhau-view.fxml";
 }
