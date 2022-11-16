@@ -153,6 +153,8 @@ public class NhanKhauController implements Initializable {
                         preparedStatement = conn.prepareStatement(DELETE_QUERY);
                         preparedStatement.setString(1, selected.getCCCD());
                         int result = preparedStatement.executeUpdate();
+                        if(result ==1) utils.createDialog(Alert.AlertType.INFORMATION,"Thông báo","Xóa thành công!","");
+                        else utils.createDialog(Alert.AlertType.WARNING,"Thông báo","Có lỗi, thử lại sau!","");
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -161,7 +163,6 @@ public class NhanKhauController implements Initializable {
                 }
             });
         }
-
     }
 
 
