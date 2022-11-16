@@ -201,7 +201,6 @@ public class NhanKhauDetailViewController {
                 preparedStatement.setString(13, ngheNghiep);
                 preparedStatement.setString(14, maHoKhau);
                 int result = preparedStatement.executeUpdate();
-                System.out.println(INSERT_QUERY);
                 if (result == 1) {
                     utils.createDialog(
                             Alert.AlertType.CONFIRMATION,
