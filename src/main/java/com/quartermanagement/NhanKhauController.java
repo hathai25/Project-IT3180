@@ -16,12 +16,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
+
 import static com.quartermanagement.DBConstants.*;
+import static com.quartermanagement.FXMLConstants.DETAIL_NHAN_KHAU_VIEW_FXML;
 
 public class NhanKhauController implements Initializable {
     @FXML
@@ -122,7 +123,7 @@ public class NhanKhauController implements Initializable {
     public void add(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("detail-view.fxml"));
+        loader.setLocation(getClass().getResource(DETAIL_NHAN_KHAU_VIEW_FXML));
         Parent studentViewParent = loader.load();
         Scene scene = new Scene(studentViewParent);
         NhanKhauDetailViewController controller = loader.getController();
@@ -170,7 +171,7 @@ public class NhanKhauController implements Initializable {
     public void detail(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("detail-view.fxml"));
+        loader.setLocation(getClass().getResource(DETAIL_NHAN_KHAU_VIEW_FXML));
         Parent studentViewParent = loader.load();
         Scene scene = new Scene(studentViewParent);
         NhanKhauDetailViewController controller = loader.getController();

@@ -2,22 +2,17 @@ package com.quartermanagement;
 
 import com.quartermanagement.model.NhanKhau;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.sql.*;
+
 import static com.quartermanagement.DBConstants.*;
+import static com.quartermanagement.FXMLConstants.NHAN_KHAU_VIEW_FXML;
 
 public class NhanKhauDetailViewController {
     @FXML
@@ -73,7 +68,7 @@ public class NhanKhauDetailViewController {
     }
     public void goBack(ActionEvent event) throws IOException {
         Utils utils = new Utils();
-        utils.switchToNhanKhau_Admin_view(event,"nhankhau-view-fxml");
+        utils.switchToNhanKhau_Admin_view(event,NHAN_KHAU_VIEW_FXML);
     }
 
 
@@ -148,7 +143,7 @@ public class NhanKhauDetailViewController {
             } catch (SQLException e) {
             }
 //          swtich to admin-nhankhau-view
-            utils.switchToNhanKhau_Admin_view(event,"nhankhau-view.fxml");
+            utils.switchToNhanKhau_Admin_view(event,NHAN_KHAU_VIEW_FXML);
         }
     }
 
@@ -219,7 +214,7 @@ public class NhanKhauDetailViewController {
             } catch (SQLException e) {
             }
 //          swtich to admin-nhankhau-view
-            utils.switchToNhanKhau_Admin_view(event,"nhankhau-view.fxml");
+            utils.switchToNhanKhau_Admin_view(event,NHAN_KHAU_VIEW_FXML);
         }
     }
 

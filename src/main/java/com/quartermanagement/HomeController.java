@@ -11,6 +11,7 @@ import java.util.prefs.Preferences;
 
 //import constants
 import static com.quartermanagement.DBConstants.*;
+import static com.quartermanagement.FXMLConstants.ADMIN_VIEW_FXML;
 
 public class HomeController {
     @FXML
@@ -44,7 +45,7 @@ public class HomeController {
                 if (result.next()) {
                     Preferences userPreferences = Preferences.userRoot();
                     userPreferences.put("role", result.getString(4));
-                    utils.changeScene(event, "admin-view.fxml");
+                    utils.changeScene(event, ADMIN_VIEW_FXML);
                 }   else {
                     utils.createDialog(
                             Alert.AlertType.ERROR,

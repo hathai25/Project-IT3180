@@ -7,7 +7,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;

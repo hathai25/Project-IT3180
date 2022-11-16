@@ -7,16 +7,15 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import static com.quartermanagement.FXMLConstants.ADMIN_VIEW_FXML;
 
 public class Utils {
     public static LocalDate LOCAL_DATE(String dateString) {
@@ -79,7 +78,7 @@ public class Utils {
         Stage stage;
         Scene scene;
         Parent root = null;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("admin-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(ADMIN_VIEW_FXML));
         root = loader.load();
         AdminController controller = loader.getController();
         controller.switchToNhanKhau();
