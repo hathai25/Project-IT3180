@@ -1,5 +1,6 @@
 package com.quartermanagement.Controller.NhanKhau;
 
+import javafx.scene.control.Pagination;
 import com.quartermanagement.Model.NhanKhau;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
@@ -27,6 +28,7 @@ import static com.quartermanagement.Utils.Utils.createDialog;
 import static com.quartermanagement.Constants.FXMLConstants.DETAIL_NHAN_KHAU_VIEW_FXML;
 
 public class NhanKhauController implements Initializable {
+
     @FXML
     private TableView<NhanKhau> tableView;
     @FXML
@@ -59,6 +61,8 @@ public class NhanKhauController implements Initializable {
     private TableColumn<NhanKhau, String> ngheNghiepColumn;
     @FXML
     private TableColumn<NhanKhau, Integer> maHoKhauColumn;
+    @FXML
+    private Pagination pagination;
 
     private ObservableList<NhanKhau> nhanKhauList = FXCollections.observableArrayList();
     // Connect to database
@@ -67,59 +71,27 @@ public class NhanKhauController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        indexColumn.setCellValueFactory((Callback<TableColumn.CellDataFeatures<NhanKhau, NhanKhau>, ObservableValue<NhanKhau>>) p -> new ReadOnlyObjectWrapper(p.getValue()));
-
-        indexColumn.setCellFactory(new Callback<TableColumn<NhanKhau, NhanKhau>, TableCell<NhanKhau, NhanKhau>>() {
-            @Override public TableCell<NhanKhau, NhanKhau> call(TableColumn<NhanKhau, NhanKhau> param) {
-                return new TableCell<NhanKhau, NhanKhau>() {
-                    @Override protected void updateItem(NhanKhau item, boolean empty) {
-                        super.updateItem(item, empty);
-
-                        if (this.getTableRow() != null && item != null) {
-                            setText(this.getTableRow().getIndex()+1+"");
-                        } else {
-                            setText("");
-                        }
-                    }
-                };
-            }
-        });
-        indexColumn.setSortable(false);
-        hoVaTenColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("HoTen"));
-        biDanhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("BiDanh"));
-        ngaySinhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NgaySinh"));
-        cccdColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("CCCD"));
-        noiSinhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NoiSinh"));
-        gioiTinhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("GioiTinh"));
-        nguyenQuanColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NguyenQuan"));
-        danTocColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("DanToc"));
-        noiThuongTruColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NoiThuongTru"));
-        tonGiaoColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("TonGiao"));
-        quocTichColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("QuocTich"));
-        diaChiHienNayColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("DiaChiHienNay"));
-        ngheNghiepColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NgheNghiep"));
-        maHoKhauColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, Integer>("MaHoKhau"));
         try {
             // Connecting Database
             String SELECT_QUERY = "SELECT * FROM nhankhau";
             conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
             preparedStatement = conn.prepareStatement(SELECT_QUERY);
             ResultSet result = preparedStatement.executeQuery();
-
-            // Loop the list of nhankhau
-            while (result.next()) {
-                nhanKhauList.add(new NhanKhau(result.getString("HoTen"), result.getString("BiDanh"),
-                        convertDate(result.getString("NgaySinh")), result.getString("CCCD"), result.getString("NoiSinh"),
-                        result.getString("GioiTinh"), result.getString("NguyenQuan"), result.getString("DanToc"),
-                        result.getString("NoiThuongTru"), result.getString("TonGiao"), result.getString("QuocTich"),
-                        result.getString("DiaChiHienNay"), result.getString("NgheNghiep"), result.getInt("MaHoKhau")
-                ));
-            }
-            // Add nhankhau to table
-            tableView.setItems(nhanKhauList);
+        while (result.next()) {
+            nhanKhauList.add(new NhanKhau(result.getString("HoTen"), result.getString("BiDanh"),
+                    convertDate(result.getString("NgaySinh")), result.getString("CCCD"), result.getString("NoiSinh"),
+                    result.getString("GioiTinh"), result.getString("NguyenQuan"), result.getString("DanToc"),
+                    result.getString("NoiThuongTru"), result.getString("TonGiao"), result.getString("QuocTich"),
+                    result.getString("DiaChiHienNay"), result.getString("NgheNghiep"), result.getInt("MaHoKhau")
+            ));
+        }
         } catch (SQLException e) {
         }
+        pagination.setPageCount(nhanKhauList.size()/ROWS_PER_PAGE+1);
+        pagination.setMaxPageIndicatorCount(5);
+        pagination.setPageFactory(this::createTableView);
     }
+
 
     public void add(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -184,5 +156,65 @@ public class NhanKhauController implements Initializable {
             controller.setTitle("Cập nhật nhân khẩu mới");
             stage.setScene(scene);
         }
+    }
+
+    public Node createTableView(int pageIndex){
+
+        indexColumn.setCellValueFactory((Callback<TableColumn.CellDataFeatures<NhanKhau, NhanKhau>, ObservableValue<NhanKhau>>) p -> new ReadOnlyObjectWrapper(p.getValue()));
+
+        indexColumn.setCellFactory(new Callback<TableColumn<NhanKhau, NhanKhau>, TableCell<NhanKhau, NhanKhau>>() {
+            @Override public TableCell<NhanKhau, NhanKhau> call(TableColumn<NhanKhau, NhanKhau> param) {
+                return new TableCell<NhanKhau, NhanKhau>() {
+                    @Override protected void updateItem(NhanKhau item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (this.getTableRow() != null && item != null) {
+                            setText(this.getTableRow().getIndex()+1+"");
+                        } else {
+                            setText("");
+                        }
+                    }
+                };
+            }
+        });
+        indexColumn.setSortable(false);
+        hoVaTenColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("HoTen"));
+        biDanhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("BiDanh"));
+        ngaySinhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NgaySinh"));
+        cccdColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("CCCD"));
+        noiSinhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NoiSinh"));
+        gioiTinhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("GioiTinh"));
+        nguyenQuanColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NguyenQuan"));
+        danTocColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("DanToc"));
+        noiThuongTruColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NoiThuongTru"));
+        tonGiaoColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("TonGiao"));
+        quocTichColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("QuocTich"));
+        diaChiHienNayColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("DiaChiHienNay"));
+        ngheNghiepColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NgheNghiep"));
+        maHoKhauColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, Integer>("MaHoKhau"));
+            int lastIndex = 0;
+            int displace = nhanKhauList.size() % ROWS_PER_PAGE;
+            if (displace > 0) {
+                lastIndex = nhanKhauList.size() / ROWS_PER_PAGE;
+            } else {
+                lastIndex = nhanKhauList.size() / ROWS_PER_PAGE - 1;
+            }
+//            System.out.println("Displace:"+ displace);
+//            System.out.println("Last Index:"+ lastIndex);
+//            System.out.println("Page Index: " + pageIndex);
+
+        if (pageIndex > lastIndex) {
+                return null;
+            }
+            // Add nhankhau to table
+            if (lastIndex == pageIndex) {
+                tableView.setItems(FXCollections.observableArrayList(nhanKhauList.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + displace)));
+            } else {
+                tableView.setItems(FXCollections.observableArrayList(nhanKhauList.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + ROWS_PER_PAGE)));
+            }
+
+
+        return tableView;
+
     }
 }
