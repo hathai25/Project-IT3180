@@ -93,7 +93,10 @@ public class NhanKhauController implements Initializable {
         }
         } catch (SQLException e) {
         }
-        pagination.setPageCount(nhanKhauList.size()/ROWS_PER_PAGE+1);
+
+        int soDu = nhanKhauList.size()% ROWS_PER_PAGE;
+        if (soDu != 0) pagination.setPageCount(nhanKhauList.size()/ROWS_PER_PAGE+1);
+        else pagination.setPageCount(nhanKhauList.size()/ROWS_PER_PAGE);
         pagination.setMaxPageIndicatorCount(5);
         pagination.setPageFactory(this::createTableView);
     }
@@ -210,15 +213,13 @@ public class NhanKhauController implements Initializable {
             } else {
                 lastIndex = nhanKhauList.size() / ROWS_PER_PAGE - 1;
             }
-//            System.out.println("Displace:"+ displace);
-//            System.out.println("Last Index:"+ lastIndex);
-//            System.out.println("Page Index: " + pageIndex);
+            System.out.println("Displace:"+ displace);
+            System.out.println("Last Index:"+ lastIndex);
+            System.out.println("Page Index: " + pageIndex);
 
-        if (pageIndex > lastIndex) {
-                return null;
-            }
+
             // Add nhankhau to table
-            if (lastIndex == pageIndex) {
+            if (lastIndex == pageIndex && displace > 0) {
                 tableView.setItems(FXCollections.observableArrayList(nhanKhauList.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + displace)));
             } else {
                 tableView.setItems(FXCollections.observableArrayList(nhanKhauList.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + ROWS_PER_PAGE)));
