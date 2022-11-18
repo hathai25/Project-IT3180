@@ -11,8 +11,8 @@
 
 <AnchorPane fx:id="basePane" prefHeight="600.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quartermanagement.Controller.NhanKhau.NhanKhauController">
    <children>
-      <Pagination fx:id="pagination" layoutX="37.0" layoutY="126.0" maxPageIndicatorCount="5" prefHeight="474.0" prefWidth="634.0" />
-      <TableView fx:id="tableView" layoutX="38.0" layoutY="125.0" prefHeight="414.0" prefWidth="633.0" tableMenuButtonVisible="true">
+      <Pagination fx:id="pagination" layoutX="37.0" layoutY="138.0" maxPageIndicatorCount="5" prefHeight="448.0" prefWidth="634.0" />
+      <TableView fx:id="tableView" layoutX="38.0" layoutY="138.0" prefHeight="387.0" prefWidth="634.0" tableMenuButtonVisible="true">
          <columns>
             <TableColumn fx:id="indexColumn" prefWidth="75.0" text="STT" />
             <TableColumn fx:id="hoVaTenColumn" prefWidth="75.0" text="Họ và tên" />

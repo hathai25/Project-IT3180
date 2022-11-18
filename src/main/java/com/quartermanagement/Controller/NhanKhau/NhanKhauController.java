@@ -1,5 +1,7 @@
 package com.quartermanagement.Controller.NhanKhau;
 
+import com.quartermanagement.Utils.Utils;
+import com.quartermanagement.Utils.ViewUtils;
 import javafx.scene.control.Pagination;
 import com.quartermanagement.Model.NhanKhau;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -105,7 +107,7 @@ public class NhanKhauController implements Initializable {
     }
 
 
-    public void delete(ActionEvent event) {
+    public void delete(ActionEvent event)  {
         NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
         if(selected == null) createDialog(Alert.AlertType.WARNING,
                 "Cảnh báo",
@@ -129,7 +131,9 @@ public class NhanKhauController implements Initializable {
                         int result = preparedStatement.executeUpdate();
                         if(result ==1) createDialog(Alert.AlertType.INFORMATION,"Thông báo","Xóa thành công!","");
                         else createDialog(Alert.AlertType.WARNING,"Thông báo","Có lỗi, thử lại sau!","");
-                    } catch (SQLException e) {
+                        ViewUtils viewUtils = new ViewUtils();
+                        viewUtils.switchToNhanKhau_Admin_view(event);
+                    } catch (SQLException | IOException e) {
                         e.printStackTrace();
                     }
                 } else if (type == noButton) {
@@ -169,7 +173,7 @@ public class NhanKhauController implements Initializable {
                         super.updateItem(item, empty);
 
                         if (this.getTableRow() != null && item != null) {
-                            setText(this.getTableRow().getIndex()+1+"");
+                            setText(this.getTableRow().getIndex()+1+pageIndex*ROWS_PER_PAGE+"");
                         } else {
                             setText("");
                         }
