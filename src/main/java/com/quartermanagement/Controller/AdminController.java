@@ -19,9 +19,9 @@ public class AdminController implements Initializable {
     @FXML
     private Button signUpUserButton;
     //Save user role
-    private Preferences userPreferences = Preferences.userRoot();
-    private String userRole = userPreferences.get("role", "");
-    private ViewUtils viewUtils = new ViewUtils();
+    private final Preferences userPreferences = Preferences.userRoot();
+    private final String userRole = userPreferences.get("role", "");
+    private final ViewUtils viewUtils = new ViewUtils();
 
     public void switchToSignUp() throws IOException {
         viewUtils.changeAnchorPane(basePane, SIGN_UP_USER_VIEW_FXML);
@@ -30,14 +30,8 @@ public class AdminController implements Initializable {
     public void switchToNhanKhau() throws IOException {
         viewUtils.changeAnchorPane(basePane, NHAN_KHAU_VIEW_FXML);
     }
-
     @Override
-
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        if (userRole.equals("totruong")) {
-            signUpUserButton.setVisible(true);
-        } else {
-            signUpUserButton.setVisible(false);
-        }
+        signUpUserButton.setVisible(userRole.equals("totruong"));
     }
 }

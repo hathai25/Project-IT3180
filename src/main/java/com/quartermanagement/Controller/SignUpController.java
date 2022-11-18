@@ -1,6 +1,5 @@
 package com.quartermanagement.Controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -20,11 +19,9 @@ public class SignUpController implements Initializable {
     private TextField signUpUsername, signUpPassword;
     @FXML
     private RadioButton isAdmin, isOfficer;
-    private ToggleGroup toggleRole = new ToggleGroup();
-    private Connection conn;
-    private PreparedStatement preparedStatement = null;
+    private final ToggleGroup toggleRole = new ToggleGroup();
 
-    public void handleSignUp(ActionEvent event) {
+    public void handleSignUp() {
         String inputUsername = signUpUsername.getText();
         String inputPassword = signUpPassword.getText();
         String role = "";
@@ -48,8 +45,8 @@ public class SignUpController implements Initializable {
                 if (isAdmin.isSelected()) role = "totruong";
                 String CREATE_QUERY = "INSERT INTO user (username, password, role) VALUES (?,?,?)";
                 try {
-                    conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-                    preparedStatement = conn.prepareStatement(CREATE_QUERY);
+                    Connection conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+                    PreparedStatement preparedStatement = conn.prepareStatement(CREATE_QUERY);
                     preparedStatement.setString(1, inputUsername);
                     preparedStatement.setString(2, hashPassword(inputPassword));
                     preparedStatement.setString(3, role);

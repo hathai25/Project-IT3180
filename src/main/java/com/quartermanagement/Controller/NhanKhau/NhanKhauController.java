@@ -68,8 +68,8 @@ public class NhanKhauController implements Initializable {
                 ));
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
-
         int soDu = nhanKhauList.size() % ROWS_PER_PAGE;
         if (soDu != 0) pagination.setPageCount(nhanKhauList.size() / ROWS_PER_PAGE + 1);
         else pagination.setPageCount(nhanKhauList.size() / ROWS_PER_PAGE);
@@ -90,7 +90,7 @@ public class NhanKhauController implements Initializable {
     }
 
 
-    public void delete(ActionEvent event) {
+    public void delete() {
         NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
         if (selected == null) createDialog(Alert.AlertType.WARNING,
                 "Cảnh báo",

@@ -1,13 +1,11 @@
 package com.quartermanagement.Controller;
 //import libs
-import com.quartermanagement.Utils.Utils;
 import com.quartermanagement.Utils.ViewUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import java.io.IOException;
 import java.sql.*;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import java.util.prefs.Preferences;
 
@@ -20,12 +18,6 @@ import static com.quartermanagement.Constants.FXMLConstants.ADMIN_VIEW_FXML;
 public class HomeController {
     @FXML
     private TextField inputUsername, inputPassword;
-    //Khai bao ket noi sql
-    private Connection conn;
-    private PreparedStatement preparedStatement = null;
-
-    @FXML
-    private Button loginButton;
 
     public void handleLogin(ActionEvent event) {
         String SELECT_QUERY = "SELECT * FROM user WHERE username = ? AND password = ?";
@@ -40,8 +32,9 @@ public class HomeController {
             );
         }   else {
             try {
-                conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-                preparedStatement = conn.prepareStatement(SELECT_QUERY);
+                //Khai bao ket noi sql
+                Connection conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+                PreparedStatement preparedStatement = conn.prepareStatement(SELECT_QUERY);
                 preparedStatement.setString(1, Username);
                 preparedStatement.setString(2, Password);
                 ResultSet result = preparedStatement.executeQuery();

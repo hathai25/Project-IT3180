@@ -104,7 +104,7 @@ public class NhanKhauDetailViewController {
         } else {
             try {
                 Connection conn;
-                PreparedStatement preparedStatement = null;
+                PreparedStatement preparedStatement;
                 String UPDATE_QUERY = "UPDATE `nhankhau` SET `HoTen`=?,`BiDanh`=?,`NgaySinh`=?,`CCCD`=?,`NoiSinh`=?," +
                         "`GioiTinh`=?,`NguyenQuan`=?,`DanToc`=?,`NoiThuongTru`=?,`TonGiao`=?,`QuocTich`=?,`DiaChiHienNay`=?," +
                         "`NgheNghiep`=?,`MaHoKhau`=? WHERE `CCCD`=?";
@@ -143,6 +143,7 @@ public class NhanKhauDetailViewController {
 
                 conn.close();
             } catch (SQLException e) {
+                e.printStackTrace();
             }
 //          swtich to admin-nhankhau-view
             viewUtils.switchToNhanKhau_Admin_view(event);
