@@ -1,5 +1,6 @@
 package com.quartermanagement.Controller.NhanKhau;
 
+import com.quartermanagement.Controller.AdminController;
 import com.quartermanagement.Utils.Utils;
 import com.quartermanagement.Utils.ViewUtils;
 import javafx.scene.control.Pagination;
@@ -17,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import java.io.IOException;
@@ -25,12 +27,14 @@ import java.sql.*;
 import java.util.ResourceBundle;
 
 import static com.quartermanagement.Constants.DBConstants.*;
+import static com.quartermanagement.Constants.FXMLConstants.NHAN_KHAU_VIEW_FXML;
 import static com.quartermanagement.Utils.Utils.convertDate;
 import static com.quartermanagement.Utils.Utils.createDialog;
 import static com.quartermanagement.Constants.FXMLConstants.DETAIL_NHAN_KHAU_VIEW_FXML;
 
 public class NhanKhauController implements Initializable {
-
+    @FXML
+    private AnchorPane basePane;
     @FXML
     private TableView<NhanKhau> tableView;
     @FXML
@@ -121,7 +125,7 @@ public class NhanKhauController implements Initializable {
             alert.getButtonTypes().setAll(okButton, noButton);
             alert.showAndWait().ifPresent(type -> {
                 if (type == okButton) {
-                    nhanKhauList.remove(selected);
+//                    nhanKhauList.remove(selected);
                     // Delete in Database
                     try {
                         String DELETE_QUERY = "DELETE FROM nhankhau WHERE `CCCD`= ?";
@@ -132,9 +136,12 @@ public class NhanKhauController implements Initializable {
                         if(result ==1) createDialog(Alert.AlertType.INFORMATION,"Thông báo","Xóa thành công!","");
                         else createDialog(Alert.AlertType.WARNING,"Thông báo","Có lỗi, thử lại sau!","");
                         ViewUtils viewUtils = new ViewUtils();
-                        viewUtils.switchToNhanKhau_Admin_view(event);
-                    } catch (SQLException | IOException e) {
+                        viewUtils.changeAnchorPane(basePane,NHAN_KHAU_VIEW_FXML);
+
+                    } catch (SQLException e) {
                         e.printStackTrace();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
                 } else if (type == noButton) {
                 } else {
