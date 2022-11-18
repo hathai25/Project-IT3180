@@ -1,6 +1,5 @@
 package com.quartermanagement.Controller;
 
-import com.quartermanagement.Utils.Utils;
 import com.quartermanagement.Utils.ViewUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,8 +17,7 @@ public class AdminController implements Initializable {
     @FXML
     private AnchorPane basePane;
     @FXML
-    private Button signUpUserButton, nhanKhauButton;
-
+    private Button signUpUserButton;
     //Save user role
     private Preferences userPreferences = Preferences.userRoot();
     private String userRole = userPreferences.get("role", "");
