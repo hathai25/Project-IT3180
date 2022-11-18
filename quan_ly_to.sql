@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 15, 2022 at 03:53 PM
+-- Generation Time: Nov 17, 2022 at 03:29 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -127,10 +127,23 @@ CREATE TABLE `nhankhau` (
 --
 
 INSERT INTO `nhankhau` (`HoTen`, `BiDanh`, `NgaySinh`, `CCCD`, `NoiSinh`, `GioiTinh`, `NguyenQuan`, `DanToc`, `NoiThuongTru`, `TonGiao`, `QuocTich`, `DiaChiHienNay`, `NgheNghiep`, `MaHoKhau`) VALUES
-('Hà Thái', '', '2022-11-22', '0896535235', 'Hà Nội', 'Nam', 'x', 'Kinh chưa kinh chưa', 'y', '', '', 'z', '', 123434567),
+('Hà Thái', '', '2022-11-15', '0348450896', 'Hà Nội', 'Nam', 'àkjn', 'Kinh', 'ádf', 'Không', 'Việt Nam', 'ưtq', 'Sinh viên', 123434567),
+('loichoi', NULL, '2022-11-08', '12123415', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
+('cal', NULL, '2022-11-08', '1231415', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
+('hi', NULL, '2022-11-08', '1232415', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
+('dm', NULL, '2022-11-08', '12324415', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
+('yoy', NULL, '2022-11-08', '1234145', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
+('abc', NULL, '2022-11-08', '123415', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
 ('Trần Tuấn Anh ', 'người dân 2', '2002-03-23', '123443215678', 'Phường Cửa Nam, thành phố Vinh, Nghệ An', 'Nam', 'vinh, nghệ an', 'Kinh', 'cửa nam, thành phố vinh, nghệ an', 'Hindu giáo', '', 'phố 7 phường La Khê', 'Sinh viên', 123434567),
+('yo', NULL, '2022-11-08', '1234815', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
+('alo', NULL, '2022-11-08', '1234911235', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
+('alo', NULL, '2022-11-08', '1234915', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
+('abcd', NULL, '2022-11-08', '128093415', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
+('abcd', NULL, '2022-11-08', '1283415', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
 ('Thái Thị Hồng Nhung', 'phó bí thư', '1992-06-22', '234554324567', 'Lam sơn, Thanh Hóa', 'Nữ', 'Lam Sơn, Thanh Hóa', 'Kinh', 'Trung đô, Lam sơn, thanh hóa', 'Ấn Độ giáo', 'Việt Nam', 'phố 7 phường La Khê', 'Giáo viên', 234565679),
-('Thái Đình Đức', 'nguoi dan 1', '1990-06-11', '245676866712', 'Anh Sơn, Nghệ An', 'Nam', 'Anh Sơn, Nghệ An', 'Kinh', 'Vinh, Nghệ An', 'Không', 'Việt Nam', 'phố 7 phường La Khê', 'Công nhân', 245738373);
+('Thái Đình Đức', 'nguoi dan 1', '1990-06-11', '245676866712', 'Anh Sơn, Nghệ An', 'Nam', 'Anh Sơn, Nghệ An', 'Kinh', 'Vinh, Nghệ An', 'Không', 'Việt Nam', 'phố 7 phường La Khê', 'Công nhân', 245738373),
+('Họ và tên', '', '2022-11-08', '2654', 'ádf', 'sadf', 'sad', 'sad', 'sad', 'sad', 'Việt Nam', 'sad', 'sad', 123434567),
+('alo', NULL, '2022-11-08', '34911235', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567);
 
 -- --------------------------------------------------------
 
@@ -173,7 +186,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`userId`, `username`, `password`, `role`) VALUES
 (1, 'admin', '12112312f12917a1571a51a714318914a10e14a18011f1c3', 'totruong'),
-(2, 'admin2', '1c81421581e91c31901591a819a1b717d18416d1da1b9109', 'canbo');
+(2, 'admin2', '1c81421581e91c31901591a819a1b717d18416d1da1b9109', 'canbo'),
+(3, 'cocc', '1a11191391a31011c31ae11510118d1f51591a81a21b1102', 'canbo');
 
 --
 -- Indexes for dumped tables
@@ -228,7 +242,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
