@@ -45,4 +45,18 @@ public class ViewUtils {
         stage.setScene(scene);
         stage.show();
     }
+
+    public void switchToCoSoVatChat_Admin_view(Event event) throws IOException {
+        Stage stage;
+        Scene scene;
+        Parent root;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(ADMIN_VIEW_FXML));
+        root = loader.load();
+        AdminController controller = loader.getController();
+        controller.switchToCoSoVatChat();
+        scene = new Scene(root);
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
 }
