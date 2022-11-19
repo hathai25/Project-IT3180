@@ -45,4 +45,18 @@ public class ViewUtils {
         stage.setScene(scene);
         stage.show();
     }
+
+    public void switchToSoHoKhau_Admin_view(ActionEvent event) throws IOException {
+        Stage stage;
+        Scene scene;
+        Parent root = null;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(ADMIN_VIEW_FXML));
+        root = loader.load();
+        AdminController controller = loader.getController();
+        controller.switchToSoHoKhau();
+        scene = new Scene(root);
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
 }
