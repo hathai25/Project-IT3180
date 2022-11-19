@@ -1,5 +1,4 @@
 package com.quartermanagement.Controller.SoHoKhau;
-
 import com.quartermanagement.Model.SoHoKhau;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
@@ -21,9 +20,9 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 import static com.quartermanagement.Constants.DBConstants.*;
-import static com.quartermanagement.Utils.Utils.convertDate;
+import static com.quartermanagement.Constants.FXMLConstants.ADD_SOHOKHAU_VIEW_FXML;
 import static com.quartermanagement.Utils.Utils.createDialog;
-import static com.quartermanagement.Constants.FXMLConstants.DETAIL_NHAN_KHAU_VIEW_FXML;
+
 
 public class SoHoKhauController implements Initializable {
     @FXML
@@ -48,13 +47,15 @@ public class SoHoKhauController implements Initializable {
         indexColumn.setCellValueFactory((Callback<TableColumn.CellDataFeatures<SoHoKhau, SoHoKhau>, ObservableValue<SoHoKhau>>) p -> new ReadOnlyObjectWrapper(p.getValue()));
 
         indexColumn.setCellFactory(new Callback<TableColumn<SoHoKhau, SoHoKhau>, TableCell<SoHoKhau, SoHoKhau>>() {
-            @Override public TableCell<SoHoKhau, SoHoKhau> call(TableColumn<SoHoKhau, SoHoKhau> param) {
+            @Override
+            public TableCell<SoHoKhau, SoHoKhau> call(TableColumn<SoHoKhau, SoHoKhau> param) {
                 return new TableCell<SoHoKhau, SoHoKhau>() {
-                    @Override protected void updateItem(SoHoKhau item, boolean empty) {
+                    @Override
+                    protected void updateItem(SoHoKhau item, boolean empty) {
                         super.updateItem(item, empty);
 
                         if (this.getTableRow() != null && item != null) {
-                            setText(this.getTableRow().getIndex()+1+"");
+                            setText(this.getTableRow().getIndex() + 1 + "");
                         } else {
                             setText("");
                         }
@@ -88,16 +89,23 @@ public class SoHoKhauController implements Initializable {
         }
     }
 
+
     public void add(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(ADD_SOHOKHAU_VIEW_FXML));
+        Parent studentViewParent = loader.load();
+        Scene scene = new Scene(studentViewParent);
+        add_shk_controller controller = loader.getController();
+        controller.hide_update_btn();
+        stage.setScene(scene);
     }
 
-    public void detail(ActionEvent event) throws IOException {
-    }
     public void delete(ActionEvent event) {
         SoHoKhau selected = tableView.getSelectionModel().getSelectedItem();
-        if(selected == null) createDialog(Alert.AlertType.WARNING,
+        if (selected == null) createDialog(Alert.AlertType.WARNING,
                 "Cảnh báo",
-                "Vui lòng chọn hộ khẩu để tiếp tục","");
+                "Vui lòng chọn hộ khẩu để tiếp tục", "");
         else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Xác nhận xóa hộ khẩu");
@@ -115,8 +123,8 @@ public class SoHoKhauController implements Initializable {
                         preparedStatement = conn.prepareStatement(DELETE_QUERY);
                         preparedStatement.setString(1, selected.getMaChuHo());
                         int result = preparedStatement.executeUpdate();
-                        if(result ==1) createDialog(Alert.AlertType.INFORMATION,"Thông báo","Xóa thành công!","");
-                        else createDialog(Alert.AlertType.WARNING,"Thông báo","Có lỗi, thử lại sau!","");
+                        if (result == 1) createDialog(Alert.AlertType.INFORMATION, "Thông báo", "Xóa thành công!", "");
+                        else createDialog(Alert.AlertType.WARNING, "Thông báo", "Có lỗi, thử lại sau!", "");
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -127,6 +135,23 @@ public class SoHoKhauController implements Initializable {
         }
     }
 
+    public void detail(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(ADD_SOHOKHAU_VIEW_FXML));
+        Parent studentViewParent = loader.load();
+        Scene scene = new Scene(studentViewParent);
+        add_shk_controller controller= loader.getController();
+        SoHoKhau selected = tableView.getSelectionModel().getSelectedItem();
+        if (selected == null) createDialog(Alert.AlertType.WARNING, "Từ từ đã đồng chí", "", "Vui lòng chọn hộ khẩu");
+        else {
+            controller.setSoHoKhau(selected);
+            controller.hide_add_btn();
+            controller.setTitle("Cập nhật hộ khẩu mới");
+            stage.setScene(scene);
+        }
+    }
+}
     /*
     public void add(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -194,4 +219,4 @@ public class SoHoKhauController implements Initializable {
     }
 
      */
-}
+
