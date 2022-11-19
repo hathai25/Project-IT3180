@@ -11,38 +11,38 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quartermanagement.Controller.AdminController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quartermanagement.Controller.AdminController">
    <left>
-      <AnchorPane prefHeight="606.0" prefWidth="190.0" style="-fx-background-color: #3f4d67;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="606.0" prefWidth="190.0" style="-fx-background-color: #3f4d67;" stylesheets="@../styles/navigation-styles.css" BorderPane.alignment="CENTER">
          <children>
-            <Text fill="WHITE" layoutX="1.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Navigation" textAlignment="CENTER" wrappingWidth="186.9140625">
+            <Text fx:id="menuTitle" fill="WHITE" layoutX="1.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Navigation" textAlignment="CENTER" wrappingWidth="186.9140625">
                <font>
                   <Font name="Segoe UI" size="18.0" />
                </font>
             </Text>
             <VBox layoutX="-1.0" layoutY="88.0" prefHeight="518.0" prefWidth="191.0" style="-fx-background-color: transparent;">
                <children>
-                  <Button fx:id="nhanKhauButton" mnemonicParsing="false" onAction="#switchToNhanKhau" prefHeight="48.0" prefWidth="191.0" style="-fx-background-color: transparent;" styleClass="menuButton" text="Nhân khẩu" textAlignment="CENTER" textFill="WHITE">
+                  <Button id="menuButton" fx:id="nhanKhauButton" mnemonicParsing="false" onAction="#switchToNhanKhau" prefHeight="48.0" prefWidth="191.0" text="Nhân khẩu" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI" size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="buttonMenu1" mnemonicParsing="false" onAction="#switchToSoHoKhau" prefHeight="48.0" prefWidth="191.0" style="-fx-background-color: transparent;" styleClass="menuButton" text="Sổ hộ khẩu" textAlignment="CENTER" textFill="WHITE">
+                  <Button id="menuButton" fx:id="buttonMenu1" mnemonicParsing="false" onAction="#switchToSoHoKhau" prefHeight="48.0" prefWidth="191.0" text="Sổ hộ khẩu" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI" size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="buttonMenu21" mnemonicParsing="false" prefHeight="48.0" prefWidth="191.0" style="-fx-background-color: transparent;" styleClass="menuButton" text="Cơ sở vật chất" textAlignment="CENTER" textFill="WHITE">
+                  <Button id="menuButton" fx:id="buttonMenu21" mnemonicParsing="false" prefHeight="48.0" prefWidth="191.0" text="Cơ sở vật chất" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI" size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="buttonMenu2" mnemonicParsing="false" prefHeight="48.0" prefWidth="191.0" style="-fx-background-color: transparent;" styleClass="menuButton" text="Lịch sinh hoạt" textAlignment="CENTER" textFill="WHITE">
+                  <Button id="menuButton" fx:id="buttonMenu2" mnemonicParsing="false" prefHeight="48.0" prefWidth="191.0" text="Lịch sinh hoạt" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI" size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="signUpUserButton" mnemonicParsing="false" onAction="#switchToSignUp" prefHeight="48.0" prefWidth="191.0" style="-fx-background-color: transparent;" styleClass="menuButton" text="Đăng ký người dùng" textAlignment="CENTER" textFill="WHITE">
+                  <Button id="menuButton" fx:id="signUpUserButton" mnemonicParsing="false" onAction="#switchToSignUp" prefHeight="48.0" prefWidth="191.0" text="Đăng ký người dùng" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI" size="14.0" />
                      </font>

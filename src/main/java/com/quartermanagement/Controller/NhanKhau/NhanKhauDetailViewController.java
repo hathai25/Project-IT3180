@@ -4,19 +4,19 @@ import com.quartermanagement.Model.NhanKhau;
 import com.quartermanagement.Utils.ViewUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.*;
+import java.util.ResourceBundle;
 
 import static com.quartermanagement.Constants.DBConstants.*;
 import static com.quartermanagement.Utils.Utils.LOCAL_DATE;
 import static com.quartermanagement.Utils.Utils.createDialog;
 
-public class NhanKhauDetailViewController {
+public class NhanKhauDetailViewController implements Initializable {
     @FXML
     private TextField hoVaTenTextField;
     @FXML
@@ -28,7 +28,7 @@ public class NhanKhauDetailViewController {
     @FXML
     private TextField noiSinhTextField;
     @FXML
-    private TextField gioiTinhTextField;
+    private ChoiceBox<String> gioiTinhChoiceBox;
     @FXML
     private TextField nguyenQuanTextField;
     @FXML
@@ -58,7 +58,7 @@ public class NhanKhauDetailViewController {
         ngaySinhDatePicker.setValue(LOCAL_DATE(nhanKhau.getNgaySinh()));
         cccdTextField.setText(nhanKhau.getCCCD());
         noiSinhTextField.setText(nhanKhau.getNoiSinh());
-        gioiTinhTextField.setText(nhanKhau.getGioiTinh());
+        gioiTinhChoiceBox.setValue(nhanKhau.getGioiTinh());
         nguyenQuanTextField.setText(nhanKhau.getNguyenQuan());
         danTocTextField.setText(nhanKhau.getDanToc());
         noiThuongTruTextField.setText(nhanKhau.getNoiThuongTru());
@@ -82,7 +82,7 @@ public class NhanKhauDetailViewController {
         String ngaySinh = ngaySinhDatePicker.getValue().toString();
         String cccd = cccdTextField.getText();
         String noiSinh = noiSinhTextField.getText();
-        String gioiTinh = gioiTinhTextField.getText();
+        String gioiTinh = gioiTinhChoiceBox.getValue();
         String nguyenQuan = nguyenQuanTextField.getText();
         String danToc = danTocTextField.getText();
         String noiThuongTru = noiThuongTruTextField.getText();
@@ -104,7 +104,7 @@ public class NhanKhauDetailViewController {
         } else {
             try {
                 Connection conn;
-                PreparedStatement preparedStatement = null;
+                PreparedStatement preparedStatement;
                 String UPDATE_QUERY = "UPDATE `nhankhau` SET `HoTen`=?,`BiDanh`=?,`NgaySinh`=?,`CCCD`=?,`NoiSinh`=?," +
                         "`GioiTinh`=?,`NguyenQuan`=?,`DanToc`=?,`NoiThuongTru`=?,`TonGiao`=?,`QuocTich`=?,`DiaChiHienNay`=?," +
                         "`NgheNghiep`=?,`MaHoKhau`=? WHERE `CCCD`=?";
@@ -143,6 +143,7 @@ public class NhanKhauDetailViewController {
 
                 conn.close();
             } catch (SQLException e) {
+                e.printStackTrace();
             }
 //          swtich to admin-nhankhau-view
             viewUtils.switchToNhanKhau_Admin_view(event);
@@ -156,7 +157,7 @@ public class NhanKhauDetailViewController {
         String ngaySinh = ngaySinhDatePicker.getValue().toString();
         String cccd = cccdTextField.getText();
         String noiSinh = noiSinhTextField.getText();
-        String gioiTinh = gioiTinhTextField.getText();
+        String gioiTinh = gioiTinhChoiceBox.getValue();
         String nguyenQuan = nguyenQuanTextField.getText();
         String danToc = danTocTextField.getText();
         String noiThuongTru = noiThuongTruTextField.getText();
@@ -191,7 +192,8 @@ public class NhanKhauDetailViewController {
                 preparedStatement.setString(7, nguyenQuan);
                 preparedStatement.setString(8, danToc);
                 preparedStatement.setString(9, noiThuongTru);
-                preparedStatement.setString(10, tonGiao);
+                if(tonGiao == "") preparedStatement.setString(10, "Không");
+                else preparedStatement.setString(10, tonGiao);
                 if(quocTich == "") preparedStatement.setString(11, "Việt Nam");
                 else preparedStatement.setString(11, quocTich);
                 preparedStatement.setString(12, diaChiHienNay);
@@ -263,14 +265,6 @@ public class NhanKhauDetailViewController {
         this.noiSinhTextField = noiSinhTextField;
     }
 
-    public TextField getGioiTinhTextField() {
-        return gioiTinhTextField;
-    }
-
-    public void setGioiTinhTextField(TextField gioiTinhTextField) {
-        this.gioiTinhTextField = gioiTinhTextField;
-    }
-
     public TextField getNguyenQuanTextField() {
         return nguyenQuanTextField;
     }
@@ -337,5 +331,12 @@ public class NhanKhauDetailViewController {
 
     public void setTitle(String title) {
         this.title.setText(title);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        gioiTinhChoiceBox.getItems().add("Nam");
+        gioiTinhChoiceBox.getItems().add("Nữ");
+        gioiTinhChoiceBox.setValue("Nam");
     }
 }
