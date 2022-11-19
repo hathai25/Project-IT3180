@@ -1,6 +1,5 @@
 package com.quartermanagement.Controller.SoHoKhau;
 
-import com.quartermanagement.Model.NhanKhau;
 import com.quartermanagement.Model.SoHoKhau;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
@@ -21,7 +20,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
-
 import static com.quartermanagement.Constants.DBConstants.*;
 import static com.quartermanagement.Utils.Utils.convertDate;
 import static com.quartermanagement.Utils.Utils.createDialog;
@@ -78,13 +76,13 @@ public class SoHoKhauController implements Initializable {
             preparedStatement = conn.prepareStatement(SELECT_QUERY);
             ResultSet result = preparedStatement.executeQuery();
 
-            // Loop the list of nhankhau
+            // Loop the list of sohokhau
             while (result.next()) {
                 SoHoKhauList.add(new SoHoKhau(result.getString("MaChuHo"),
                         result.getString("DiaChi"), result.getInt("MaHoKhau")
                 ));
             }
-            // Add nhankhau to table
+            // Add sohokhau to table
             tableView.setItems(SoHoKhauList);
         } catch (SQLException e) {
         }
@@ -99,11 +97,11 @@ public class SoHoKhauController implements Initializable {
         SoHoKhau selected = tableView.getSelectionModel().getSelectedItem();
         if(selected == null) createDialog(Alert.AlertType.WARNING,
                 "Cảnh báo",
-                "Vui lòng chọn nhân khẩu để tiếp tục","");
+                "Vui lòng chọn hộ khẩu để tiếp tục","");
         else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Xác nhận xóa nhân khẩu");
-            alert.setContentText("Đồng chí muốn xóa nhân khẩu này?");
+            alert.setTitle("Xác nhận xóa hộ khẩu");
+            alert.setContentText("Đồng chí muốn xóa hộ khẩu này?");
             ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
             ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
             alert.getButtonTypes().setAll(okButton, noButton);
