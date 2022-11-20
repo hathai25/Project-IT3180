@@ -63,7 +63,6 @@ public class CoSoVatChatDeTailController implements Initializable {
         String soLuong = soLuongTextField.getText();
         String soLuongKhaDung = soLuongKhaDungTextField.getText();
 
-        int check = soLuongKhaDung.compareTo(soLuong);
 
         if (maDoDung.trim().equals("") || tenDoDung.trim().equals("") || soLuong.trim().equals("") || soLuongKhaDung.trim().equals("")) {
 
@@ -72,7 +71,7 @@ public class CoSoVatChatDeTailController implements Initializable {
                     "Đồng chí giữ bình tĩnh",
                     "", "Vui lòng nhập đủ thông tin!"
             );
-        } else if (check > 0){
+        } else if (Integer.parseInt(soLuongKhaDung) > Integer.parseInt(soLuong)){
             createDialog(
                     Alert.AlertType.WARNING,
                     "Mời đồng chí nhập lại!",
