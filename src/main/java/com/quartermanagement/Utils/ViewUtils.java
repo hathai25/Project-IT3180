@@ -22,7 +22,7 @@ public class ViewUtils {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(viewSource));
         root = loader.load();
         scene = new Scene(root);
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();
     }
@@ -41,12 +41,27 @@ public class ViewUtils {
         AdminController controller = loader.getController();
         controller.switchToNhanKhau();
         scene = new Scene(root);
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();
     }
 
-    public void switchToSoHoKhau_Admin_view(ActionEvent event) throws IOException {
+    // cosovatchat
+    public void switchToCoSoVatChat_Admin_view(Event event) throws IOException {
+        Stage stage;
+        Scene scene;
+        Parent root;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(ADMIN_VIEW_FXML));
+        root = loader.load();
+        AdminController controller = loader.getController();
+        controller.switchToCoSoVatChat();
+        scene = new Scene(root);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
+// so ho khau
+    public void switchToSoHoKhau_Admin_view (ActionEvent event) throws IOException {
         Stage stage;
         Scene scene;
         Parent root = null;
@@ -55,7 +70,7 @@ public class ViewUtils {
         AdminController controller = loader.getController();
         controller.switchToSoHoKhau();
         scene = new Scene(root);
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();
     }

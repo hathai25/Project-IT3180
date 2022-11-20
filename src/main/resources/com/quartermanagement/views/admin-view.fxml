@@ -32,7 +32,7 @@
                         <Font name="Segoe UI" size="14.0" />
                      </font>
                   </Button>
-                  <Button id="menuButton" fx:id="buttonMenu21" mnemonicParsing="false" prefHeight="48.0" prefWidth="191.0" text="Cơ sở vật chất" textAlignment="CENTER" textFill="WHITE">
+                  <Button id="menuButton" fx:id="buttonMenu21" mnemonicParsing="false" onAction="#switchToCoSoVatChat" prefHeight="48.0" prefWidth="191.0" text="Cơ sở vật chất" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI" size="14.0" />
                      </font>
