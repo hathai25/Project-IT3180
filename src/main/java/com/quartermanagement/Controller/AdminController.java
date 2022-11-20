@@ -1,6 +1,7 @@
 package com.quartermanagement.Controller;
 
 import com.quartermanagement.Utils.ViewUtils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -33,7 +34,10 @@ public class AdminController implements Initializable {
     public void switchToCoSoVatChat() throws IOException {
         viewUtils.changeAnchorPane(basePane, CO_SO_VAT_CHAT_VIEW_FXML);
     }
-
+    public void switchToSoHoKhau() throws IOException {
+        viewUtils.changeAnchorPane(basePane, SO_HO_KHAU_VIEW_FXML);
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         signUpUserButton.setVisible(userRole.equals("totruong"));
