@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 17, 2022 at 03:29 AM
+-- Generation Time: Nov 20, 2022 at 03:35 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -39,8 +39,14 @@ CREATE TABLE `cosovatchat` (
 --
 
 INSERT INTO `cosovatchat` (`MaDoDung`, `TenDoDung`, `SoLuong`, `SoLuongKhaDung`) VALUES
+(1632, 'SADF', 53, 6322),
+(3512, 'MAYANH', 5, 98),
+(3546, 'ADF', 354, 354),
+(13546, 'ASDF', 65, 546),
+(134658, 'ADF', 86, 6345),
+(213354, 'SDAF', 35, 123),
 (232986, 'MÁY ẢNH', 3, 1),
-(454271, 'MICROPHONE', 5, 2),
+(315468, 'ASDFLJK', 123, 123),
 (476093, 'LOA', 4, 4),
 (476530, 'MÁY CHIẾU', 2, 0),
 (521616, 'BÀN', 12, 8),
@@ -68,7 +74,6 @@ CREATE TABLE `hoatdong_cosovatchat` (
 
 INSERT INTO `hoatdong_cosovatchat` (`MaHoatDong`, `MaDoDung`, `SoLuong`) VALUES
 (1, 232986, 1),
-(1, 454271, 1),
 (2, 888397, 1),
 (2, 934848, 1),
 (3, 476530, 1),
@@ -127,23 +132,22 @@ CREATE TABLE `nhankhau` (
 --
 
 INSERT INTO `nhankhau` (`HoTen`, `BiDanh`, `NgaySinh`, `CCCD`, `NoiSinh`, `GioiTinh`, `NguyenQuan`, `DanToc`, `NoiThuongTru`, `TonGiao`, `QuocTich`, `DiaChiHienNay`, `NgheNghiep`, `MaHoKhau`) VALUES
+('Lê Phương Hà', 'Thỏ', '2002-11-30', '00130298465', 'Hà Nội', 'Nữ', 'Bách Khoa, Hai Bà Trưng, Hà Nội', 'Kinh', 'Bách Khoa, Hai Bà Trưng, Hà Nội', 'Không', 'Việt Nam', 'Bách Khoa, Hai Bà Trưng, Hà Nội', 'Sinh viên', 123434567),
+('Phạm Him Lam', '', '2022-11-16', '031347897965', 'Hà Nội', 'Nam', 'abc', 'Kinh ', 'abc', 'Không', 'Việt Nam', 'abc', 'Sinh viên', 123434567),
+('Yo', '', '2022-11-09', '0325', 'dfsa', 'Nam', 'asdf', 'ad', 'asdf', 'Không', 'Việt Nam', 'asdf', 'sadf', 123434567),
 ('Hà Thái', '', '2022-11-15', '0348450896', 'Hà Nội', 'Nam', 'àkjn', 'Kinh', 'ádf', 'Không', 'Việt Nam', 'ưtq', 'Sinh viên', 123434567),
-('loichoi', NULL, '2022-11-08', '12123415', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
-('cal', NULL, '2022-11-08', '1231415', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
-('hi', NULL, '2022-11-08', '1232415', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
-('dm', NULL, '2022-11-08', '12324415', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
-('yoy', NULL, '2022-11-08', '1234145', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
-('abc', NULL, '2022-11-08', '123415', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
-('Trần Tuấn Anh ', 'người dân 2', '2002-03-23', '123443215678', 'Phường Cửa Nam, thành phố Vinh, Nghệ An', 'Nam', 'vinh, nghệ an', 'Kinh', 'cửa nam, thành phố vinh, nghệ an', 'Hindu giáo', '', 'phố 7 phường La Khê', 'Sinh viên', 123434567),
-('yo', NULL, '2022-11-08', '1234815', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
-('alo', NULL, '2022-11-08', '1234911235', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
-('alo', NULL, '2022-11-08', '1234915', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
-('abcd', NULL, '2022-11-08', '128093415', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
-('abcd', NULL, '2022-11-08', '1283415', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
+('Heyy', '', '2022-11-02', '079865', 'asdf', 'Nữ', 'adsf', 'safd', 'asdf', 'Không', 'Việt Nam', 'sadf', 'saf', 123434567),
+('Kinh', '', '2022-11-07', '0865', 'adsf', 'nam', 'ád', 'ád', 'ád', 'ád', 'Việt Nam', 'ád', 'ád', 123434567),
+('loichoi', NULL, '2022-11-08', '12123415', 'Hà Nam', 'Nữ', 'sadf', 'f', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
+('yoy', NULL, '2022-11-08', '1234145', 'sàd', 'Nam', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
+('abc', NULL, '2022-11-08', '123415', 'sàd', 'Nữ', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
+('Trần Tuấn Anh ', 'người dân 2', '2002-03-23', '123443215678', 'Phường Cửa Nam, thành phố Vinh, Nghệ An', 'Nữ', 'vinh, nghệ an', 'Kinh', 'cửa nam, thành phố vinh, nghệ an', 'Hindu giáo', '', 'phố 7 phường La Khê', 'Sinh viên', 123434567),
+('abcd', NULL, '2022-11-08', '128093415', 'sàd', 'Nam', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
+('Hà Lan', '', '2022-11-09', '189465', 'akf', 'nam', 'àd', 'àd', 'ádf', '', 'Việt Nam', 'ádf', 'ádf', 123434567),
 ('Thái Thị Hồng Nhung', 'phó bí thư', '1992-06-22', '234554324567', 'Lam sơn, Thanh Hóa', 'Nữ', 'Lam Sơn, Thanh Hóa', 'Kinh', 'Trung đô, Lam sơn, thanh hóa', 'Ấn Độ giáo', 'Việt Nam', 'phố 7 phường La Khê', 'Giáo viên', 234565679),
 ('Thái Đình Đức', 'nguoi dan 1', '1990-06-11', '245676866712', 'Anh Sơn, Nghệ An', 'Nam', 'Anh Sơn, Nghệ An', 'Kinh', 'Vinh, Nghệ An', 'Không', 'Việt Nam', 'phố 7 phường La Khê', 'Công nhân', 245738373),
 ('Họ và tên', '', '2022-11-08', '2654', 'ádf', 'sadf', 'sad', 'sad', 'sad', 'sad', 'Việt Nam', 'sad', 'sad', 123434567),
-('alo', NULL, '2022-11-08', '34911235', 'sàd', 'ádf', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567);
+('DKM', '', '2022-11-07', '8645321', 'uhj', 'Nữ', 'm', 'ohujk', ',', 'Không', 'Việt Nam', 'j', 'kjnm', 123434567);
 
 -- --------------------------------------------------------
 

@@ -85,6 +85,7 @@ public class CoSoVatChatController implements Initializable {
             Scene scene = new Scene(studentViewParent);
             CoSoVatChatDeTailController controller = loader.getController();
             controller.hide_update_btn();
+            controller.hide_Pane();
             stage.setScene(scene);
         }
 
