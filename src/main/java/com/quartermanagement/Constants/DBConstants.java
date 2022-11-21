@@ -7,5 +7,5 @@ public class DBConstants {
     public static final String USERNAME = "root";
     public static final String PASSWORD = "";
 
-    public static final int ROWS_PER_PAGE = 15;
+    public static final int ROWS_PER_PAGE = 10;
 }
