@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quartermanagement.Controller.AdminController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quartermanagement.Controller.AdminController">
    <left>
       <AnchorPane prefHeight="606.0" prefWidth="190.0" style="-fx-background-color: #3f4d67;" stylesheets="@../styles/navigation-styles.css" BorderPane.alignment="CENTER">
          <children>
@@ -33,7 +33,7 @@
                         <Font name="Segoe UI" size="14.0" />
                      </font>
                   </Button>
-                  <Button id="menuButton" fx:id="buttonMenu2" mnemonicParsing="false" prefHeight="48.0" prefWidth="191.0" text="Lịch sinh hoạt" textAlignment="CENTER" textFill="WHITE">
+                  <Button id="menuButton" fx:id="buttonMenu2" mnemonicParsing="false" onAction="#switchToLichHoatDong" prefHeight="48.0" prefWidth="191.0" text="Lịch sinh hoạt" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI" size="14.0" />
                      </font>

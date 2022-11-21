@@ -42,4 +42,8 @@ public class AdminController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         signUpUserButton.setVisible(userRole.equals("totruong"));
     }
+
+    public void switchToLichHoatDong() throws IOException {
+        viewUtils.changeAnchorPane(basePane, LICH_HOAT_DONG_VIEW_FXML);
+    }
 }

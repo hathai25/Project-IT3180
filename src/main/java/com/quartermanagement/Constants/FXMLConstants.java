@@ -12,5 +12,7 @@ public class FXMLConstants {
     public static String DETAIL_CO_SO_VAT_CHAT_VIEW_FXML="/com/quartermanagement/views/cosovatchat-detail-view.fxml";
     public static String SO_HO_KHAU_VIEW_FXML = "/com/quartermanagement/views/sohokhau-view.fxml";
     public static String ADD_SOHOKHAU_VIEW_FXML = "/com/quartermanagement/views/add-sohokhau-view.fxml";
+    public static String LICH_HOAT_DONG_VIEW_FXML = "/com/quartermanagement/views/lichhoatdong-view.fxml";
+    public static String DETAIL_LICH_HOAT_DONG_VIEW_FXML = "/com/quartermanagement/views/lichhoatdong-detail-view.fxml";
 
 }

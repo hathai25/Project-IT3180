@@ -74,4 +74,19 @@ public class ViewUtils {
         stage.setScene(scene);
         stage.show();
     }
+
+    public void switchToLichHoatDong_Admin_view(ActionEvent event) throws IOException {
+        Stage stage;
+        Scene scene;
+        Parent root = null;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(ADMIN_VIEW_FXML));
+        root = loader.load();
+        AdminController controller = loader.getController();
+        controller.switchToLichHoatDong();
+        scene = new Scene(root);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
+
 }
