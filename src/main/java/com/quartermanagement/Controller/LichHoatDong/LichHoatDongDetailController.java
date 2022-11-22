@@ -41,9 +41,15 @@ public class LichHoatDongDetailController implements Initializable {
 
     @FXML
     private TextField tenHoatDongTextField;
+    @FXML
+    private TextField maNguoiTaoTextField;
+    @FXML
+    private Pane statusPane;
 
     @FXML
     private Text title;
+    @FXML
+    private Text maNguoiTaoText;
 
     @FXML
     private Button update_btn;
@@ -54,6 +60,7 @@ public class LichHoatDongDetailController implements Initializable {
         startTimeTextField.setText(String.valueOf(lichHoatDong.getStartTime()));
         endTimeTextField.setText(String.valueOf(lichHoatDong.getEndTime()));
         statusTextField.setText(String.valueOf(lichHoatDong.getStatus()));
+        maNguoiTaoTextField.setText(String.valueOf(lichHoatDong.getMaNguoiTao()));
     }
 
     public void goBack (ActionEvent event) throws IOException {
@@ -68,9 +75,10 @@ public class LichHoatDongDetailController implements Initializable {
         String startTime = startTimeTextField.getText();
         String endTime = endTimeTextField.getText();
         String status = statusTextField.getText();
+        String maNguoiTao = maNguoiTaoTextField.getText();
 
 
-        if (maHoatDong.trim().equals("") || tenHoatDong.trim().equals("") || startTime.trim().equals("") || endTime.trim().equals("")) {
+        if (maHoatDong.trim().equals("") || tenHoatDong.trim().equals("") || startTime.trim().equals("") || endTime.trim().equals("") || maNguoiTao.trim().equals("")) {
 
             createDialog(
                     Alert.AlertType.WARNING,
@@ -82,7 +90,7 @@ public class LichHoatDongDetailController implements Initializable {
             try {
                 Connection conn;
                 PreparedStatement preparedStatement;
-                String UPDATE_QUERY ="UPDATE lichhoatdong SET `MaHoatDong`=?, `TenHoatDong`=?, `ThoiGianBatDau`=?, `ThoiGianKetThuc`=?, `DuocDuyet`=? WHERE `MaHoatDong`=?";
+                String UPDATE_QUERY ="UPDATE lichhoatdong SET `MaHoatDong`=?, `TenHoatDong`=?, `ThoiGianBatDau`=?, `ThoiGianKetThuc`=?, `DuocDuyet`=?, `MaNguoiTao`=? WHERE `MaHoatDong`=?";
                 conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
                 preparedStatement = conn.prepareStatement((UPDATE_QUERY));
                 preparedStatement.setString(1, maHoatDong);
@@ -90,6 +98,8 @@ public class LichHoatDongDetailController implements Initializable {
                 preparedStatement.setString(3, startTime);
                 preparedStatement.setString(4, endTime);
                 preparedStatement.setString(5, status);
+                preparedStatement.setString(6, maNguoiTao);
+                preparedStatement.setString(7, maHoatDong);
 
                 int result = preparedStatement.executeUpdate();
                 if (result == 1) {
@@ -119,8 +129,9 @@ public class LichHoatDongDetailController implements Initializable {
         String tenHoatDong = tenHoatDongTextField.getText();
         String startTime = startTimeTextField.getText();
         String endTime = endTimeTextField.getText();
-        String status = statusTextField.getText();
-        if (tenHoatDong.trim().equals("") ||startTime.trim().equals("") || endTime.trim().equals("") || status.trim().equals("")) {
+        String status = "Chưa duyệt";
+        String maNguoiTao = maNguoiTaoTextField.getText();
+        if (tenHoatDong.trim().equals("") ||startTime.trim().equals("") || endTime.trim().equals("") || maNguoiTao.trim().equals("")) {
 
             createDialog(
                     Alert.AlertType.WARNING,
@@ -140,13 +151,14 @@ public class LichHoatDongDetailController implements Initializable {
                     rs = check.executeQuery();
                 } while (rs.next());
 
-                String INSERT_QUERY = "INSERT INTO lichhoatdong VALUES(?,?,?,?,?)";
+                String INSERT_QUERY = "INSERT INTO lichhoatdong VALUES(?,?,?,?,?,?)";
                 preparedStatement = conn.prepareStatement((INSERT_QUERY));
                 preparedStatement.setString(1, maHoatDong);
                 preparedStatement.setString(2, tenHoatDong);
                 preparedStatement.setString(3, startTime);
                 preparedStatement.setString(4, endTime);
                 preparedStatement.setString(5, status);
+                preparedStatement.setString(6, maNguoiTao);
 
                 int result = preparedStatement.executeUpdate();
                 if (result == 1) {
@@ -177,8 +189,14 @@ public class LichHoatDongDetailController implements Initializable {
         add_btn.setTranslateX(100);
     }
 
-    public void hide_Pane() {
+    public void hide_maHoatDongPane() {
         maHoatDongPane.setVisible(false);
+    }
+
+    public void hide_statusPane(){
+        statusPane.setVisible(false);
+        maNguoiTaoText.setTranslateY(-40);
+        maNguoiTaoTextField.setTranslateY(-40);
     }
 
     public void setTitle(String title) {

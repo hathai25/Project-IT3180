@@ -2,7 +2,12 @@ package com.quartermanagement.Model;
 
 public class LichHoatDong {
     private int maHoatDong;
-    private String tenHoatDong, startTime, endTime, status;
+    private String tenHoatDong;
+    private String startTime;
+    private String endTime;
+    private String status;
+
+    private String maNguoiTao;
 
     public int getMaHoatDong() {
         return maHoatDong;
@@ -44,12 +49,21 @@ public class LichHoatDong {
         this.status = status;
     }
 
-    public LichHoatDong(int mahoatdong, String tenhoatdong, String startTime, String endTime, String status){
+    public String getMaNguoiTao() {
+        return maNguoiTao;
+    }
+
+    public void setMaNguoiTao(String maNguoiTao) {
+        this.maNguoiTao = maNguoiTao;
+    }
+
+    public LichHoatDong(int mahoatdong, String tenhoatdong, String startTime, String endTime, String status, String maNguoiTao){
         this.maHoatDong = mahoatdong;
         this.tenHoatDong = tenhoatdong;
         this.startTime = startTime;
         this.endTime = endTime;
         this.status = status;
+        this.maNguoiTao = maNguoiTao;
     }
 
     public LichHoatDong(){};
