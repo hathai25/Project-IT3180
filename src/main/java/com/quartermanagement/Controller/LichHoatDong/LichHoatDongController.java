@@ -27,8 +27,7 @@ import java.util.ResourceBundle;
 import static com.quartermanagement.Constants.DBConstants.*;
 import static com.quartermanagement.Constants.DBConstants.ROWS_PER_PAGE;
 import static com.quartermanagement.Constants.FXMLConstants.*;
-import static com.quartermanagement.Utils.Utils.convertDate;
-import static com.quartermanagement.Utils.Utils.createDialog;
+import static com.quartermanagement.Utils.Utils.*;
 
 public class LichHoatDongController implements Initializable {
     @FXML
@@ -57,7 +56,7 @@ public class LichHoatDongController implements Initializable {
             ResultSet result = preparedStatement.executeQuery();
             while (result.next()) {
                 lichHoatDongList.add(new LichHoatDong(result.getInt("MaHoatDong"),result.getString("TenHoatDong"),
-                        result.getString("ThoiGianBatDau"), result.getString("ThoiGianKetThuc"),
+                        convertTime(result.getString("ThoiGianBatDau")), convertTime(result.getString("ThoiGianKetThuc")),
                         result.getString("DuocDuyet"), result.getString("MaNguoiTao")
                 ));
             }

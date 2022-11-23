@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -18,7 +19,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.quartermanagement.Constants.DBConstants.*;
-import static com.quartermanagement.Utils.Utils.createDialog;
+import static com.quartermanagement.Utils.Utils.*;
 
 public class LichHoatDongDetailController implements Initializable {
     @FXML
@@ -26,6 +27,12 @@ public class LichHoatDongDetailController implements Initializable {
 
     @FXML
     private TextField endTimeTextField;
+    @FXML
+    private TextField startTimeTextField;
+    @FXML
+    private DatePicker startDatePicker;
+    @FXML
+    private DatePicker endDatePicker;
 
     @FXML
     private Pane maHoatDongPane;
@@ -33,8 +40,6 @@ public class LichHoatDongDetailController implements Initializable {
     @FXML
     private TextField maHoatDongTextField;
 
-    @FXML
-    private TextField startTimeTextField;
 
     @FXML
     private TextField statusTextField;
@@ -57,8 +62,14 @@ public class LichHoatDongDetailController implements Initializable {
     public void setLichHoatDong(LichHoatDong lichHoatDong) {
         maHoatDongTextField.setText(String.valueOf(lichHoatDong.getMaHoatDong()));
         tenHoatDongTextField.setText(lichHoatDong.getTenHoatDong());
-        startTimeTextField.setText(String.valueOf(lichHoatDong.getStartTime()));
-        endTimeTextField.setText(String.valueOf(lichHoatDong.getEndTime()));
+        String startTime = lichHoatDong.getStartTime();
+        String [] starttime = startTime.split(" ");
+        startDatePicker.setValue(LOCAL_DATE(starttime[1]));
+        startTimeTextField.setText(starttime[0]);
+        String endTime = lichHoatDong.getEndTime();
+        String [] endtime = endTime.split(" ");
+        endDatePicker.setValue(LOCAL_DATE(endtime[1]));
+        endTimeTextField.setText(endtime[0]);
         statusTextField.setText(String.valueOf(lichHoatDong.getStatus()));
         maNguoiTaoTextField.setText(String.valueOf(lichHoatDong.getMaNguoiTao()));
     }
@@ -72,13 +83,18 @@ public class LichHoatDongDetailController implements Initializable {
         ViewUtils viewUtils = new ViewUtils();
         String maHoatDong = maHoatDongTextField.getText();
         String tenHoatDong = tenHoatDongTextField.getText();
+        String startDateTime = startDatePicker.getValue().toString();
         String startTime = startTimeTextField.getText();
+        String starttime = startDateTime + " " + startTime;
+        String endDateTime = endDatePicker.getValue().toString();
         String endTime = endTimeTextField.getText();
+        String endtime = endDateTime + " " + endTime;
         String status = statusTextField.getText();
         String maNguoiTao = maNguoiTaoTextField.getText();
 
 
-        if (maHoatDong.trim().equals("") || tenHoatDong.trim().equals("") || startTime.trim().equals("") || endTime.trim().equals("") || maNguoiTao.trim().equals("")) {
+        if (maHoatDong.trim().equals("") || tenHoatDong.trim().equals("") || startTime.trim().equals("") || endTime.trim().equals("") || maNguoiTao.trim().equals("")
+           || startDateTime.trim().equals("") || endDateTime.trim().equals("") ) {
 
             createDialog(
                     Alert.AlertType.WARNING,
@@ -95,8 +111,8 @@ public class LichHoatDongDetailController implements Initializable {
                 preparedStatement = conn.prepareStatement((UPDATE_QUERY));
                 preparedStatement.setString(1, maHoatDong);
                 preparedStatement.setString(2, tenHoatDong);
-                preparedStatement.setString(3, startTime);
-                preparedStatement.setString(4, endTime);
+                preparedStatement.setString(3, starttime);
+                preparedStatement.setString(4, endtime);
                 preparedStatement.setString(5, status);
                 preparedStatement.setString(6, maNguoiTao);
                 preparedStatement.setString(7, maHoatDong);
@@ -127,17 +143,24 @@ public class LichHoatDongDetailController implements Initializable {
         ViewUtils viewUtils = new ViewUtils();
         String maHoatDong;
         String tenHoatDong = tenHoatDongTextField.getText();
+        String startDateTime = startDatePicker.getValue().toString();
         String startTime = startTimeTextField.getText();
+        String starttime = startDateTime + " " + startTime;
+        String endDateTime = endDatePicker.getValue().toString();
         String endTime = endTimeTextField.getText();
+        String endtime = endDateTime + " " + endTime;
         String status = "Chưa duyệt";
         String maNguoiTao = maNguoiTaoTextField.getText();
-        if (tenHoatDong.trim().equals("") ||startTime.trim().equals("") || endTime.trim().equals("") || maNguoiTao.trim().equals("")) {
+        if (tenHoatDong.trim().equals("") ||startTime.trim().equals("") || endTime.trim().equals("") || maNguoiTao.trim().equals("")
+                || startDateTime.trim().equals("") || endDateTime.trim().equals("")) {
 
             createDialog(
                     Alert.AlertType.WARNING,
                     "Đồng chí giữ bình tĩnh",
                     "", "Vui lòng nhập đủ thông tin!"
             );
+        } else if(!isValidTime(startTime) && !isValidTime(endTime)){
+            createDialog(Alert.AlertType.WARNING,"Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng", "");
         } else {
             try {
                 Connection conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
@@ -155,8 +178,8 @@ public class LichHoatDongDetailController implements Initializable {
                 preparedStatement = conn.prepareStatement((INSERT_QUERY));
                 preparedStatement.setString(1, maHoatDong);
                 preparedStatement.setString(2, tenHoatDong);
-                preparedStatement.setString(3, startTime);
-                preparedStatement.setString(4, endTime);
+                preparedStatement.setString(3, starttime);
+                preparedStatement.setString(4, endtime);
                 preparedStatement.setString(5, status);
                 preparedStatement.setString(6, maNguoiTao);
 
@@ -207,4 +230,6 @@ public class LichHoatDongDetailController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
     }
+
+
 }
