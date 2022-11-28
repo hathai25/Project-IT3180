@@ -13,10 +13,13 @@
     <children>
         <TableView fx:id="tableView" layoutX="38.0" layoutY="125.0" prefHeight="414.0" prefWidth="633.0" stylesheets="@../styles/table.css">
             <columns>
-                <TableColumn fx:id="indexColumn" prefWidth="41.599971771240234" text="#" />
-                <TableColumn fx:id="maHoKhauColumn" prefWidth="136.0" text="Mã hộ khẩu" />
-                <TableColumn fx:id="diaChiColumn" prefWidth="276.00001525878906" text="Địa chỉ" />
-                <TableColumn fx:id="maChuHoColumn" prefWidth="164.0" text="Mã Chủ Hộ" />
+                <TableColumn fx:id="indexColumn" prefWidth="25.600006103515625" text="#" />
+                <TableColumn fx:id="maHoKhauColumn" prefWidth="117.60000991821289" text="Mã hộ khẩu" />
+                <TableColumn fx:id="diaChiColumn" prefWidth="153.6000213623047" text="Địa chỉ" />
+                <TableColumn fx:id="maChuHoColumn" prefWidth="96.0" text="Mã Chủ Hộ" />
+            <TableColumn fx:id="ngayLapColumn" prefWidth="91.99993896484375" text="Ngày Lập" />
+            <TableColumn fx:id="ngayChuyenDiColumn" prefWidth="78.39996337890625" text="Ngày Chuyển Đi" />
+            <TableColumn fx:id="lyDoChuyenColumn" prefWidth="75.0" text="Lý do chuyển" />
             </columns>
         </TableView>
         <Text layoutX="38.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quản lý sổ hộ khẩu" textAlignment="CENTER" wrappingWidth="169.9140625">
@@ -44,6 +47,6 @@
                 <Font name="Segoe UI" size="14.0" />
             </font>
         </Button>
-        <Pagination layoutX="235.0" layoutY="539.0" prefHeight="60.0" prefWidth="238.0" />
+        <Pagination fx:id="pagination" layoutX="235.0" layoutY="539.0" prefHeight="60.0" prefWidth="238.0" />
     </children>
 </AnchorPane>

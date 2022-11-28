@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2022 at 03:35 AM
+-- Generation Time: Nov 22, 2022 at 04:30 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -24,6 +24,20 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `cccd`
+--
+
+CREATE TABLE `cccd` (
+  `ID` int(11) NOT NULL,
+  `idNhankhau` int(11) NOT NULL,
+  `CCCD` int(11) NOT NULL,
+  `NgayCap` date NOT NULL,
+  `NoiCap` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `cosovatchat`
 --
 
@@ -39,22 +53,21 @@ CREATE TABLE `cosovatchat` (
 --
 
 INSERT INTO `cosovatchat` (`MaDoDung`, `TenDoDung`, `SoLuong`, `SoLuongKhaDung`) VALUES
-(1632, 'SADF', 53, 6322),
-(3512, 'MAYANH', 5, 98),
-(3546, 'ADF', 354, 354),
-(13546, 'ASDF', 65, 546),
 (134658, 'ADF', 86, 6345),
 (213354, 'SDAF', 35, 123),
 (232986, 'MÁY ẢNH', 3, 1),
+(265756, 'Nến', 50, 50),
 (315468, 'ASDFLJK', 123, 123),
+(336721, 'Bàn chải sạch', 5, 5),
 (476093, 'LOA', 4, 4),
 (476530, 'MÁY CHIẾU', 2, 0),
 (521616, 'BÀN', 12, 8),
-(590662, 'MÀN HÌNH', 3, 2),
+(590662, 'MÀN HÌNH', 3, 3),
+(610329, 'Laptop', 100, 100),
 (637670, 'LAPTOP', 4, 2),
-(687545, 'GHẾ', 100, 38),
+(687545, 'GHẾ', 100, 100),
 (888397, 'PHÔNG BẠT', 6, 4),
-(934848, 'ĐÈN', 16, 5);
+(934848, 'ĐÈN', 16, 16);
 
 -- --------------------------------------------------------
 
@@ -68,16 +81,19 @@ CREATE TABLE `hoatdong_cosovatchat` (
   `SoLuong` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `hoatdong_cosovatchat`
+-- Table structure for table `khaitu`
 --
 
-INSERT INTO `hoatdong_cosovatchat` (`MaHoatDong`, `MaDoDung`, `SoLuong`) VALUES
-(1, 232986, 1),
-(2, 888397, 1),
-(2, 934848, 1),
-(3, 476530, 1),
-(3, 888397, 1);
+CREATE TABLE `khaitu` (
+  `ID` int(11) NOT NULL,
+  `idNguoiKhai` int(11) NOT NULL,
+  `idNguoiChet` int(11) NOT NULL,
+  `ngayKhai` date NOT NULL,
+  `lyDoChet` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -92,17 +108,8 @@ CREATE TABLE `lichhoatdong` (
   `ThoiGianKetThuc` datetime NOT NULL,
   `DuocDuyet` varchar(15) NOT NULL,
   `ThoiGianTao` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `MaNguoiTao` varchar(12) NOT NULL
+  `MaNguoiTao` int(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `lichhoatdong`
---
-
-INSERT INTO `lichhoatdong` (`MaHoatDong`, `TenHoatDong`, `ThoiGianBatDau`, `ThoiGianKetThuc`, `DuocDuyet`, `ThoiGianTao`, `MaNguoiTao`) VALUES
-(1, 'Họp tổ dân phố', '2022-11-05 07:00:00', '2022-11-05 09:00:00', 'Đã duyệt', '2022-11-05 01:14:26', '245676866712'),
-(2, 'Họp hội phụ nữ', '2022-11-05 14:00:00', '2022-11-05 16:00:00', 'Đã duyệt', '2022-11-05 01:06:33', '123443215678'),
-(3, 'Tuyên truyền về vệ sinh an toàn thực phẩm', '2022-11-05 08:00:00', '2022-11-05 10:00:00', 'Từ chối', '2022-11-05 01:10:08', '234554324567');
 
 -- --------------------------------------------------------
 
@@ -111,10 +118,10 @@ INSERT INTO `lichhoatdong` (`MaHoatDong`, `TenHoatDong`, `ThoiGianBatDau`, `Thoi
 --
 
 CREATE TABLE `nhankhau` (
+  `ID` int(11) NOT NULL,
   `HoTen` text NOT NULL,
   `BiDanh` text DEFAULT NULL,
   `NgaySinh` date NOT NULL,
-  `CCCD` varchar(12) NOT NULL,
   `NoiSinh` text NOT NULL,
   `GioiTinh` text NOT NULL,
   `NguyenQuan` text NOT NULL,
@@ -123,31 +130,8 @@ CREATE TABLE `nhankhau` (
   `TonGiao` text DEFAULT NULL,
   `QuocTich` text DEFAULT 'Việt Nam',
   `DiaChiHienNay` text NOT NULL,
-  `NgheNghiep` text DEFAULT NULL,
-  `MaHoKhau` int(11) NOT NULL
+  `NgheNghiep` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `nhankhau`
---
-
-INSERT INTO `nhankhau` (`HoTen`, `BiDanh`, `NgaySinh`, `CCCD`, `NoiSinh`, `GioiTinh`, `NguyenQuan`, `DanToc`, `NoiThuongTru`, `TonGiao`, `QuocTich`, `DiaChiHienNay`, `NgheNghiep`, `MaHoKhau`) VALUES
-('Lê Phương Hà', 'Thỏ', '2002-11-30', '00130298465', 'Hà Nội', 'Nữ', 'Bách Khoa, Hai Bà Trưng, Hà Nội', 'Kinh', 'Bách Khoa, Hai Bà Trưng, Hà Nội', 'Không', 'Việt Nam', 'Bách Khoa, Hai Bà Trưng, Hà Nội', 'Sinh viên', 123434567),
-('Phạm Him Lam', '', '2022-11-16', '031347897965', 'Hà Nội', 'Nam', 'abc', 'Kinh ', 'abc', 'Không', 'Việt Nam', 'abc', 'Sinh viên', 123434567),
-('Yo', '', '2022-11-09', '0325', 'dfsa', 'Nam', 'asdf', 'ad', 'asdf', 'Không', 'Việt Nam', 'asdf', 'sadf', 123434567),
-('Hà Thái', '', '2022-11-15', '0348450896', 'Hà Nội', 'Nam', 'àkjn', 'Kinh', 'ádf', 'Không', 'Việt Nam', 'ưtq', 'Sinh viên', 123434567),
-('Heyy', '', '2022-11-02', '079865', 'asdf', 'Nữ', 'adsf', 'safd', 'asdf', 'Không', 'Việt Nam', 'sadf', 'saf', 123434567),
-('Kinh', '', '2022-11-07', '0865', 'adsf', 'nam', 'ád', 'ád', 'ád', 'ád', 'Việt Nam', 'ád', 'ád', 123434567),
-('loichoi', NULL, '2022-11-08', '12123415', 'Hà Nam', 'Nữ', 'sadf', 'f', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
-('yoy', NULL, '2022-11-08', '1234145', 'sàd', 'Nam', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
-('abc', NULL, '2022-11-08', '123415', 'sàd', 'Nữ', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
-('Trần Tuấn Anh ', 'người dân 2', '2002-03-23', '123443215678', 'Phường Cửa Nam, thành phố Vinh, Nghệ An', 'Nữ', 'vinh, nghệ an', 'Kinh', 'cửa nam, thành phố vinh, nghệ an', 'Hindu giáo', '', 'phố 7 phường La Khê', 'Sinh viên', 123434567),
-('abcd', NULL, '2022-11-08', '128093415', 'sàd', 'Nam', 'sadf', 'sadf', 'sàd', 'sfda', 'Việt Nam', 'ádf', 'àd', 123434567),
-('Hà Lan', '', '2022-11-09', '189465', 'akf', 'nam', 'àd', 'àd', 'ádf', '', 'Việt Nam', 'ádf', 'ádf', 123434567),
-('Thái Thị Hồng Nhung', 'phó bí thư', '1992-06-22', '234554324567', 'Lam sơn, Thanh Hóa', 'Nữ', 'Lam Sơn, Thanh Hóa', 'Kinh', 'Trung đô, Lam sơn, thanh hóa', 'Ấn Độ giáo', 'Việt Nam', 'phố 7 phường La Khê', 'Giáo viên', 234565679),
-('Thái Đình Đức', 'nguoi dan 1', '1990-06-11', '245676866712', 'Anh Sơn, Nghệ An', 'Nam', 'Anh Sơn, Nghệ An', 'Kinh', 'Vinh, Nghệ An', 'Không', 'Việt Nam', 'phố 7 phường La Khê', 'Công nhân', 245738373),
-('Họ và tên', '', '2022-11-08', '2654', 'ádf', 'sadf', 'sad', 'sad', 'sad', 'sad', 'Việt Nam', 'sad', 'sad', 123434567),
-('DKM', '', '2022-11-07', '8645321', 'uhj', 'Nữ', 'm', 'ohujk', ',', 'Không', 'Việt Nam', 'j', 'kjnm', 123434567);
 
 -- --------------------------------------------------------
 
@@ -156,20 +140,55 @@ INSERT INTO `nhankhau` (`HoTen`, `BiDanh`, `NgaySinh`, `CCCD`, `NoiSinh`, `GioiT
 --
 
 CREATE TABLE `sohokhau` (
-  `STT` int(11) NOT NULL,
   `MaHoKhau` int(11) NOT NULL,
   `DiaChi` text NOT NULL DEFAULT 'phố 7 phường La Khê',
-  `MaChuHo` varchar(12) NOT NULL
+  `MaChuHo` int(12) NOT NULL,
+  `NgayLap` date NOT NULL,
+  `NgayChuyenDi` date NOT NULL,
+  `LyDoChuyen` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `sohokhau`
+-- Table structure for table `tamtru`
 --
 
-INSERT INTO `sohokhau` (`STT`, `MaHoKhau`, `DiaChi`, `MaChuHo`) VALUES
-(2, 123434567, 'phố 7 phường La Khê', '123443215678'),
-(3, 234565679, 'phố 7 phường La Khê', '234554324567'),
-(1, 245738373, 'phố 7 phường La Khê', '245676866712');
+CREATE TABLE `tamtru` (
+  `ID` int(11) NOT NULL,
+  `idNhankhau` int(11) NOT NULL,
+  `sdtNgDangKi` int(11) NOT NULL,
+  `noiTamTru` text NOT NULL,
+  `tuNgay` date NOT NULL,
+  `denNgay` date NOT NULL,
+  `lido` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tamvang`
+--
+
+CREATE TABLE `tamvang` (
+  `ID` int(11) NOT NULL,
+  `idNhankhau` int(11) NOT NULL,
+  `tuNgay` date NOT NULL,
+  `denNgay` date NOT NULL,
+  `lydo` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `thanhviencuaho`
+--
+
+CREATE TABLE `thanhviencuaho` (
+  `idNhanKhau` int(11) NOT NULL,
+  `idHoKhau` int(11) NOT NULL,
+  `quanHeVoiChuHo` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -198,6 +217,14 @@ INSERT INTO `user` (`userId`, `username`, `password`, `role`) VALUES
 --
 
 --
+-- Indexes for table `cccd`
+--
+ALTER TABLE `cccd`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `idNhankhau_2` (`idNhankhau`),
+  ADD KEY `idNhankhau` (`idNhankhau`);
+
+--
 -- Indexes for table `cosovatchat`
 --
 ALTER TABLE `cosovatchat`
@@ -212,6 +239,14 @@ ALTER TABLE `hoatdong_cosovatchat`
   ADD KEY `MaDoDung` (`MaDoDung`);
 
 --
+-- Indexes for table `khaitu`
+--
+ALTER TABLE `khaitu`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `idNguoiChet` (`idNguoiChet`),
+  ADD KEY `idNguoiKhai` (`idNguoiKhai`);
+
+--
 -- Indexes for table `lichhoatdong`
 --
 ALTER TABLE `lichhoatdong`
@@ -222,8 +257,7 @@ ALTER TABLE `lichhoatdong`
 -- Indexes for table `nhankhau`
 --
 ALTER TABLE `nhankhau`
-  ADD PRIMARY KEY (`CCCD`),
-  ADD KEY `MaHoKhau` (`MaHoKhau`);
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `sohokhau`
@@ -231,6 +265,27 @@ ALTER TABLE `nhankhau`
 ALTER TABLE `sohokhau`
   ADD PRIMARY KEY (`MaHoKhau`),
   ADD KEY `MaChuHo` (`MaChuHo`);
+
+--
+-- Indexes for table `tamtru`
+--
+ALTER TABLE `tamtru`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `idNhankhau` (`idNhankhau`);
+
+--
+-- Indexes for table `tamvang`
+--
+ALTER TABLE `tamvang`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `idNhankhau` (`idNhankhau`);
+
+--
+-- Indexes for table `thanhviencuaho`
+--
+ALTER TABLE `thanhviencuaho`
+  ADD PRIMARY KEY (`idNhanKhau`,`idHoKhau`),
+  ADD KEY `idHoKhau` (`idHoKhau`);
 
 --
 -- Indexes for table `user`
@@ -253,6 +308,12 @@ ALTER TABLE `user`
 --
 
 --
+-- Constraints for table `cccd`
+--
+ALTER TABLE `cccd`
+  ADD CONSTRAINT `cccd_ibfk_1` FOREIGN KEY (`idNhankhau`) REFERENCES `nhankhau` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `hoatdong_cosovatchat`
 --
 ALTER TABLE `hoatdong_cosovatchat`
@@ -260,22 +321,42 @@ ALTER TABLE `hoatdong_cosovatchat`
   ADD CONSTRAINT `hoatdong_cosovatchat_ibfk_2` FOREIGN KEY (`MaDoDung`) REFERENCES `cosovatchat` (`MaDoDung`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `khaitu`
+--
+ALTER TABLE `khaitu`
+  ADD CONSTRAINT `khaitu_ibfk_1` FOREIGN KEY (`idNguoiKhai`) REFERENCES `nhankhau` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `khaitu_ibfk_2` FOREIGN KEY (`idNguoiChet`) REFERENCES `nhankhau` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `lichhoatdong`
 --
 ALTER TABLE `lichhoatdong`
-  ADD CONSTRAINT `lichhoatdong_ibfk_1` FOREIGN KEY (`MaNguoiTao`) REFERENCES `nhankhau` (`CCCD`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `nhankhau`
---
-ALTER TABLE `nhankhau`
-  ADD CONSTRAINT `nhankhau_ibfk_1` FOREIGN KEY (`MaHoKhau`) REFERENCES `sohokhau` (`MaHoKhau`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `lichhoatdong_ibfk_1` FOREIGN KEY (`MaNguoiTao`) REFERENCES `nhankhau` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `sohokhau`
 --
 ALTER TABLE `sohokhau`
-  ADD CONSTRAINT `sohokhau_ibfk_1` FOREIGN KEY (`MaChuHo`) REFERENCES `nhankhau` (`CCCD`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `sohokhau_ibfk_1` FOREIGN KEY (`MaChuHo`) REFERENCES `nhankhau` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tamtru`
+--
+ALTER TABLE `tamtru`
+  ADD CONSTRAINT `tamtru_ibfk_1` FOREIGN KEY (`idNhankhau`) REFERENCES `nhankhau` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tamvang`
+--
+ALTER TABLE `tamvang`
+  ADD CONSTRAINT `tamvang_ibfk_1` FOREIGN KEY (`idNhankhau`) REFERENCES `nhankhau` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `thanhviencuaho`
+--
+ALTER TABLE `thanhviencuaho`
+  ADD CONSTRAINT `thanhviencuaho_ibfk_1` FOREIGN KEY (`idNhanKhau`) REFERENCES `nhankhau` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `thanhviencuaho_ibfk_2` FOREIGN KEY (`idHoKhau`) REFERENCES `sohokhau` (`MaHoKhau`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

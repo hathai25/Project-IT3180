@@ -1,40 +1,68 @@
 package com.quartermanagement.Model;
 
 public class SoHoKhau {
-    private int MaHoKhau;
-    private String MaChuHo, DiaChi;
+    private int maHoKhau, maChuHo;
+    private String diaChi, ngayLap, ngayChuyenDi, lyDoChuyen;
 
-    // constructor
-    public SoHoKhau(String MaChuHo, String diaChi, int maHoKhau) {
-        MaHoKhau = maHoKhau;
-        this.MaChuHo = MaChuHo;
-        DiaChi = diaChi;
+    public SoHoKhau() {
     }
 
-    // Getter and setter
 
+    // constructor
+    public SoHoKhau(int maHoKhau, String diaChi, int maChuHo, String ngayLap, String ngayChuyenDi, String lyDoChuyen) {
+        this.maHoKhau = maHoKhau;
+        this.maChuHo = maChuHo;
+        this.diaChi = diaChi;
+        this.ngayLap = ngayLap;
+        this.ngayChuyenDi = ngayChuyenDi;
+        this.lyDoChuyen = lyDoChuyen;
+    }
 
     public int getMaHoKhau() {
-        return MaHoKhau;
+        return maHoKhau;
     }
 
     public void setMaHoKhau(int maHoKhau) {
-        MaHoKhau = maHoKhau;
+        this.maHoKhau = maHoKhau;
     }
 
-    public String getMaChuHo() {
-        return MaChuHo;
+    public int getMaChuHo() {
+        return maChuHo;
     }
 
-    public void setMaChuHo(String maChuHo) {
-        MaChuHo = maChuHo;
+    public void setMaChuHo(int maChuHo) {
+        this.maChuHo = maChuHo;
     }
 
     public String getDiaChi() {
-        return DiaChi;
+        return diaChi;
     }
 
     public void setDiaChi(String diaChi) {
-        DiaChi = diaChi;
+        this.diaChi = diaChi;
+    }
+
+    public String getNgayLap() {
+        return ngayLap;
+    }
+
+    public void setNgayLap(String ngayLap) {
+        this.ngayLap = ngayLap;
+    }
+
+    public String getNgayChuyenDi() {
+        return ngayChuyenDi;
+    }
+
+    public void setNgayChuyenDi(String ngayChuyenDi) {
+        this.ngayChuyenDi = ngayChuyenDi;
+    }
+
+    public String getLyDoChuyen() {
+        return lyDoChuyen;
+    }
+
+    public void setLyDoChuyen(String lyDoChuyen) {
+        this.lyDoChuyen = lyDoChuyen;
     }
 }
