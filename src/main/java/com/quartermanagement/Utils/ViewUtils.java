@@ -64,7 +64,7 @@ public class ViewUtils {
     public void switchToSoHoKhau_Admin_view (ActionEvent event) throws IOException {
         Stage stage;
         Scene scene;
-        Parent root = null;
+        Parent root;
         FXMLLoader loader = new FXMLLoader(getClass().getResource(ADMIN_VIEW_FXML));
         root = loader.load();
         AdminController controller = loader.getController();
