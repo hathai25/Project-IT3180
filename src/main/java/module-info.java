@@ -21,4 +21,6 @@ module comz.quartermanagement {
     opens com.quartermanagement.Controller.CoSoVatChat to javafx.fxml;
     exports com.quartermanagement.Utils;
     opens com.quartermanagement.Utils to javafx.fxml;
+    exports com.quartermanagement.Controller.LichHoatDong;
+    opens com.quartermanagement.Controller.LichHoatDong to javafx.fxml;
 }
