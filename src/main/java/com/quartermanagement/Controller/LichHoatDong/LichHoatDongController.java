@@ -37,12 +37,11 @@ public class LichHoatDongController implements Initializable {
     @FXML private TableColumn indexColumn;
     @FXML
     private TableColumn<LichHoatDong, String> tenHoatDongColumn,
-            startTimeColumn, endTimeColumn, statusColumn, maNguoiTaoColumn;
+            startTimeColumn, endTimeColumn, statusColumn, maNguoiTaoColumn, thoiGianTaoColumn;
     @FXML
     private TableColumn<LichHoatDong, Integer> maHoatDongColumn;
     @FXML
     private Pagination pagination;
-
     private ObservableList<LichHoatDong> lichHoatDongList = FXCollections.observableArrayList();
     private Connection conn;
     private PreparedStatement preparedStatement = null;
@@ -57,8 +56,7 @@ public class LichHoatDongController implements Initializable {
             while (result.next()) {
                 lichHoatDongList.add(new LichHoatDong(result.getInt("MaHoatDong"),result.getString("TenHoatDong"),
                         convertTime(result.getString("ThoiGianBatDau")), convertTime(result.getString("ThoiGianKetThuc")),
-                        result.getString("DuocDuyet"), result.getString("MaNguoiTao")
-                ));
+                        result.getString("DuocDuyet"), result.getString("MaNguoiTao"), convertTime(result.getString("ThoiGianTao"))));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -163,6 +161,7 @@ public class LichHoatDongController implements Initializable {
         endTimeColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("endTime"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("status"));
         maNguoiTaoColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("maNguoiTao"));
+        thoiGianTaoColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("thoiGianTao"));
         int lastIndex = 0;
         int displace = lichHoatDongList.size() % ROWS_PER_PAGE;
         if (displace > 0) {

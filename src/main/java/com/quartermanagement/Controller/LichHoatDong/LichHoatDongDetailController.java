@@ -5,26 +5,25 @@ import com.quartermanagement.Utils.ViewUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.quartermanagement.Constants.DBConstants.*;
 import static com.quartermanagement.Utils.Utils.*;
+import static com.quartermanagement.Controller.AdminController.userRole;
 
 public class LichHoatDongDetailController implements Initializable {
     @FXML
     private Button add_btn;
-
     @FXML
     private TextField endTimeTextField;
     @FXML
@@ -33,17 +32,14 @@ public class LichHoatDongDetailController implements Initializable {
     private DatePicker startDatePicker;
     @FXML
     private DatePicker endDatePicker;
-
     @FXML
     private Pane maHoatDongPane;
-
     @FXML
     private TextField maHoatDongTextField;
-
-
     @FXML
-    private TextField statusTextField;
-
+    private ChoiceBox<String> statusChoiceBox;
+    @FXML
+    private Text statusText;
     @FXML
     private TextField tenHoatDongTextField;
     @FXML
@@ -55,7 +51,6 @@ public class LichHoatDongDetailController implements Initializable {
     private Text title;
     @FXML
     private Text maNguoiTaoText;
-
     @FXML
     private Button update_btn;
 
@@ -70,7 +65,7 @@ public class LichHoatDongDetailController implements Initializable {
         String [] endtime = endTime.split(" ");
         endDatePicker.setValue(LOCAL_DATE(endtime[1]));
         endTimeTextField.setText(endtime[0]);
-        statusTextField.setText(String.valueOf(lichHoatDong.getStatus()));
+        statusChoiceBox.setValue(String.valueOf(lichHoatDong.getStatus()));
         maNguoiTaoTextField.setText(String.valueOf(lichHoatDong.getMaNguoiTao()));
     }
 
@@ -89,53 +84,56 @@ public class LichHoatDongDetailController implements Initializable {
         String endDateTime = endDatePicker.getValue().toString();
         String endTime = endTimeTextField.getText();
         String endtime = endDateTime + " " + endTime;
-        String status = statusTextField.getText();
+        String status = statusChoiceBox.getValue();
         String maNguoiTao = maNguoiTaoTextField.getText();
 
 
         if (maHoatDong.trim().equals("") || tenHoatDong.trim().equals("") || startTime.trim().equals("") || endTime.trim().equals("") || maNguoiTao.trim().equals("")
-           || startDateTime.trim().equals("") || endDateTime.trim().equals("") ) {
+                || startDateTime.trim().equals("") || endDateTime.trim().equals("")) {
 
             createDialog(
                     Alert.AlertType.WARNING,
                     "Đồng chí giữ bình tĩnh",
                     "", "Vui lòng nhập đủ thông tin!"
             );
-        }
-        else {
-            try {
-                Connection conn;
-                PreparedStatement preparedStatement;
-                String UPDATE_QUERY ="UPDATE lichhoatdong SET `MaHoatDong`=?, `TenHoatDong`=?, `ThoiGianBatDau`=?, `ThoiGianKetThuc`=?, `DuocDuyet`=?, `MaNguoiTao`=? WHERE `MaHoatDong`=?";
-                conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-                preparedStatement = conn.prepareStatement((UPDATE_QUERY));
-                preparedStatement.setString(1, maHoatDong);
-                preparedStatement.setString(2, tenHoatDong);
-                preparedStatement.setString(3, starttime);
-                preparedStatement.setString(4, endtime);
-                preparedStatement.setString(5, status);
-                preparedStatement.setString(6, maNguoiTao);
-                preparedStatement.setString(7, maHoatDong);
+        } else {
+            if (isValidTime(startTime) && isValidTime(endTime)) {
+                createDialog(Alert.AlertType.WARNING, "Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng", "");
+            } else {
+                try {
+                    Connection conn;
+                    PreparedStatement preparedStatement;
+                    String UPDATE_QUERY = "UPDATE lichhoatdong SET `MaHoatDong`=?, `TenHoatDong`=?, `ThoiGianBatDau`=?, `ThoiGianKetThuc`=?, `DuocDuyet`=?, `MaNguoiTao`=? WHERE `MaHoatDong`=?";
+                    conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+                    preparedStatement = conn.prepareStatement((UPDATE_QUERY));
+                    preparedStatement.setString(1, maHoatDong);
+                    preparedStatement.setString(2, tenHoatDong);
+                    preparedStatement.setString(3, starttime);
+                    preparedStatement.setString(4, endtime);
+                    preparedStatement.setString(5, status);
+                    preparedStatement.setString(6, maNguoiTao);
+                    preparedStatement.setString(7, maHoatDong);
 
-                int result = preparedStatement.executeUpdate();
-                if (result == 1) {
-                    createDialog(
-                            Alert.AlertType.CONFIRMATION,
-                            "Thành công",
-                            "", "Đồng chí vất vả rồi!"
-                    );
-                } else {
-                    createDialog(
-                            Alert.AlertType.ERROR,
-                            "Thất bại",
-                            "", "Thất bại là mẹ thành công! Mong đồng chí thử lại"
-                    );
+                    int result = preparedStatement.executeUpdate();
+                    if (result == 1) {
+                        createDialog(
+                                Alert.AlertType.CONFIRMATION,
+                                "Thành công",
+                                "", "Đồng chí vất vả rồi!"
+                        );
+                    } else {
+                        createDialog(
+                                Alert.AlertType.ERROR,
+                                "Thất bại",
+                                "", "Thất bại là mẹ thành công! Mong đồng chí thử lại"
+                        );
+                    }
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+                viewUtils.switchToLichHoatDong_Admin_view(event);
             }
-            viewUtils.switchToLichHoatDong_Admin_view(event);
         }
     }
 
@@ -151,6 +149,9 @@ public class LichHoatDongDetailController implements Initializable {
         String endtime = endDateTime + " " + endTime;
         String status = "Chưa duyệt";
         String maNguoiTao = maNguoiTaoTextField.getText();
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String thoiGianTao = dtf.format(currentTime);
         if (tenHoatDong.trim().equals("") ||startTime.trim().equals("") || endTime.trim().equals("") || maNguoiTao.trim().equals("")
                 || startDateTime.trim().equals("") || endDateTime.trim().equals("")) {
 
@@ -159,7 +160,7 @@ public class LichHoatDongDetailController implements Initializable {
                     "Đồng chí giữ bình tĩnh",
                     "", "Vui lòng nhập đủ thông tin!"
             );
-        } else if(!isValidTime(startTime) && !isValidTime(endTime)){
+        } else if(isValidTime(startTime) && isValidTime(endTime)){
             createDialog(Alert.AlertType.WARNING,"Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng", "");
         } else {
             try {
@@ -174,7 +175,7 @@ public class LichHoatDongDetailController implements Initializable {
                     rs = check.executeQuery();
                 } while (rs.next());
 
-                String INSERT_QUERY = "INSERT INTO lichhoatdong VALUES(?,?,?,?,?,?)";
+                String INSERT_QUERY = "INSERT INTO lichhoatdong VALUES(?,?,?,?,?,?,?)";
                 preparedStatement = conn.prepareStatement((INSERT_QUERY));
                 preparedStatement.setString(1, maHoatDong);
                 preparedStatement.setString(2, tenHoatDong);
@@ -182,6 +183,7 @@ public class LichHoatDongDetailController implements Initializable {
                 preparedStatement.setString(4, endtime);
                 preparedStatement.setString(5, status);
                 preparedStatement.setString(6, maNguoiTao);
+                preparedStatement.setString(7, thoiGianTao);
 
                 int result = preparedStatement.executeUpdate();
                 if (result == 1) {
@@ -218,17 +220,19 @@ public class LichHoatDongDetailController implements Initializable {
 
     public void hide_statusPane(){
         statusPane.setVisible(false);
-        maNguoiTaoText.setTranslateY(-40);
-        maNguoiTaoTextField.setTranslateY(-40);
     }
 
     public void setTitle(String title) {
-        this.title.setText(title);
+       this.title.setText(title);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        statusChoiceBox.getItems().add("Chưa duyệt");
+        statusChoiceBox.getItems().add("Chấp nhận");
+        statusChoiceBox.getItems().add("Từ chối");
+        statusChoiceBox.setValue("Chưa duyệt");
+        statusPane.setVisible(userRole.equals("totruong"));
     }
 
 

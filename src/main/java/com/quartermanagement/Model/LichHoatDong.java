@@ -6,8 +6,17 @@ public class LichHoatDong {
     private String startTime;
     private String endTime;
     private String status;
-
     private String maNguoiTao;
+
+    public String getThoiGianTao() {
+        return thoiGianTao;
+    }
+
+    public void setThoiGianTao(String thoiGianTao) {
+        this.thoiGianTao = thoiGianTao;
+    }
+
+    private String thoiGianTao;
 
     public int getMaHoatDong() {
         return maHoatDong;
@@ -57,13 +66,14 @@ public class LichHoatDong {
         this.maNguoiTao = maNguoiTao;
     }
 
-    public LichHoatDong(int mahoatdong, String tenhoatdong, String startTime, String endTime, String status, String maNguoiTao){
+    public LichHoatDong(int mahoatdong, String tenhoatdong, String startTime, String endTime, String status, String maNguoiTao, String thoiGianTao){
         this.maHoatDong = mahoatdong;
         this.tenHoatDong = tenhoatdong;
         this.startTime = startTime;
         this.endTime = endTime;
         this.status = status;
         this.maNguoiTao = maNguoiTao;
+        this.thoiGianTao = thoiGianTao;
     }
 
     public LichHoatDong(){};

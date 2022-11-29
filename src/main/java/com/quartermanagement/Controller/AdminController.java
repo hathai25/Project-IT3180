@@ -19,8 +19,8 @@ public class AdminController implements Initializable {
     @FXML
     private Button signUpUserButton;
     //Save user role
-    private final Preferences userPreferences = Preferences.userRoot();
-    private final String userRole = userPreferences.get("role", "");
+    private static final Preferences userPreferences = Preferences.userRoot();
+    public static final String userRole = userPreferences.get("role", "");
     private final ViewUtils viewUtils = new ViewUtils();
 
     public void switchToSignUp() throws IOException {
