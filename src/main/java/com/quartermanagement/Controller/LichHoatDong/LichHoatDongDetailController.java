@@ -84,7 +84,7 @@ public class LichHoatDongDetailController implements Initializable {
         } else {
             if (!isValidTime(startTime) || !isValidTime(endTime)) {
                 createDialog(Alert.AlertType.WARNING, "Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng hh:mm", "");
-            }else if(!greaterTime(startDateTime, startTime, endDateTime, endTime)){
+            } else if(!greaterTime(startDateTime, startTime, endDateTime, endTime)){
                 createDialog(Alert.AlertType.WARNING,"Từ từ thôi đồng chí!", "Thời gian kết thúc phải lớn hơn thời gian bắt đầu!", "");
             }else {
                 try {

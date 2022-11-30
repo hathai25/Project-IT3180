@@ -76,8 +76,8 @@ public class LichHoatDongController implements Initializable {
         Scene scene = new Scene(studentViewParent);
         LichHoatDongDetailController controller = loader.getController();
         controller.hide_update_btn();
-        controller.hide_maHoatDongPane();
         controller.hide_statusPane();
+        controller.hide_maHoatDongPane();
         stage.setScene(scene);
     }
 
@@ -128,7 +128,8 @@ public class LichHoatDongController implements Initializable {
         else {
             controller.setLichHoatDong(selected);
             controller.hide_add_btn();
-            controller.setTitle("Cập nhật cơ sở vật chất");
+            controller.hide_maHoatDongPane();
+            controller.setTitle("Cập nhật lịch hoat động");
             stage.setScene(scene);
         }
     }
