@@ -105,7 +105,7 @@ public class NhanKhauDetailViewController implements Initializable {
         } else {
             //regex
             if (isCccd(cccd)) {
-                createDialog(Alert.AlertType.WARNING, "Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng", "");
+                createDialog(Alert.AlertType.WARNING, "Từ từ thôi đồng chí!", "Hãy nhập đúng định dạng CCCD", "");
             }
             else {
 
@@ -185,7 +185,7 @@ public class NhanKhauDetailViewController implements Initializable {
         } else {
             //regex
             if (isCccd(cccd)) {
-                createDialog(Alert.AlertType.WARNING, "Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng", "");
+                createDialog(Alert.AlertType.WARNING, "Từ từ thôi đồng chí!", "Hãy nhập đúng định dạng CCCD", "");
             } else {
                 try {
                     Connection conn;
