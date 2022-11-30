@@ -58,11 +58,11 @@ public class Utils {
 
     public static boolean isValidTime(String time)
     {
-//        String regex = "([01]?[0-9]|2[0-3]):[0-5][0-9]";
-        String regex = "^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$";
+//        String regex = "^(2[0-3]{2}|[01]?[0-9]{2}):([0-5]?[0-9]{2})$";
+        String regex = "^(2[0-3]|[1][0-9]|[0][0-9]):(0[0-9]|[1-5][0-9])$";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(time);
-        return !m.matches();
+        return m.matches();
     }
 }
 

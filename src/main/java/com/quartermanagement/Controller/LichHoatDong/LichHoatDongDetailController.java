@@ -25,32 +25,17 @@ public class LichHoatDongDetailController implements Initializable {
     @FXML
     private Button add_btn;
     @FXML
-    private TextField endTimeTextField;
+    private TextField endTimeTextField, startTimeTextField, maHoatDongTextField, tenHoatDongTextField, maNguoiTaoTextField;
     @FXML
-    private TextField startTimeTextField;
-    @FXML
-    private DatePicker startDatePicker;
-    @FXML
-    private DatePicker endDatePicker;
+    private DatePicker startDatePicker, endDatePicker;
     @FXML
     private Pane maHoatDongPane;
     @FXML
-    private TextField maHoatDongTextField;
-    @FXML
     private ChoiceBox<String> statusChoiceBox;
     @FXML
-    private Text statusText;
-    @FXML
-    private TextField tenHoatDongTextField;
-    @FXML
-    private TextField maNguoiTaoTextField;
-    @FXML
     private Pane statusPane;
-
     @FXML
     private Text title;
-    @FXML
-    private Text maNguoiTaoText;
     @FXML
     private Button update_btn;
 
@@ -97,7 +82,7 @@ public class LichHoatDongDetailController implements Initializable {
                     "", "Vui lòng nhập đủ thông tin!"
             );
         } else {
-            if (isValidTime(startTime) && isValidTime(endTime)) {
+            if (!isValidTime(startTime) || !isValidTime(endTime)) {
                 createDialog(Alert.AlertType.WARNING, "Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng", "");
             } else {
                 try {
@@ -160,7 +145,7 @@ public class LichHoatDongDetailController implements Initializable {
                     "Đồng chí giữ bình tĩnh",
                     "", "Vui lòng nhập đủ thông tin!"
             );
-        } else if(isValidTime(startTime) && isValidTime(endTime)){
+        } else if(!isValidTime(startTime) || !isValidTime(endTime)){
             createDialog(Alert.AlertType.WARNING,"Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng", "");
         } else {
             try {
