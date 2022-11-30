@@ -64,5 +64,16 @@ public class Utils {
         Matcher m = p.matcher(time);
         return m.matches();
     }
+
+    public static boolean greaterTime(String startDate, String startTime, String endDate, String endTime){
+        String[] startDateArr = startDate.split("-");
+        String[] startTimeArr = startTime.split(":");
+        String[] endDateArr = endDate.split("-");
+        String[] endTimeArr = endTime.split(":");
+        String starttime = startDateArr[0] + startDateArr[1] + startDateArr[2] + startTimeArr[0]+ startTimeArr[1];
+        String endtime = endDateArr[0] + endDateArr[1] + endDateArr[2] + endTimeArr[0] + endTimeArr[1];
+        if(Long.parseLong(endtime) > Long.parseLong(starttime)) return true;
+        else return false;
+    }
 }
 
