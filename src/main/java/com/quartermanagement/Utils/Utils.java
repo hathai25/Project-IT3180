@@ -75,5 +75,12 @@ public class Utils {
         if(Long.parseLong(endtime) > Long.parseLong(starttime)) return true;
         else return false;
     }
+    public static boolean isCccd(String cccd)
+    {
+        String regex = "^\\d{12}$";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(cccd);
+        return !m.matches();
+    }
 }
 
