@@ -25,32 +25,17 @@ public class LichHoatDongDetailController implements Initializable {
     @FXML
     private Button add_btn;
     @FXML
-    private TextField endTimeTextField;
+    private TextField endTimeTextField, startTimeTextField, maHoatDongTextField, tenHoatDongTextField, maNguoiTaoTextField;
     @FXML
-    private TextField startTimeTextField;
-    @FXML
-    private DatePicker startDatePicker;
-    @FXML
-    private DatePicker endDatePicker;
+    private DatePicker startDatePicker, endDatePicker;
     @FXML
     private Pane maHoatDongPane;
     @FXML
-    private TextField maHoatDongTextField;
-    @FXML
     private ChoiceBox<String> statusChoiceBox;
     @FXML
-    private Text statusText;
-    @FXML
-    private TextField tenHoatDongTextField;
-    @FXML
-    private TextField maNguoiTaoTextField;
-    @FXML
     private Pane statusPane;
-
     @FXML
     private Text title;
-    @FXML
-    private Text maNguoiTaoText;
     @FXML
     private Button update_btn;
 
@@ -97,9 +82,11 @@ public class LichHoatDongDetailController implements Initializable {
                     "", "Vui lòng nhập đủ thông tin!"
             );
         } else {
-            if (isValidTime(startTime) && isValidTime(endTime)) {
-                createDialog(Alert.AlertType.WARNING, "Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng", "");
-            } else {
+            if (!isValidTime(startTime) || !isValidTime(endTime)) {
+                createDialog(Alert.AlertType.WARNING, "Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng hh:mm", "");
+            } else if(!greaterTime(startDateTime, startTime, endDateTime, endTime)){
+                createDialog(Alert.AlertType.WARNING,"Từ từ thôi đồng chí!", "Thời gian kết thúc phải lớn hơn thời gian bắt đầu!", "");
+            }else {
                 try {
                     Connection conn;
                     PreparedStatement preparedStatement;
@@ -160,50 +147,52 @@ public class LichHoatDongDetailController implements Initializable {
                     "Đồng chí giữ bình tĩnh",
                     "", "Vui lòng nhập đủ thông tin!"
             );
-        } else if(isValidTime(startTime) && isValidTime(endTime)){
-            createDialog(Alert.AlertType.WARNING,"Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng", "");
-        } else {
-            try {
-                Connection conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-                PreparedStatement preparedStatement;
-                ResultSet rs;
-                do {
-                    int rand = ThreadLocalRandom.current().nextInt(100000, 999999);
-                    maHoatDong = String.valueOf(rand);
-                    PreparedStatement check = conn.prepareStatement("SELECT MaHoatDong From lichhoatdong WHERE `MaHoatDong` =?");
-                    check.setInt(1, rand);
-                    rs = check.executeQuery();
-                } while (rs.next());
+        } else if(!isValidTime(startTime) || !isValidTime(endTime)){
+            createDialog(Alert.AlertType.WARNING,"Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng hh:mm", "");
+        } else if(!greaterTime(startDateTime, startTime, endDateTime, endTime)){
+            createDialog(Alert.AlertType.WARNING,"Từ từ thôi đồng chí!", "Thời gian kết thúc phải lớn hơn thời gian bắt đầu!", "");
+        } else{
+                try {
+                    Connection conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+                    PreparedStatement preparedStatement;
+                    ResultSet rs;
+                    do {
+                        int rand = ThreadLocalRandom.current().nextInt(100000, 999999);
+                        maHoatDong = String.valueOf(rand);
+                        PreparedStatement check = conn.prepareStatement("SELECT MaHoatDong From lichhoatdong WHERE `MaHoatDong` =?");
+                        check.setInt(1, rand);
+                        rs = check.executeQuery();
+                    } while (rs.next());
 
-                String INSERT_QUERY = "INSERT INTO lichhoatdong VALUES(?,?,?,?,?,?,?)";
-                preparedStatement = conn.prepareStatement((INSERT_QUERY));
-                preparedStatement.setString(1, maHoatDong);
-                preparedStatement.setString(2, tenHoatDong);
-                preparedStatement.setString(3, starttime);
-                preparedStatement.setString(4, endtime);
-                preparedStatement.setString(5, status);
-                preparedStatement.setString(6, maNguoiTao);
-                preparedStatement.setString(7, thoiGianTao);
+                    String INSERT_QUERY = "INSERT INTO lichhoatdong VALUES(?,?,?,?,?,?,?)";
+                    preparedStatement = conn.prepareStatement((INSERT_QUERY));
+                    preparedStatement.setString(1, maHoatDong);
+                    preparedStatement.setString(2, tenHoatDong);
+                    preparedStatement.setString(3, starttime);
+                    preparedStatement.setString(4, endtime);
+                    preparedStatement.setString(5, status);
+                    preparedStatement.setString(6, maNguoiTao);
+                    preparedStatement.setString(7, thoiGianTao);
 
-                int result = preparedStatement.executeUpdate();
-                if (result == 1) {
-                    createDialog(
-                            Alert.AlertType.CONFIRMATION,
-                            "Thành công",
-                            "", "Đồng chí vất vả rồi!"
-                    );
-                } else {
-                    createDialog(
-                            Alert.AlertType.ERROR,
-                            "Thất bại",
-                            "", "Thất bại là mẹ thành công! Mong đồng chí thử lại"
-                    );
+                    int result = preparedStatement.executeUpdate();
+                    if (result == 1) {
+                        createDialog(
+                                Alert.AlertType.CONFIRMATION,
+                                "Thành công",
+                                "", "Đồng chí vất vả rồi!"
+                        );
+                    } else {
+                        createDialog(
+                                Alert.AlertType.ERROR,
+                                "Thất bại",
+                                "", "Thất bại là mẹ thành công! Mong đồng chí thử lại"
+                        );
+                    }
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            viewUtils.switchToLichHoatDong_Admin_view(event);
+                viewUtils.switchToLichHoatDong_Admin_view(event);
         }
     }
 
