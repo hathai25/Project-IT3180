@@ -10,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+
 import java.io.IOException;
 import java.sql.*;
 
@@ -38,10 +39,12 @@ public class add_shk_controller {
         diaChiTextField.setText(soHoKhau.getDiaChi());
         maHoKhauTextField.setText(String.valueOf(soHoKhau.getMaHoKhau()));
     }
+
     public void goBack(ActionEvent event) throws IOException {
         ViewUtils viewUtils = new ViewUtils();
         viewUtils.switchToSoHoKhau_Admin_view(event);
     }
+
     public void hide_add_btn() {
         add_btn.setVisible(false);
     }
@@ -50,10 +53,10 @@ public class add_shk_controller {
         update_btn.setVisible(false);
         add_btn.setTranslateX(100);
     }
+
     public void setTitle(String title) {
         this.title.setText(title);
     }
-
 
 
     public void addnew(ActionEvent event) throws IOException {
@@ -88,6 +91,8 @@ public class add_shk_controller {
                             "Thành công",
                             "", "Đồng chí vất cả rồi!"
                     );
+                    //          swtich to admin-sohokhau-view
+                    viewUtils.switchToSoHoKhau_Admin_view(event);
                 } else {
                     createDialog(
                             Alert.AlertType.ERROR,
@@ -99,8 +104,7 @@ public class add_shk_controller {
                 conn.close();
             } catch (SQLException e) {
             }
-//          swtich to admin-sohokhau-view
-            viewUtils.switchToSoHoKhau_Admin_view(event);
+
         }
     }
 

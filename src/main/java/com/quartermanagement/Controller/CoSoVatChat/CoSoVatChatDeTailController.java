@@ -99,6 +99,7 @@ public class CoSoVatChatDeTailController implements Initializable {
                             "Thành công",
                             "", "Đồng chí vất vả rồi!"
                     );
+                    viewUtils.switchToCoSoVatChat_Admin_view(event);
                 } else {
                     createDialog(
                             Alert.AlertType.ERROR,
@@ -110,7 +111,6 @@ public class CoSoVatChatDeTailController implements Initializable {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            viewUtils.switchToCoSoVatChat_Admin_view(event);
         }
     }
 

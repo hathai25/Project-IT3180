@@ -134,6 +134,8 @@ public class NhanKhauDetailViewController implements Initializable {
                             "Thành công",
                             "", "Đồng chí vất vả rồi!"
                     );
+                    //          swtich to admin-nhankhau-view
+                    viewUtils.switchToNhanKhau_Admin_view(event);
                 } else {
                     createDialog(
                             Alert.AlertType.ERROR,
@@ -146,8 +148,6 @@ public class NhanKhauDetailViewController implements Initializable {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-//          swtich to admin-nhankhau-view
-            viewUtils.switchToNhanKhau_Admin_view(event);
         }
     }
 
