@@ -14,8 +14,8 @@ import java.sql.*;
 import java.util.ResourceBundle;
 
 import static com.quartermanagement.Constants.DBConstants.*;
-import static com.quartermanagement.Utils.Utils.LOCAL_DATE;
-import static com.quartermanagement.Utils.Utils.createDialog;
+import static com.quartermanagement.Utils.Utils.*;
+import static com.quartermanagement.Utils.Utils.isCccd;
 
 public class NhanKhauDetailViewController implements Initializable {
     @FXML
@@ -103,54 +103,61 @@ public class NhanKhauDetailViewController implements Initializable {
                     "", "Vui lòng nhập đủ thông tin!")
             ;
         } else {
-            try {
-                Connection conn;
-                PreparedStatement preparedStatement;
-                String UPDATE_QUERY = "UPDATE `nhankhau` SET `HoTen`=?,`BiDanh`=?,`NgaySinh`=?,`CCCD`=?,`NoiSinh`=?," +
-                        "`GioiTinh`=?,`NguyenQuan`=?,`DanToc`=?,`NoiThuongTru`=?,`TonGiao`=?,`QuocTich`=?,`DiaChiHienNay`=?," +
-                        "`NgheNghiep`=?,`MaHoKhau`=? WHERE `CCCD`=?";
-                conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-                preparedStatement = conn.prepareStatement(UPDATE_QUERY);
-                preparedStatement.setString(1, hoVaTen);
-                preparedStatement.setString(2, biDanh);
-                preparedStatement.setString(3, ngaySinh);
-                preparedStatement.setString(4, cccd);
-                preparedStatement.setString(5, noiSinh);
-                preparedStatement.setString(6, gioiTinh);
-                preparedStatement.setString(7, nguyenQuan);
-                preparedStatement.setString(8, danToc);
-                preparedStatement.setString(9, noiThuongTru);
-                preparedStatement.setString(10, tonGiao);
-                preparedStatement.setString(11, quocTich);
-                preparedStatement.setString(12, diaChiHienNay);
-                preparedStatement.setString(13, ngheNghiep);
-                preparedStatement.setString(14, maHoKhau);
-                preparedStatement.setString(15, cccd);
-
-                int result = preparedStatement.executeUpdate();
-                if (result == 1) {
-                    createDialog(
-                            Alert.AlertType.CONFIRMATION,
-                            "Thành công",
-                            "", "Đồng chí vất vả rồi!"
-                    );
-                    //          swtich to admin-nhankhau-view
-                    viewUtils.switchToNhanKhau_Admin_view(event);
-                } else {
-                    createDialog(
-                            Alert.AlertType.ERROR,
-                            "Thất bại",
-                            "", "Oops, mời đồng chí nhập lại thông tin!"
-                    );
-                }
-
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+            //regex
+            if (isCccd(cccd)) {
+                createDialog(Alert.AlertType.WARNING, "Từ từ thôi đồng chí!", "Hãy nhập đúng định dạng CCCD", "");
             }
+            else {
+
+                try {
+                    Connection conn;
+                    PreparedStatement preparedStatement;
+                    String UPDATE_QUERY = "UPDATE `nhankhau` SET `HoTen`=?,`BiDanh`=?,`NgaySinh`=?,`CCCD`=?,`NoiSinh`=?," +
+                            "`GioiTinh`=?,`NguyenQuan`=?,`DanToc`=?,`NoiThuongTru`=?,`TonGiao`=?,`QuocTich`=?,`DiaChiHienNay`=?," +
+                            "`NgheNghiep`=?,`MaHoKhau`=? WHERE `CCCD`=?";
+                    conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+                    preparedStatement = conn.prepareStatement(UPDATE_QUERY);
+                    preparedStatement.setString(1, hoVaTen);
+                    preparedStatement.setString(2, biDanh);
+                    preparedStatement.setString(3, ngaySinh);
+                    preparedStatement.setString(4, cccd);
+                    preparedStatement.setString(5, noiSinh);
+                    preparedStatement.setString(6, gioiTinh);
+                    preparedStatement.setString(7, nguyenQuan);
+                    preparedStatement.setString(8, danToc);
+                    preparedStatement.setString(9, noiThuongTru);
+                    preparedStatement.setString(10, tonGiao);
+                    preparedStatement.setString(11, quocTich);
+                    preparedStatement.setString(12, diaChiHienNay);
+                    preparedStatement.setString(13, ngheNghiep);
+                    preparedStatement.setString(14, maHoKhau);
+                    preparedStatement.setString(15, cccd);
+
+                    int result = preparedStatement.executeUpdate();
+                    if (result == 1) {
+                        createDialog(
+                                Alert.AlertType.CONFIRMATION,
+                                "Thành công",
+                                "", "Đồng chí vất vả rồi!"
+                        );
+                        //          swtich to admin-nhankhau-view
+                viewUtils.switchToNhanKhau_Admin_view(event);
+                    } else {
+                        createDialog(
+                                Alert.AlertType.ERROR,
+                                "Thất bại",
+                                "", "Oops, mời đồng chí nhập lại thông tin!"
+                        );
+                    }
+
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
     }
-
     public void addnew(ActionEvent event) throws IOException {
         ViewUtils viewUtils = new ViewUtils();
         String hoVaTen = hoVaTenTextField.getText();
@@ -177,52 +184,56 @@ public class NhanKhauDetailViewController implements Initializable {
                     "", "Vui lòng nhập đủ thông tin!")
             ;
         } else {
-            try {
-                Connection conn;
-                PreparedStatement preparedStatement = null;
-                String INSERT_QUERY = "INSERT INTO nhankhau VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            //regex
+            if (isCccd(cccd)) {
+                createDialog(Alert.AlertType.WARNING, "Từ từ thôi đồng chí!", "Hãy nhập đúng định dạng CCCD", "");
+            } else {
+                try {
+                    Connection conn;
+                    PreparedStatement preparedStatement = null;
+                    String INSERT_QUERY = "INSERT INTO nhankhau VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-                conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-                preparedStatement = conn.prepareStatement(INSERT_QUERY);
-                preparedStatement.setString(1, hoVaTen);
-                preparedStatement.setString(2, biDanh);
-                preparedStatement.setString(3, ngaySinh);
-                preparedStatement.setString(4, cccd);
-                preparedStatement.setString(5, noiSinh);
-                preparedStatement.setString(6, gioiTinh);
-                preparedStatement.setString(7, nguyenQuan);
-                preparedStatement.setString(8, danToc);
-                preparedStatement.setString(9, noiThuongTru);
-                if(tonGiao == "") preparedStatement.setString(10, "Không");
-                else preparedStatement.setString(10, tonGiao);
-                if(quocTich == "") preparedStatement.setString(11, "Việt Nam");
-                else preparedStatement.setString(11, quocTich);
-                preparedStatement.setString(12, diaChiHienNay);
-                preparedStatement.setString(13, ngheNghiep);
-                preparedStatement.setString(14, maHoKhau);
-                int result = preparedStatement.executeUpdate();
-                if (result == 1) {
-                    createDialog(
-                            Alert.AlertType.CONFIRMATION,
-                            "Thành công",
-                            "", "Đồng chí vất cả rồi!"
-                    );
-                } else {
-                    createDialog(
-                            Alert.AlertType.ERROR,
-                            "Thất bại",
-                            "", "Oops, mời đồng chí nhập lại thông tin!"
-                    );
+                    conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+                    preparedStatement = conn.prepareStatement(INSERT_QUERY);
+                    preparedStatement.setString(1, hoVaTen);
+                    preparedStatement.setString(2, biDanh);
+                    preparedStatement.setString(3, ngaySinh);
+                    preparedStatement.setString(4, cccd);
+                    preparedStatement.setString(5, noiSinh);
+                    preparedStatement.setString(6, gioiTinh);
+                    preparedStatement.setString(7, nguyenQuan);
+                    preparedStatement.setString(8, danToc);
+                    preparedStatement.setString(9, noiThuongTru);
+                    if (tonGiao == "") preparedStatement.setString(10, "Không");
+                    else preparedStatement.setString(10, tonGiao);
+                    if (quocTich == "") preparedStatement.setString(11, "Việt Nam");
+                    else preparedStatement.setString(11, quocTich);
+                    preparedStatement.setString(12, diaChiHienNay);
+                    preparedStatement.setString(13, ngheNghiep);
+                    preparedStatement.setString(14, maHoKhau);
+                    int result = preparedStatement.executeUpdate();
+                    if (result == 1) {
+                        createDialog(
+                                Alert.AlertType.CONFIRMATION,
+                                "Thành công",
+                                "", "Đồng chí vất cả rồi!"
+                        );
+                    } else {
+                        createDialog(
+                                Alert.AlertType.ERROR,
+                                "Thất bại",
+                                "", "Oops, mời đồng chí nhập lại thông tin!"
+                        );
+                    }
+
+                    conn.close();
+                } catch (SQLException e) {
                 }
-
-                conn.close();
-            } catch (SQLException e) {
-            }
 //          swtich to admin-nhankhau-view
-            viewUtils.switchToNhanKhau_Admin_view(event);
+                viewUtils.switchToNhanKhau_Admin_view(event);
+            }
         }
     }
-
     public void hide_add_btn() {
         add_btn.setVisible(false);
     }

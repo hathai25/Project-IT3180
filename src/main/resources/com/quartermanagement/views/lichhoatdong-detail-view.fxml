@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="710.0" style="-fx-background-color: transparent;" stylesheets="@../styles/nhankhau-detail.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quartermanagement.Controller.LichHoatDong.LichHoatDongDetailController">
+<AnchorPane prefHeight="600.0" prefWidth="710.0" style="-fx-background-color: transparent;" stylesheets="@../styles/lichhoatdong-detail.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quartermanagement.Controller.LichHoatDong.LichHoatDongDetailController">
     <children>
         <!-- Title -->
         <Text fx:id="title" layoutX="228.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thêm lịch hoạt động mới" textAlignment="CENTER" wrappingWidth="235.31402587890625">
@@ -72,7 +72,7 @@
             </TextField>
          </children>
       </Pane>
-      <Text fx:id="maNguoiTaoText" layoutX="34.0" layoutY="343.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã người tạo" wrappingWidth="167.5140380859375">
+      <Text layoutX="34.0" layoutY="343.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã người tạo" wrappingWidth="167.5140380859375">
          <font>
             <Font name="Segoe UI" size="18.0" />
          </font>
@@ -84,26 +84,26 @@
       </TextField>
       <Pane fx:id="statusPane" layoutX="27.0" layoutY="362.0" prefHeight="60.0" prefWidth="656.0">
          <children>
-            <Text fx:id="statusText" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Trạng thái" wrappingWidth="167.5140380859375">
+            <Text layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Trạng thái" wrappingWidth="167.5140380859375">
                <font>
                   <Font name="Segoe UI" size="18.0" />
                </font>
             </Text>
-            <ChoiceBox fx:id="statusChoiceBox" layoutX="205.0" layoutY="17.0" prefHeight="25.0" prefWidth="315.0" />
+            <ChoiceBox fx:id="statusChoiceBox" layoutX="205.0" layoutY="17.0" prefHeight="25.0" prefWidth="315.0" style="-fx-border-color: #3f4d67; -fx-border-radius: 10px; -fx-background-color: transparent;" />
          </children>
       </Pane>
-      <DatePicker fx:id="startDatePicker" layoutX="233.0" layoutY="218.0" prefHeight="25.0" prefWidth="205.0" style="-fx-border-radius: 10px;" />
-      <TextField fx:id="startTimeTextField" layoutX="454.0" layoutY="218.0" prefHeight="25.0" prefWidth="205.0" promptText="hh:mm:ss" style="-fx-border-radius: 10px; -fx-border-color: #3f4d67; -fx-background-color: transparent;">
+      <DatePicker fx:id="startDatePicker" layoutX="233.0" layoutY="218.0" prefHeight="25.0" prefWidth="205.0" />
+      <TextField fx:id="startTimeTextField" layoutX="454.0" layoutY="218.0" prefHeight="25.0" prefWidth="205.0" promptText="hh:mm" style="-fx-border-radius: 10px; -fx-border-color: #3f4d67; -fx-background-color: transparent;">
+         <font>
+            <Font name="Segoe UI Italic" size="14.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="endTimeTextField" layoutX="454.0" layoutY="270.0" prefHeight="25.0" prefWidth="205.0" promptText="hh:mm" style="-fx-border-radius: 10px; -fx-border-color: #3f4d67; -fx-background-color: transparent;">
          <font>
             <Font name="Segoe UI Italic" size="14.0" />
          </font>
       </TextField>
       <DatePicker fx:id="endDatePicker" layoutX="233.0" layoutY="272.0" prefHeight="25.0" prefWidth="205.0" />
-      <TextField fx:id="endTimeTextField" layoutX="454.0" layoutY="270.0" prefHeight="25.0" prefWidth="205.0" promptText="hh:mm:ss" style="-fx-border-radius: 10px; -fx-border-color: #3f4d67; -fx-background-color: transparent;">
-         <font>
-            <Font name="Segoe UI Italic" size="14.0" />
-         </font>
-      </TextField>
 
     </children>
 </AnchorPane>
