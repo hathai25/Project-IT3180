@@ -41,8 +41,8 @@ public class NhanKhauController implements Initializable {
     @FXML
     private TableColumn<NhanKhau, String> hoVaTenColumn, biDanhColumn, ngaySinhColumn, cccdColumn, noiSinhColumn, gioiTinhColumn,
             nguyenQuanColumn, danTocColumn, noiThuongTruColumn, tonGiaoColumn, quocTichColumn, diaChiHienNayColumn, ngheNghiepColumn;
-    @FXML
-    private TableColumn<NhanKhau, Integer> maHoKhauColumn;
+//    @FXML
+//    private TableColumn<NhanKhau, Integer> idColumn;
     @FXML
     private Pagination pagination;
 
@@ -55,16 +55,18 @@ public class NhanKhauController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         try {
             // Connecting Database
-            String SELECT_QUERY = "SELECT * FROM nhankhau";
+            String SELECT_QUERY = "SELECT nhankhau.*, cccd.CCCD\n" +
+                                  "FROM nhankhau, cccd\n" +
+                                  "WHERE nhankhau.ID = cccd.idNhankhau";
             conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
             preparedStatement = conn.prepareStatement(SELECT_QUERY);
             ResultSet result = preparedStatement.executeQuery();
             while (result.next()) {
-                nhanKhauList.add(new NhanKhau(result.getString("HoTen"), result.getString("BiDanh"),
+                nhanKhauList.add(new NhanKhau(result.getInt("ID"),result.getString("HoTen"), result.getString("BiDanh"),
                         convertDate(result.getString("NgaySinh")), result.getString("CCCD"), result.getString("NoiSinh"),
                         result.getString("GioiTinh"), result.getString("NguyenQuan"), result.getString("DanToc"),
                         result.getString("NoiThuongTru"), result.getString("TonGiao"), result.getString("QuocTich"),
-                        result.getString("DiaChiHienNay"), result.getString("NgheNghiep"), result.getInt("MaHoKhau")
+                        result.getString("DiaChiHienNay"), result.getString("NgheNghiep")
                 ));
             }
         } catch (SQLException e) {
@@ -106,10 +108,19 @@ public class NhanKhauController implements Initializable {
                 if (type == okButton) {
                     // Delete in Database
                     try {
-                        String DELETE_QUERY = "DELETE FROM nhankhau WHERE `CCCD`= ?";
+                        String DELETE_QUERY =   "DELETE FROM cccd " +
+                                                "WHERE `idNhankhau` =?";
+
                         conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
                         preparedStatement = conn.prepareStatement(DELETE_QUERY);
-                        preparedStatement.setString(1, selected.getCCCD());
+                        preparedStatement.setInt(1, selected.getID());
+
+                        PreparedStatement preparedStatement1 = null;
+                        DELETE_QUERY =
+                                "DELETE FROM nhankhau " +
+                                        "WHERE `ID` =?";
+                        preparedStatement1 = conn.prepareStatement(DELETE_QUERY);
+                        preparedStatement1.setInt(1, selected.getID());
                         int result = preparedStatement.executeUpdate();
                         if (result == 1) createDialog(Alert.AlertType.INFORMATION, "Thông báo", "Xóa thành công!", "");
                         else createDialog(Alert.AlertType.WARNING, "Thông báo", "Có lỗi, thử lại sau!", "");
@@ -139,6 +150,7 @@ public class NhanKhauController implements Initializable {
             createDialog(Alert.AlertType.WARNING, "Từ từ đã đồng chí", "", "Vui lòng chọn một nhân khẩu");
         else {
             controller.setNhanKhau(selected);
+            controller.setID(selected.getID());
             controller.hide_add_btn();
             controller.setTitle("Cập nhật nhân khẩu mới");
             stage.setScene(scene);
@@ -167,6 +179,7 @@ public class NhanKhauController implements Initializable {
             }
         });
         indexColumn.setSortable(false);
+//        idColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, Integer>("ID"));
         hoVaTenColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("HoTen"));
         biDanhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("BiDanh"));
         ngaySinhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NgaySinh"));
@@ -180,7 +193,6 @@ public class NhanKhauController implements Initializable {
         quocTichColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("QuocTich"));
         diaChiHienNayColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("DiaChiHienNay"));
         ngheNghiepColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NgheNghiep"));
-        maHoKhauColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, Integer>("MaHoKhau"));
         int lastIndex = 0;
         int displace = nhanKhauList.size() % ROWS_PER_PAGE;
         if (displace > 0) {

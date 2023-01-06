@@ -1,18 +1,18 @@
 package com.quartermanagement.Model;
 
 public class NhanKhau {
-    private int MaHoKhau;
     private String HoTen, BiDanh, NgaySinh, CCCD, NoiSinh,
             GioiTinh, NguyenQuan, DanToc, NoiThuongTru, TonGiao, QuocTich, DiaChiHienNay, NgheNghiep;
 
+    private  int ID;
     // constructor
     public NhanKhau(){
     }
 
-    public NhanKhau(String hoTen, String biDanh, String ngaySinh, String CCCD,
+    public NhanKhau(Integer id,String hoTen, String biDanh, String ngaySinh, String CCCD,
                     String noiSinh, String gioiTinh, String nguyenQuan, String danToc, String noiThuongTru,
-                    String tonGiao, String quocTich, String diaChiHienNay, String ngheNghiep, int maHoKhau) {
-        MaHoKhau = maHoKhau;
+                    String tonGiao, String quocTich, String diaChiHienNay, String ngheNghiep) {
+        ID = id;
         HoTen = hoTen;
         BiDanh = biDanh;
         NgaySinh = ngaySinh;
@@ -30,13 +30,6 @@ public class NhanKhau {
 
     // Getter and setter
 
-    public int getMaHoKhau() {
-        return MaHoKhau;
-    }
-
-    public void setMaHoKhau(int maHoKhau) {
-        MaHoKhau = maHoKhau;
-    }
 
     public String getHoTen() {
         return HoTen;
@@ -140,5 +133,12 @@ public class NhanKhau {
 
     public void setNgheNghiep(String ngheNghiep) {
         NgheNghiep = ngheNghiep;
+    }
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 }

@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="basePane" prefHeight="600.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quartermanagement.Controller.NhanKhau.NhanKhauController">
+<AnchorPane fx:id="basePane" prefHeight="600.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quartermanagement.Controller.NhanKhau.NhanKhauController">
    <children>
       <Pagination fx:id="pagination" layoutX="37.0" layoutY="138.0" maxPageIndicatorCount="5" prefHeight="448.0" prefWidth="634.0" />
       <TableView fx:id="tableView" layoutX="38.0" layoutY="138.0" prefHeight="350.0" prefWidth="634.0" stylesheets="@../styles/table.css">
@@ -28,7 +28,6 @@
             <TableColumn fx:id="quocTichColumn" prefWidth="88.80001220703127" text="Quốc tịch" />
             <TableColumn fx:id="diaChiHienNayColumn" prefWidth="88.80001220703127" text="Địa chỉ hiện nay" />
             <TableColumn fx:id="ngheNghiepColumn" prefWidth="88.80001220703127" text="Nghề nghiệp" />
-            <TableColumn fx:id="maHoKhauColumn" prefWidth="88.80001220703127" text="Mã hộ khẩu" />
          </columns>
       </TableView>
       <Text layoutX="41.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nhân khẩu" textAlignment="CENTER" wrappingWidth="98.9140625">
