@@ -82,5 +82,8 @@ public class Utils {
         Matcher m = p.matcher(cccd);
         return !m.matches();
     }
+    public static String toUpperFirstLetter(String text) {
+        return text.substring(0, 1).toUpperCase() + text.substring(1);
+    }
 }
 
