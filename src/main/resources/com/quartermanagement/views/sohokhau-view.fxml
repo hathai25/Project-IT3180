@@ -11,7 +11,7 @@
 
 <AnchorPane fx:id="basePane" prefHeight="600.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quartermanagement.Controller.SoHoKhau.SoHoKhauController">
     <children>
-        <TableView fx:id="tableView" layoutX="38.0" layoutY="125.0" prefHeight="414.0" prefWidth="633.0" stylesheets="@../styles/table.css">
+        <TableView fx:id="tableView" layoutX="38.0" layoutY="125.0" prefHeight="414.0" prefWidth="613.0" stylesheets="@../styles/table.css">
             <columns>
                 <TableColumn fx:id="indexColumn" prefWidth="41.599971771240234" text="#" />
                 <TableColumn fx:id="maHoKhauColumn" prefWidth="136.0" text="Mã hộ khẩu" />
@@ -44,6 +44,6 @@
                 <Font name="Segoe UI" size="14.0" />
             </font>
         </Button>
-        <Pagination layoutX="235.0" layoutY="539.0" prefHeight="60.0" prefWidth="238.0" />
+        <Pagination fx:id="pagination" layoutX="38.0" layoutY="125.0" prefHeight="478.0" prefWidth="634.0" />
     </children>
 </AnchorPane>

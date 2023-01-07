@@ -36,6 +36,8 @@ public class SoHoKhauController implements Initializable {
     private TableColumn<SoHoKhau, String> diaChiColumn;
     @FXML
     private TableColumn<SoHoKhau, Integer> maHoKhauColumn;
+    @FXML
+    private Pagination pagination;
 
     private ObservableList<SoHoKhau> SoHoKhauList = FXCollections.observableArrayList();
     // Connect to database
@@ -44,32 +46,7 @@ public class SoHoKhauController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        indexColumn.setCellValueFactory((Callback<TableColumn.CellDataFeatures<SoHoKhau, SoHoKhau>, ObservableValue<SoHoKhau>>) p -> new ReadOnlyObjectWrapper(p.getValue()));
 
-        indexColumn.setCellFactory(new Callback<TableColumn<SoHoKhau, SoHoKhau>, TableCell<SoHoKhau, SoHoKhau>>() {
-            @Override
-            public TableCell<SoHoKhau, SoHoKhau> call(TableColumn<SoHoKhau, SoHoKhau> param) {
-                return new TableCell<SoHoKhau, SoHoKhau>() {
-                    @Override
-                    protected void updateItem(SoHoKhau item, boolean empty) {
-                        super.updateItem(item, empty);
-
-                        if (this.getTableRow() != null && item != null) {
-                            setText(this.getTableRow().getIndex() + 1 + "");
-                        } else {
-                            setText("");
-                        }
-                    }
-                };
-            }
-        });
-        indexColumn.setSortable(false);
-
-        maChuHoColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, String>("MaChuHo"));
-
-        diaChiColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, String>("DiaChi"));
-
-        maHoKhauColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, Integer>("MaHoKhau"));
         try {
             // Connecting Database
             String SELECT_QUERY = "SELECT * FROM sohokhau";
@@ -87,6 +64,13 @@ public class SoHoKhauController implements Initializable {
             tableView.setItems(SoHoKhauList);
         } catch (SQLException e) {
         }
+
+        int soDu = SoHoKhauList.size() % ROWS_PER_PAGE;
+        if (soDu != 0) pagination.setPageCount(SoHoKhauList.size() / ROWS_PER_PAGE + 1);
+        else pagination.setPageCount(SoHoKhauList.size() / ROWS_PER_PAGE);
+        pagination.setMaxPageIndicatorCount(5);
+        pagination.setPageFactory(this::createTableView);
+
     }
 
 
@@ -151,7 +135,55 @@ public class SoHoKhauController implements Initializable {
             stage.setScene(scene);
         }
     }
+
+    public Node createTableView(int pageIndex) {
+        indexColumn.setCellValueFactory((Callback<TableColumn.CellDataFeatures<SoHoKhau, SoHoKhau>, ObservableValue<SoHoKhau>>) p -> new ReadOnlyObjectWrapper(p.getValue()));
+
+        indexColumn.setCellFactory(new Callback<TableColumn<SoHoKhau, SoHoKhau>, TableCell<SoHoKhau, SoHoKhau>>() {
+            @Override
+            public TableCell<SoHoKhau, SoHoKhau> call(TableColumn<SoHoKhau, SoHoKhau> param) {
+                return new TableCell<SoHoKhau, SoHoKhau>() {
+                    @Override
+                    protected void updateItem(SoHoKhau item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (this.getTableRow() != null && item != null) {
+                            setText(this.getTableRow().getIndex() + 1 + "");
+                        } else {
+                            setText("");
+                        }
+                    }
+                };
+            }
+        });
+        indexColumn.setSortable(false);
+
+        maChuHoColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, String>("MaChuHo"));
+
+        diaChiColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, String>("DiaChi"));
+
+        maHoKhauColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, Integer>("MaHoKhau"));
+
+        int lastIndex = 0;
+        int displace = SoHoKhauList.size() % ROWS_PER_PAGE;
+        if (displace > 0) {
+            lastIndex = SoHoKhauList.size() / ROWS_PER_PAGE;
+        } else {
+            lastIndex = SoHoKhauList.size() / ROWS_PER_PAGE - 1;
+        }
+        if (lastIndex == pageIndex && displace > 0) {
+            tableView.setItems(FXCollections.observableArrayList(SoHoKhauList.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + displace)));
+        } else {
+            tableView.setItems(FXCollections.observableArrayList(SoHoKhauList.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + ROWS_PER_PAGE)));
+        }
+        return tableView;
+
+    }
+
 }
+
+
+
     /*
     public void add(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
