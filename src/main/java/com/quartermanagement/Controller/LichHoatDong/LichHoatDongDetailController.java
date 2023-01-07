@@ -23,21 +23,19 @@ import static com.quartermanagement.Controller.AdminController.userRole;
 
 public class LichHoatDongDetailController implements Initializable {
     @FXML
-    private Button add_btn;
+    private Button add_btn, update_btn;
     @FXML
     private TextField endTimeTextField, startTimeTextField, maHoatDongTextField, tenHoatDongTextField, maNguoiTaoTextField;
     @FXML
     private DatePicker startDatePicker, endDatePicker;
     @FXML
-    private Pane maHoatDongPane;
-    @FXML
     private ChoiceBox<String> statusChoiceBox;
+    @FXML
+    private Pane maHoatDongPane;
     @FXML
     private Pane statusPane;
     @FXML
     private Text title;
-    @FXML
-    private Button update_btn;
 
     public void setLichHoatDong(LichHoatDong lichHoatDong) {
         maHoatDongTextField.setText(String.valueOf(lichHoatDong.getMaHoatDong()));
@@ -171,8 +169,8 @@ public class LichHoatDongDetailController implements Initializable {
                     preparedStatement.setString(3, starttime);
                     preparedStatement.setString(4, endtime);
                     preparedStatement.setString(5, status);
-                    preparedStatement.setString(6, maNguoiTao);
-                    preparedStatement.setString(7, thoiGianTao);
+                    preparedStatement.setString(6, thoiGianTao);
+                    preparedStatement.setString(7, maNguoiTao);
 
                     int result = preparedStatement.executeUpdate();
                     if (result == 1) {

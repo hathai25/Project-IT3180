@@ -5,33 +5,39 @@ public class LichHoatDong {
     private String tenHoatDong;
     private String startTime;
     private String endTime;
+
     private String status;
-    private String maNguoiTao;
+    private String madeTime;
 
-    public String getThoiGianTao() {
-        return thoiGianTao;
+    private int maNguoiTao;
+
+    public LichHoatDong(){}
+
+    public LichHoatDong(int maHoatDong, String tenHoatDong, String startTime, String endTime, String status,
+    String madeTime, int maNguoiTao) {
+        this.maHoatDong = maHoatDong;
+        this.tenHoatDong = tenHoatDong;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.status = status;
+        this.madeTime = madeTime;
+        this.maNguoiTao = maNguoiTao;
     }
-
-    public void setThoiGianTao(String thoiGianTao) {
-        this.thoiGianTao = thoiGianTao;
-    }
-
-    private String thoiGianTao;
 
     public int getMaHoatDong() {
         return maHoatDong;
     }
 
-    public void setMaHoatDong(int mahoatdong) {
-        this.maHoatDong = mahoatdong;
+    public void setMaHoatDong(int maHoatDong) {
+        this.maHoatDong = maHoatDong;
     }
 
     public String getTenHoatDong() {
         return tenHoatDong;
     }
 
-    public void setTenHoatDong(String tenhoatdong) {
-        this.tenHoatDong = tenhoatdong;
+    public void setTenHoatDong(String tenHoatDong) {
+        this.tenHoatDong = tenHoatDong;
     }
 
     public String getStartTime() {
@@ -58,23 +64,19 @@ public class LichHoatDong {
         this.status = status;
     }
 
-    public String getMaNguoiTao() {
+    public String getMadeTime() {
+        return madeTime;
+    }
+
+    public void setMadeTime(String madeTime) {
+        this.madeTime = madeTime;
+    }
+
+    public int getMaNguoiTao() {
         return maNguoiTao;
     }
 
-    public void setMaNguoiTao(String maNguoiTao) {
+    public void setMaNguoiTao(int maNguoiTao) {
         this.maNguoiTao = maNguoiTao;
     }
-
-    public LichHoatDong(int mahoatdong, String tenhoatdong, String startTime, String endTime, String status, String maNguoiTao, String thoiGianTao){
-        this.maHoatDong = mahoatdong;
-        this.tenHoatDong = tenhoatdong;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.status = status;
-        this.maNguoiTao = maNguoiTao;
-        this.thoiGianTao = thoiGianTao;
-    }
-
-    public LichHoatDong(){};
 }
