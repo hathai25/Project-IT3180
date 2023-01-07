@@ -1,6 +1,7 @@
 package com.quartermanagement.Controller.LichHoatDong;
 
 import com.quartermanagement.Model.LichHoatDong;
+import com.quartermanagement.Model.NhanKhau;
 import com.quartermanagement.Utils.ViewUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,11 +26,11 @@ public class LichHoatDongDetailController implements Initializable {
     @FXML
     private Button add_btn, update_btn;
     @FXML
-    private TextField endTimeTextField, startTimeTextField, maHoatDongTextField, tenHoatDongTextField, maNguoiTaoTextField;
+    private TextField endTimeTextField, startTimeTextField, maHoatDongTextField, tenHoatDongTextField;
     @FXML
     private DatePicker startDatePicker, endDatePicker;
     @FXML
-    private ChoiceBox<String> statusChoiceBox;
+    private ChoiceBox<String> statusChoiceBox, maNguoiTaoChoiceBox;
     @FXML
     private Pane maHoatDongPane;
     @FXML
@@ -49,7 +50,7 @@ public class LichHoatDongDetailController implements Initializable {
         endDatePicker.setValue(LOCAL_DATE(endtime[1]));
         endTimeTextField.setText(endtime[0]);
         statusChoiceBox.setValue(String.valueOf(lichHoatDong.getStatus()));
-        maNguoiTaoTextField.setText(String.valueOf(lichHoatDong.getMaNguoiTao()));
+        maNguoiTaoChoiceBox.setValue(String.valueOf(lichHoatDong.getMaNguoiTao()));
     }
 
     public void goBack (ActionEvent event) throws IOException {
@@ -68,7 +69,7 @@ public class LichHoatDongDetailController implements Initializable {
         String endTime = endTimeTextField.getText();
         String endtime = endDateTime + " " + endTime;
         String status = statusChoiceBox.getValue();
-        String maNguoiTao = maNguoiTaoTextField.getText();
+        String maNguoiTao = maNguoiTaoChoiceBox.getValue();
 
 
         if (maHoatDong.trim().equals("") || tenHoatDong.trim().equals("") || startTime.trim().equals("") || endTime.trim().equals("") || maNguoiTao.trim().equals("")
@@ -133,7 +134,7 @@ public class LichHoatDongDetailController implements Initializable {
         String endTime = endTimeTextField.getText();
         String endtime = endDateTime + " " + endTime;
         String status = "Chưa duyệt";
-        String maNguoiTao = maNguoiTaoTextField.getText();
+        String maNguoiTao = maNguoiTaoChoiceBox.getValue();
         LocalDateTime currentTime = LocalDateTime.now();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String thoiGianTao = dtf.format(currentTime);
@@ -220,7 +221,23 @@ public class LichHoatDongDetailController implements Initializable {
         statusChoiceBox.getItems().add("Từ chối");
         statusChoiceBox.setValue("Chưa duyệt");
         statusPane.setVisible(userRole.equals("totruong"));
+
+        try {
+            Connection conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+            PreparedStatement preparedStatement;
+            // Connecting Database
+            String SELECT_QUERY = "SELECT `ID` FROM nhankhau";
+            preparedStatement = conn.prepareStatement(SELECT_QUERY);
+            ResultSet result = preparedStatement.executeQuery();
+            while (result.next()) {
+                maNguoiTaoChoiceBox.getItems().add(result.getString("ID"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
+
 
 
 }
