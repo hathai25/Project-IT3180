@@ -66,7 +66,8 @@ public class add_shk_controller {
         String diaChi = diaChiTextField.getText();
         String maHoKhau = maHoKhauTextField.getText();
 
-        if (maChuHo.trim().equals("") || diaChi.trim().equals("") || maHoKhau.trim().equals("")) {
+        if (maChuHo.trim().equals("") || diaChi.trim().equals("") || maHoKhau
+                .trim().equals("")) {
 
             createDialog(
                     Alert.AlertType.WARNING,
@@ -77,14 +78,23 @@ public class add_shk_controller {
             try {
                 Connection conn;
                 PreparedStatement preparedStatement = null;
-                String INSERT_QUERY = "INSERT INTO sohokhau VALUES(?,?,?)";
+                String INSERT_QUERY = "INSERT INTO `sohokhau`(`MaHoKhau`, `DiaChi`, `MaChuHo`) VALUES (?,?,?)";
+
+
+                System.out.println(maHoKhau+diaChi+maChuHo);
 
                 conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
                 preparedStatement = conn.prepareStatement(INSERT_QUERY);
                 preparedStatement.setString(1, maHoKhau);
                 preparedStatement.setString(2, diaChi);
                 preparedStatement.setString(3, maChuHo);
+
+                System.out.println("thuc hien thanh cong 1");
+                System.out.println(preparedStatement);
                 int result = preparedStatement.executeUpdate();
+
+                System.out.println("thuc hien thanh cong");
+
                 if (result == 1) {
                     createDialog(
                             Alert.AlertType.CONFIRMATION,
