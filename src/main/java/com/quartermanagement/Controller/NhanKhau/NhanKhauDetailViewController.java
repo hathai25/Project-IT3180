@@ -169,6 +169,7 @@ public class NhanKhauDetailViewController implements Initializable {
         }
 
     }
+
     public void addnew(ActionEvent event) throws IOException {
         ViewUtils viewUtils = new ViewUtils();
         if(ngaySinhDatePicker.getValue() == null)  createDialog(
@@ -225,7 +226,7 @@ public class NhanKhauDetailViewController implements Initializable {
                         else preparedStatement.setString(10, quocTich);
                         preparedStatement.setString(11, diaChiHienNay);
                         preparedStatement.setString(12, ngheNghiep);
-                        preparedStatement.execute();
+                        int result = preparedStatement.executeUpdate();
 
                         //Find to id
                         PreparedStatement preparedStatement1 = null;
@@ -242,11 +243,6 @@ public class NhanKhauDetailViewController implements Initializable {
                         preparedStatement2 = conn.prepareStatement(INSERT_QUERY2);
                         preparedStatement2.setInt(1, ID);
                         preparedStatement2.setString(2, cccd);
-                        preparedStatement2.execute();
-
-
-
-                        int result = preparedStatement.executeUpdate();
                         int result2 = preparedStatement2.executeUpdate();
                         if (result == 1 && result2 == 1) {
                             createDialog(

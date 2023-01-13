@@ -108,21 +108,22 @@ public class NhanKhauController implements Initializable {
                 if (type == okButton) {
                     // Delete in Database
                     try {
+                        int ID = selected.getID();
                         String DELETE_QUERY =   "DELETE FROM cccd " +
-                                                "WHERE `idNhankhau` =?";
-
-                        conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-                        preparedStatement = conn.prepareStatement(DELETE_QUERY);
-                        preparedStatement.setInt(1, selected.getID());
-
+                                "WHERE idNhankhau =?";
                         PreparedStatement preparedStatement1 = null;
+                        conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+                        preparedStatement1 = conn.prepareStatement(DELETE_QUERY);
+                        preparedStatement1.setInt(1, ID);
+                        int result1 = preparedStatement1.executeUpdate();
+                        PreparedStatement preparedStatement2 = null;
                         DELETE_QUERY =
                                 "DELETE FROM nhankhau " +
-                                        "WHERE `ID` =?";
-                        preparedStatement1 = conn.prepareStatement(DELETE_QUERY);
-                        preparedStatement1.setInt(1, selected.getID());
-                        int result = preparedStatement.executeUpdate();
-                        if (result == 1) createDialog(Alert.AlertType.INFORMATION, "Thông báo", "Xóa thành công!", "");
+                                        "WHERE ID =?";
+                        preparedStatement2 = conn.prepareStatement(DELETE_QUERY);
+                        preparedStatement2.setInt(1, ID);
+                        int result2 = preparedStatement2.executeUpdate();
+                        if (result1 == 1 && result2 == 1) createDialog(Alert.AlertType.INFORMATION, "Thông báo", "Xóa thành công!", "");
                         else createDialog(Alert.AlertType.WARNING, "Thông báo", "Có lỗi, thử lại sau!", "");
                         ViewUtils viewUtils = new ViewUtils();
                         viewUtils.changeAnchorPane(basePane, NHAN_KHAU_VIEW_FXML);
