@@ -1,6 +1,7 @@
 package com.quartermanagement.Controller.LichHoatDong;
 
 import com.quartermanagement.Model.LichHoatDong;
+import com.quartermanagement.Model.NhanKhau;
 import com.quartermanagement.Utils.ViewUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,21 +24,19 @@ import static com.quartermanagement.Controller.AdminController.userRole;
 
 public class LichHoatDongDetailController implements Initializable {
     @FXML
-    private Button add_btn;
+    private Button add_btn, update_btn;
     @FXML
-    private TextField endTimeTextField, startTimeTextField, maHoatDongTextField, tenHoatDongTextField, maNguoiTaoTextField;
+    private TextField endTimeTextField, startTimeTextField, maHoatDongTextField, tenHoatDongTextField;
     @FXML
     private DatePicker startDatePicker, endDatePicker;
     @FXML
-    private Pane maHoatDongPane;
+    private ChoiceBox<String> statusChoiceBox, maNguoiTaoChoiceBox;
     @FXML
-    private ChoiceBox<String> statusChoiceBox;
+    private Pane maHoatDongPane;
     @FXML
     private Pane statusPane;
     @FXML
     private Text title;
-    @FXML
-    private Button update_btn;
 
     public void setLichHoatDong(LichHoatDong lichHoatDong) {
         maHoatDongTextField.setText(String.valueOf(lichHoatDong.getMaHoatDong()));
@@ -51,7 +50,7 @@ public class LichHoatDongDetailController implements Initializable {
         endDatePicker.setValue(LOCAL_DATE(endtime[1]));
         endTimeTextField.setText(endtime[0]);
         statusChoiceBox.setValue(String.valueOf(lichHoatDong.getStatus()));
-        maNguoiTaoTextField.setText(String.valueOf(lichHoatDong.getMaNguoiTao()));
+        maNguoiTaoChoiceBox.setValue(String.valueOf(lichHoatDong.getMaNguoiTao()));
     }
 
     public void goBack (ActionEvent event) throws IOException {
@@ -70,7 +69,7 @@ public class LichHoatDongDetailController implements Initializable {
         String endTime = endTimeTextField.getText();
         String endtime = endDateTime + " " + endTime;
         String status = statusChoiceBox.getValue();
-        String maNguoiTao = maNguoiTaoTextField.getText();
+        String maNguoiTao = maNguoiTaoChoiceBox.getValue();
 
 
         if (maHoatDong.trim().equals("") || tenHoatDong.trim().equals("") || startTime.trim().equals("") || endTime.trim().equals("") || maNguoiTao.trim().equals("")
@@ -135,7 +134,7 @@ public class LichHoatDongDetailController implements Initializable {
         String endTime = endTimeTextField.getText();
         String endtime = endDateTime + " " + endTime;
         String status = "Chưa duyệt";
-        String maNguoiTao = maNguoiTaoTextField.getText();
+        String maNguoiTao = maNguoiTaoChoiceBox.getValue();
         LocalDateTime currentTime = LocalDateTime.now();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String thoiGianTao = dtf.format(currentTime);
@@ -171,8 +170,8 @@ public class LichHoatDongDetailController implements Initializable {
                     preparedStatement.setString(3, starttime);
                     preparedStatement.setString(4, endtime);
                     preparedStatement.setString(5, status);
-                    preparedStatement.setString(6, maNguoiTao);
-                    preparedStatement.setString(7, thoiGianTao);
+                    preparedStatement.setString(6, thoiGianTao);
+                    preparedStatement.setString(7, maNguoiTao);
 
                     int result = preparedStatement.executeUpdate();
                     if (result == 1) {
@@ -222,7 +221,23 @@ public class LichHoatDongDetailController implements Initializable {
         statusChoiceBox.getItems().add("Từ chối");
         statusChoiceBox.setValue("Chưa duyệt");
         statusPane.setVisible(userRole.equals("totruong"));
+
+        try {
+            Connection conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+            PreparedStatement preparedStatement;
+            // Connecting Database
+            String SELECT_QUERY = "SELECT `ID` FROM nhankhau";
+            preparedStatement = conn.prepareStatement(SELECT_QUERY);
+            ResultSet result = preparedStatement.executeQuery();
+            while (result.next()) {
+                maNguoiTaoChoiceBox.getItems().add(result.getString("ID"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
+
 
 
 }
