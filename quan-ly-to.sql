@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 06, 2023 lúc 08:28 AM
+-- Thời gian đã tạo: Th1 07, 2023 lúc 06:15 AM
 -- Phiên bản máy phục vụ: 10.4.25-MariaDB
 -- Phiên bản PHP: 8.1.10
 
@@ -206,13 +206,28 @@ INSERT INTO `nhankhau` (`ID`, `HoTen`, `BiDanh`, `NgaySinh`, `NoiSinh`, `GioiTin
 
 CREATE TABLE `sohokhau` (
   `ID` int(11) NOT NULL,
-  `MaHoKhau` int(11) NOT NULL,
+  `MaHoKhau` text NOT NULL,
   `DiaChi` text NOT NULL DEFAULT 'phố 7 phường La Khê',
   `MaChuHo` int(12) NOT NULL,
-  `NgayLap` date NOT NULL,
-  `NgayChuyenDi` date NOT NULL,
-  `LyDoChuyen` text NOT NULL
+  `NgayLap` date DEFAULT NULL,
+  `NgayChuyenDi` date DEFAULT NULL,
+  `LyDoChuyen` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Đang đổ dữ liệu cho bảng `sohokhau`
+--
+
+INSERT INTO `sohokhau` (`ID`, `MaHoKhau`, `DiaChi`, `MaChuHo`, `NgayLap`, `NgayChuyenDi`, `LyDoChuyen`) VALUES
+(1, '123123', 'phố 7 phường La Khê', 25, '0000-00-00', '0000-00-00', ''),
+(5, '123321', 'Dinh Hoa', 1, '0000-00-00', '0000-00-00', ''),
+(999, '123123123', 'phố 7 phường La Khê', 25, '0000-00-00', '0000-00-00', ''),
+(1000, '1234', 'so 8 la khe', 1, '0000-00-00', '0000-00-00', ''),
+(1001, '777', 'dia chi day', 1, '0000-00-00', '0000-00-00', ''),
+(1002, '987', 'thanh', 1, '0000-00-00', '0000-00-00', ''),
+(1003, '9876', 'thanh', 1, NULL, NULL, NULL),
+(1004, '98', 'thanh', 1, NULL, NULL, NULL),
+(1005, '999', 'thanhh', 1, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -330,7 +345,6 @@ ALTER TABLE `nhankhau`
 --
 ALTER TABLE `sohokhau`
   ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `MaHoKhau` (`MaHoKhau`),
   ADD KEY `MaChuHo` (`MaChuHo`);
 
 --
@@ -375,6 +389,12 @@ ALTER TABLE `cccd`
 --
 ALTER TABLE `nhankhau`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+
+--
+-- AUTO_INCREMENT cho bảng `sohokhau`
+--
+ALTER TABLE `sohokhau`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1006;
 
 --
 -- AUTO_INCREMENT cho bảng `user`
@@ -434,8 +454,8 @@ ALTER TABLE `tamvang`
 -- Các ràng buộc cho bảng `thanhviencuaho`
 --
 ALTER TABLE `thanhviencuaho`
-  ADD CONSTRAINT `thanhviencuaho_ibfk_2` FOREIGN KEY (`idHoKhau`) REFERENCES `sohokhau` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `thanhviencuaho_ibfk_3` FOREIGN KEY (`idNhanKhau`) REFERENCES `nhankhau` (`ID`);
+  ADD CONSTRAINT `thanhviencuaho_ibfk_3` FOREIGN KEY (`idNhanKhau`) REFERENCES `nhankhau` (`ID`),
+  ADD CONSTRAINT `thanhviencuaho_ibfk_4` FOREIGN KEY (`idHoKhau`) REFERENCES `sohokhau` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
