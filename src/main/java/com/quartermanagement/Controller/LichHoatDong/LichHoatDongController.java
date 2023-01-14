@@ -173,10 +173,13 @@ public class LichHoatDongController implements Initializable {
         } else {
             lastIndex = lichHoatDongList.size() / ROWS_PER_PAGE - 1;
         }
-        if (lastIndex == pageIndex && displace > 0) {
-            tableView.setItems(FXCollections.observableArrayList(lichHoatDongList.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + displace)));
-        } else {
-            tableView.setItems(FXCollections.observableArrayList(lichHoatDongList.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + ROWS_PER_PAGE)));
+        if (lichHoatDongList.isEmpty()) tableView.setItems(FXCollections.observableArrayList(lichHoatDongList));
+        else {
+            if (lastIndex == pageIndex && displace > 0) {
+                tableView.setItems(FXCollections.observableArrayList(lichHoatDongList.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + displace)));
+            } else {
+                tableView.setItems(FXCollections.observableArrayList(lichHoatDongList.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + ROWS_PER_PAGE)));
+            }
         }
         return tableView;
     }

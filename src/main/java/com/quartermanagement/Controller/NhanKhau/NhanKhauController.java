@@ -201,10 +201,13 @@ public class NhanKhauController implements Initializable {
             lastIndex = nhanKhauList.size() / ROWS_PER_PAGE - 1;
         }
         // Add nhankhau to table
-        if (lastIndex == pageIndex && displace > 0) {
-            tableView.setItems(FXCollections.observableArrayList(nhanKhauList.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + displace)));
-        } else {
-            tableView.setItems(FXCollections.observableArrayList(nhanKhauList.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + ROWS_PER_PAGE)));
+        if (nhanKhauList.isEmpty()) tableView.setItems(FXCollections.observableArrayList(nhanKhauList));
+        else {
+            if (lastIndex == pageIndex && displace > 0) {
+                tableView.setItems(FXCollections.observableArrayList(nhanKhauList.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + displace)));
+            } else {
+                tableView.setItems(FXCollections.observableArrayList(nhanKhauList.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + ROWS_PER_PAGE)));
+            }
         }
         return tableView;
     }

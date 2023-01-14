@@ -143,7 +143,6 @@ public class CoSoVatChatController implements Initializable {
     }
 
     public Node createTableView(int pageIndex) {
-
         indexColumn.setCellValueFactory((Callback<TableColumn.CellDataFeatures<CoSoVatChat, CoSoVatChat>, ObservableValue<CoSoVatChat>>) p -> new ReadOnlyObjectWrapper(p.getValue()));
         indexColumn.setCellFactory(new Callback<TableColumn<CoSoVatChat, CoSoVatChat>, TableCell<CoSoVatChat, CoSoVatChat>>() {
             @Override
@@ -175,10 +174,13 @@ public class CoSoVatChatController implements Initializable {
         } else {
         lastIndex = coSoVatChatList.size() / ROWS_PER_PAGE - 1;
         }
-        if (lastIndex == pageIndex && displace > 0) {
-        tableView.setItems(FXCollections.observableArrayList(coSoVatChatList.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + displace)));
-        } else {
-            tableView.setItems(FXCollections.observableArrayList(coSoVatChatList.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + ROWS_PER_PAGE)));
+        if (coSoVatChatList.isEmpty()) tableView.setItems(FXCollections.observableArrayList(coSoVatChatList));
+        else {
+            if (lastIndex == pageIndex && displace > 0) {
+                tableView.setItems(FXCollections.observableArrayList(coSoVatChatList.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + displace)));
+            } else {
+                tableView.setItems(FXCollections.observableArrayList(coSoVatChatList.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + ROWS_PER_PAGE)));
+            }
         }
         return tableView;
     }
