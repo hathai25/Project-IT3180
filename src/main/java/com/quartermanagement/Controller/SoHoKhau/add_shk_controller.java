@@ -74,8 +74,9 @@ public class add_shk_controller {
         Connection conn;
         PreparedStatement preparedStatement = null;
         conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-        String query = "SELECT * FROM sohokhau, nhankhau, cccd where sohokhau.MaChuHo = nhankhau.ID and nhankhau.id = cccd.idNhankhau";
+        String query = "SELECT * FROM sohokhau, nhankhau, cccd where sohokhau.MaChuHo = nhankhau.ID and nhankhau.id = cccd.idNhankhau and sohokhau.MaHoKhau = ?";
         preparedStatement = conn.prepareStatement(query);
+        preparedStatement.setString(1,soHoKhau.getMaHoKhau());
         ResultSet result = preparedStatement.executeQuery();
         if(result.next()){
             tenChuHoTextField.setText(result.getString("HoTen"));
