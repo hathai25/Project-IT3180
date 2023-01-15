@@ -57,7 +57,7 @@ public class SoHoKhauController implements Initializable {
             // Loop the list of sohokhau
             while (result.next()) {
                 SoHoKhauList.add(new SoHoKhau(result.getString("MaChuHo"),
-                        result.getString("DiaChi"), result.getInt("MaHoKhau")
+                        result.getString("DiaChi"), result.getString("MaHoKhau")
                 ));
             }
             // Add sohokhau to table
@@ -119,7 +119,7 @@ public class SoHoKhauController implements Initializable {
         }
     }
 
-    public void detail(ActionEvent event) throws IOException {
+    public void detail(ActionEvent event) throws IOException, SQLException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(ADD_SOHOKHAU_VIEW_FXML));
@@ -134,6 +134,7 @@ public class SoHoKhauController implements Initializable {
             controller.setTitle("Cập nhật hộ khẩu mới");
             stage.setScene(scene);
         }
+
     }
 
     public Node createTableView(int pageIndex) {
