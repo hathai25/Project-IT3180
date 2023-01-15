@@ -1,8 +1,10 @@
 package com.quartermanagement.Controller;
 
 import com.quartermanagement.Controller.NhanKhau.NhanKhauDetailViewController;
+import com.quartermanagement.Controller.SoHoKhau.add_shk_controller;
 import com.quartermanagement.Model.NhanKhau;
 import com.quartermanagement.Model.SoHoKhau;
+import com.quartermanagement.Utils.ViewUtils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -14,10 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -26,9 +25,11 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static com.quartermanagement.Constants.DBConstants.*;
+import static com.quartermanagement.Constants.FXMLConstants.ADD_SOHOKHAU_VIEW_FXML;
 import static com.quartermanagement.Constants.FXMLConstants.DETAIL_NHAN_KHAU_VIEW_FXML;
 import static com.quartermanagement.Utils.Utils.convertDate;
 import static com.quartermanagement.Utils.Utils.createDialog;
@@ -44,7 +45,8 @@ public class AddThanhVienController {
     private TableColumn<NhanKhau, String> hoVaTenColumn, biDanhColumn, ngaySinhColumn, cccdColumn, noiSinhColumn, gioiTinhColumn,
             nguyenQuanColumn, danTocColumn, noiThuongTruColumn, tonGiaoColumn, quocTichColumn, diaChiHienNayColumn, ngheNghiepColumn;
     private ObservableList<NhanKhau> nhanKhauList = FXCollections.observableArrayList();
-
+    private int idHoKhau;
+    private SoHoKhau soHoKhau;
     public void initTable(SoHoKhau soHoKhau) throws SQLException {
         System.out.println("initTable");
         Connection conn;
@@ -103,11 +105,64 @@ public class AddThanhVienController {
     }
 
 
-    public void add(ActionEvent event)throws IOException {
-        System.out.println("add");
+    public void add(ActionEvent event) throws IOException, SQLException {
+        NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Nhập thông tin Quan hệ với chủ hộ");
+        dialog.setHeaderText("Quan hệ với chủ hộ:");
+        dialog.setContentText("Quan hệ với chủ hộ:");
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(quanHe -> {
+            System.out.println(quanHe);
+            try {
+                Connection conn;
+                PreparedStatement preparedStatement = null;
+                conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+                String INSERT_QUERY = "INSERT INTO thanhviencuaho (idNhanKhau, idHoKhau, quanHeVoiChuHo) VALUES (?,?,?)";
+                preparedStatement = conn.prepareStatement(INSERT_QUERY);
+                preparedStatement.setInt(1,selected.getID());
+                preparedStatement.setInt(2,getIdHoKhau());
+                preparedStatement.setString(3,quanHe);
+                System.out.println(preparedStatement);
+                int res = preparedStatement.executeUpdate();
+                nhanKhauList.remove(selected);
+                tableView.setItems(FXCollections.observableArrayList(nhanKhauList));
+                if (res==1) createDialog(Alert.AlertType.INFORMATION, "Thông báo", "Thêm thành công!", "");
+                else createDialog(Alert.AlertType.WARNING, "Thông báo", "Có lỗi, thử lại sau!", "");
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
-    public void back(ActionEvent event) throws IOException {
-        System.out.println("back");
+    public void back(ActionEvent event) throws IOException, SQLException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(ADD_SOHOKHAU_VIEW_FXML));
+        Parent studentViewParent = loader.load();
+        Scene scene = new Scene(studentViewParent);
+        add_shk_controller controller= loader.getController();
+        controller.setSoHoKhau(getSoHoKhau());
+        controller.hide_add_btn();
+        controller.setTitle("Cập nhật hộ khẩu mới");
+        stage.setScene(scene);
     }
 
+    public int getIdHoKhau() {
+        return idHoKhau;
+    }
+
+    public void setIdHoKhau(int idHoKhau) {
+        this.idHoKhau = idHoKhau;
+    }
+
+    public SoHoKhau getSoHoKhau() {
+        return soHoKhau;
+    }
+
+    public void setSoHoKhau(SoHoKhau soHoKhau) {
+        this.soHoKhau = soHoKhau;
+    }
 }

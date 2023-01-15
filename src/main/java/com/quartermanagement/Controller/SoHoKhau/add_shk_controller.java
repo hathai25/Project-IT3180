@@ -67,6 +67,8 @@ public class add_shk_controller {
     @FXML
     private Button updateThanhVienBtn;
     private SoHoKhau soHoKhau;
+    private int idHoKhau;
+
     public void setSoHoKhau(SoHoKhau soHoKhau) throws SQLException {
         this.soHoKhau = soHoKhau;
         Connection conn;
@@ -78,6 +80,7 @@ public class add_shk_controller {
         if(result.next()){
             tenChuHoTextField.setText(result.getString("HoTen"));
             maChuHoTextField.setText(result.getString("CCCD"));
+            idHoKhau = result.getInt(1);
         }
 
         diaChiTextField.setText(soHoKhau.getDiaChi());
@@ -190,6 +193,8 @@ public class add_shk_controller {
         Parent studentViewParent = loader.load();
         Scene scene = new Scene(studentViewParent);
         AddThanhVienController controller = loader.getController();
+        controller.setIdHoKhau(idHoKhau);
+        controller.setSoHoKhau(soHoKhau);
         controller.initTable(soHoKhau);
         stage.setScene(scene);
     }
@@ -226,6 +231,7 @@ public class add_shk_controller {
                         int result = preparedStatement.executeUpdate();
                         if (result==1) createDialog(Alert.AlertType.INFORMATION, "Thông báo", "Xóa thành công!", "");
                         else createDialog(Alert.AlertType.WARNING, "Thông báo", "Có lỗi, thử lại sau!", "");
+                        thanhVienList.clear();
                         setSoHoKhau(soHoKhau);
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -398,5 +404,7 @@ public class add_shk_controller {
         this.title = title;
     }
 
-
+    public SoHoKhau getSoHoKhau() {
+        return soHoKhau;
+    }
 }
