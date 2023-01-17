@@ -7,6 +7,8 @@ import com.quartermanagement.Model.NhanKhau;
 import com.quartermanagement.Model.SoHoKhau;
 import com.quartermanagement.Model.ThanhVien;
 import com.quartermanagement.Utils.ViewUtils;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,15 +23,19 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import static com.quartermanagement.Constants.DBConstants.*;
 
 import static com.quartermanagement.Constants.FXMLConstants.ADD_SOHOKHAU_VIEW_FXML;
 import static com.quartermanagement.Constants.FXMLConstants.NHAN_KHAU_VIEW_FXML;
+import static com.quartermanagement.Utils.Utils.convertDate;
 import static com.quartermanagement.Utils.Utils.createDialog;
 
 public class add_shk_controller {
@@ -66,6 +72,8 @@ public class add_shk_controller {
     private Button deleteThanhVienBtn;
     @FXML
     private Button updateThanhVienBtn;
+    @FXML
+    private TextField ngayTaoTextField;
     private SoHoKhau soHoKhau;
     private int idHoKhau;
 
@@ -81,6 +89,7 @@ public class add_shk_controller {
         if(result.next()){
             tenChuHoTextField.setText(result.getString("HoTen"));
             maChuHoTextField.setText(result.getString("CCCD"));
+            ngayTaoTextField.setText(result.getString("NgayLap"));
             idHoKhau = result.getInt(1);
         }
 
@@ -105,6 +114,76 @@ public class add_shk_controller {
 
     }
 
+
+//    them chu ho
+    @FXML
+    private TableView<NhanKhau> tableView;
+    @FXML
+    private TableColumn indexColumn;
+    @FXML
+    private TableColumn<NhanKhau, String> hoVaTenColumn, biDanhColumn, ngaySinhColumn, cccd2Column, noiSinhColumn, gioiTinhColumn,
+            nguyenQuanColumn, danTocColumn, noiThuongTruColumn, tonGiaoColumn, quocTichColumn, diaChiHienNayColumn, ngheNghiepColumn;
+    private ObservableList<NhanKhau> nhanKhauList = FXCollections.observableArrayList();
+    public void khoiTaoBangChuHo() throws SQLException {
+        System.out.println("initTable");
+        Connection conn;
+        PreparedStatement preparedStatement = null;
+        conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+        String SELECT_QUERY = "SELECT nhankhau.*, cccd.CCCD\n" +
+                "FROM nhankhau\n" +
+                "JOIN cccd\n" +
+                "ON nhankhau.ID = cccd.idNhankhau\n" +
+                "WHERE nhankhau.ID not in (SELECT idNhanKhau FROM thanhviencuaho) " +
+                "and nhankhau.ID not in (SELECT MaChuHo FROM sohokhau)";
+        preparedStatement = conn.prepareStatement(SELECT_QUERY);
+        ResultSet result = preparedStatement.executeQuery();
+        while (result.next()) {
+            nhanKhauList.add(new NhanKhau(result.getInt("ID"),result.getString("HoTen"), result.getString("BiDanh"),
+                    convertDate(result.getString("NgaySinh")), result.getString("CCCD"), result.getString("NoiSinh"),
+                    result.getString("GioiTinh"), result.getString("NguyenQuan"), result.getString("DanToc"),
+                    result.getString("NoiThuongTru"), result.getString("TonGiao"), result.getString("QuocTich"),
+                    result.getString("DiaChiHienNay"), result.getString("NgheNghiep")
+            ));
+        }
+        indexColumn.setCellValueFactory((Callback<TableColumn.CellDataFeatures<NhanKhau, NhanKhau>, ObservableValue<NhanKhau>>) p -> new ReadOnlyObjectWrapper(p.getValue()));
+
+        indexColumn.setCellFactory(new Callback<TableColumn<NhanKhau, NhanKhau>, TableCell<NhanKhau, NhanKhau>>() {
+            @Override
+            public TableCell<NhanKhau, NhanKhau> call(TableColumn<NhanKhau, NhanKhau> param) {
+                return new TableCell<NhanKhau, NhanKhau>() {
+                    @Override
+                    protected void updateItem(NhanKhau item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (this.getTableRow() != null && item != null) {
+                            setText(this.getTableRow().getIndex() + 1 + "");
+                        } else {
+                            setText("");
+                        }
+                    }
+                };
+            }
+        });
+        indexColumn.setSortable(false);
+//        idColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, Integer>("ID"));
+        hoVaTenColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("HoTen"));
+        biDanhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("BiDanh"));
+        ngaySinhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NgaySinh"));
+        cccd2Column.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("CCCD"));
+        noiSinhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NoiSinh"));
+        gioiTinhColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("GioiTinh"));
+        nguyenQuanColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NguyenQuan"));
+        danTocColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("DanToc"));
+        noiThuongTruColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NoiThuongTru"));
+        tonGiaoColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("TonGiao"));
+        quocTichColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("QuocTich"));
+        diaChiHienNayColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("DiaChiHienNay"));
+        ngheNghiepColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NgheNghiep"));
+        tableView.setItems(FXCollections.observableArrayList(nhanKhauList));
+    }
+
+
+
     public void goBack(ActionEvent event) throws IOException {
         ViewUtils viewUtils = new ViewUtils();
         viewUtils.switchToSoHoKhau_Admin_view(event);
@@ -126,12 +205,13 @@ public class add_shk_controller {
 
     public void addnew(ActionEvent event) throws IOException {
         ViewUtils viewUtils = new ViewUtils();
-
-        String maChuHo = maChuHoTextField.getText();
+        NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
+        if (selected == null) createDialog(Alert.AlertType.WARNING, "Từ từ đã đồng chí", "", "Vui lòng chọn hộ khẩu");
+        else {
         String diaChi = diaChiTextField.getText();
         String maHoKhau = maHoKhauTextField.getText();
 
-        if (maChuHo.trim().equals("") || diaChi.trim().equals("") || maHoKhau
+        if (diaChi.trim().equals("") || maHoKhau
                 .trim().equals("")) {
 
             createDialog(
@@ -143,17 +223,17 @@ public class add_shk_controller {
             try {
                 Connection conn;
                 PreparedStatement preparedStatement = null;
-                String INSERT_QUERY = "INSERT INTO `sohokhau`(`MaHoKhau`, `DiaChi`, `MaChuHo`) VALUES (?,?,?)";
+                String INSERT_QUERY = "INSERT INTO `sohokhau`(`MaHoKhau`, `DiaChi`, `MaChuHo`,`NgayLap`) VALUES (?,?,?,?)";
 
 
-                System.out.println(maHoKhau+diaChi+maChuHo);
+                System.out.println(maHoKhau + diaChi + selected.getID());
 
                 conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
                 preparedStatement = conn.prepareStatement(INSERT_QUERY);
                 preparedStatement.setString(1, maHoKhau);
                 preparedStatement.setString(2, diaChi);
-                preparedStatement.setString(3, maChuHo);
-
+                preparedStatement.setInt(3, selected.getID());
+                preparedStatement.setString(4, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 System.out.println("thuc hien thanh cong 1");
                 System.out.println(preparedStatement);
                 int result = preparedStatement.executeUpdate();
@@ -179,7 +259,7 @@ public class add_shk_controller {
                 conn.close();
             } catch (SQLException e) {
             }
-
+        }
         }
     }
 
@@ -279,6 +359,28 @@ public class add_shk_controller {
         });
     }
     }
+    @FXML
+    Text ngayTaoLabel, cccdLabel, tenChuHoLabel;
+
+    public void setDisableForAdd(){
+        ngayTaoLabel.setVisible(false);
+        cccdLabel.setVisible(false);
+        tenChuHoLabel.setVisible(false);
+        ngayTaoTextField.setVisible(false);;
+        maChuHoTextField.setVisible(false);;
+        tenChuHoTextField.setVisible(false);;
+        thanhVienTable.setVisible(false);
+        addThanhVienBtn.setVisible(false);
+        deleteThanhVienBtn.setVisible(false);
+        updateThanhVienBtn.setVisible(false);
+    }
+    @FXML
+    Text luaChonLabel;
+    public void setDisableForDetail(){
+        luaChonLabel.setVisible(false);
+        tableView.setVisible(false);
+    }
+
    /* public void update(ActionEvent event) throws IOException {
         ViewUtils viewUtils = new ViewUtils();
         String hoVaTen = hoVaTenTextField.getText();

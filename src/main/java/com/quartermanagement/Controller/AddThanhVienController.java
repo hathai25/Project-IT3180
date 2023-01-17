@@ -55,8 +55,9 @@ public class AddThanhVienController {
         String SELECT_QUERY = "SELECT nhankhau.*, cccd.CCCD\n" +
                 "FROM nhankhau\n" +
                 "JOIN cccd\n" +
-                "ON nhankhau.ID = cccd.idNhankhau\n" +
-                "WHERE nhankhau.ID not in (SELECT idNhanKhau FROM thanhviencuaho)";
+                "ON nhankhau.ID = cccd.idNhankhau\n"+
+                "WHERE nhankhau.ID not in (SELECT idNhanKhau FROM thanhviencuaho)"+
+                "and nhankhau.ID not in (SELECT MaChuHo FROM sohokhau)";
         preparedStatement = conn.prepareStatement(SELECT_QUERY);
         ResultSet result = preparedStatement.executeQuery();
         while (result.next()) {
@@ -147,6 +148,7 @@ public class AddThanhVienController {
         controller.setSoHoKhau(getSoHoKhau());
         controller.hide_add_btn();
         controller.setTitle("Cập nhật hộ khẩu mới");
+        controller.setDisableForDetail();
         stage.setScene(scene);
     }
 
