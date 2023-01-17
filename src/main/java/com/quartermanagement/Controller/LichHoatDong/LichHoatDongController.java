@@ -201,7 +201,57 @@ public class LichHoatDongController implements Initializable {
                 return false;
             }
         });
+            int soDu = filteredData.size() % ROWS_PER_PAGE;
+            if (soDu != 0) pagination.setPageCount(filteredData.size() / ROWS_PER_PAGE + 1);
+            else pagination.setPageCount(filteredData.size() / ROWS_PER_PAGE);
+            pagination.setMaxPageIndicatorCount(5);
+            pagination.setPageFactory(pageIndex->{
+                indexColumn.setCellValueFactory((Callback<TableColumn.CellDataFeatures<LichHoatDong, LichHoatDong>, ObservableValue<LichHoatDong>>) p -> new ReadOnlyObjectWrapper(p.getValue()));
+                indexColumn.setCellFactory(new Callback<TableColumn<LichHoatDong, LichHoatDong>, TableCell<LichHoatDong, LichHoatDong>>() {
+                    @Override
+                    public TableCell<LichHoatDong, LichHoatDong> call(TableColumn<LichHoatDong, LichHoatDong> param) {
+                        return new TableCell<LichHoatDong, LichHoatDong>() {
+                            @Override
+                            protected void updateItem(LichHoatDong item, boolean empty) {
+                                super.updateItem(item, empty);
+
+                                if (this.getTableRow() != null && item != null) {
+                                    setText(this.getTableRow().getIndex() + 1 + pageIndex * ROWS_PER_PAGE + "");
+                                } else {
+                                    setText("");
+                                }
+                            }
+                        };
+                    }
+                });
+
+                indexColumn.setSortable(false);
+                maHoatDongColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, Integer>("maHoatDong"));
+                tenHoatDongColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("tenHoatDong"));
+                startTimeColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("startTime"));
+                endTimeColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("endTime"));
+                statusColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("status"));
+                madeTimeColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("madeTime"));
+                maNguoiTaoColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, Integer>("maNguoiTao"));
+
+                int lastIndex = 0;
+                int displace = filteredData.size() % ROWS_PER_PAGE;
+                if (displace > 0) {
+                    lastIndex = filteredData.size() / ROWS_PER_PAGE;
+                } else {
+                    lastIndex = filteredData.size() / ROWS_PER_PAGE - 1;
+                }
+                if (filteredData.isEmpty()) tableView.setItems(FXCollections.observableArrayList(filteredData));
+                else {
+                    if (lastIndex == pageIndex && displace > 0) {
+                        tableView.setItems(FXCollections.observableArrayList(filteredData.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + displace)));
+                    } else {
+                        tableView.setItems(FXCollections.observableArrayList(filteredData.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + ROWS_PER_PAGE)));
+                    }
+                }
+                return tableView;
+            });
         });
-        tableView.setItems(filteredData);
+
     }
 }

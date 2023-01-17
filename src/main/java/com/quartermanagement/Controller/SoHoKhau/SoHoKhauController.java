@@ -201,8 +201,53 @@ public class SoHoKhauController implements Initializable {
                 return false;
             }
         });
+            int soDu = filteredData.size() % ROWS_PER_PAGE;
+            if (soDu != 0) pagination.setPageCount(filteredData.size() / ROWS_PER_PAGE + 1);
+            else pagination.setPageCount(filteredData.size() / ROWS_PER_PAGE);
+            pagination.setMaxPageIndicatorCount(5);
+            pagination.setPageFactory(pageIndex->{
+                indexColumn.setCellValueFactory((Callback<TableColumn.CellDataFeatures<SoHoKhau, SoHoKhau>, ObservableValue<SoHoKhau>>) p -> new ReadOnlyObjectWrapper(p.getValue()));
+
+                indexColumn.setCellFactory(new Callback<TableColumn<SoHoKhau, SoHoKhau>, TableCell<SoHoKhau, SoHoKhau>>() {
+                    @Override
+                    public TableCell<SoHoKhau, SoHoKhau> call(TableColumn<SoHoKhau, SoHoKhau> param) {
+                        return new TableCell<SoHoKhau, SoHoKhau>() {
+                            @Override
+                            protected void updateItem(SoHoKhau item, boolean empty) {
+                                super.updateItem(item, empty);
+
+                                if (this.getTableRow() != null && item != null) {
+                                    setText(this.getTableRow().getIndex() + 1 + "");
+                                } else {
+                                    setText("");
+                                }
+                            }
+                        };
+                    }
+                });
+                indexColumn.setSortable(false);
+
+                maChuHoColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, String>("MaChuHo"));
+
+                diaChiColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, String>("DiaChi"));
+
+                maHoKhauColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, Integer>("MaHoKhau"));
+
+                int lastIndex = 0;
+                int displace = filteredData.size() % ROWS_PER_PAGE;
+                if (displace > 0) {
+                    lastIndex = filteredData.size() / ROWS_PER_PAGE;
+                } else {
+                    lastIndex = filteredData.size() / ROWS_PER_PAGE - 1;
+                }
+                if (lastIndex == pageIndex && displace > 0) {
+                    tableView.setItems(FXCollections.observableArrayList(filteredData.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + displace)));
+                } else {
+                    tableView.setItems(FXCollections.observableArrayList(filteredData.subList(pageIndex * ROWS_PER_PAGE, pageIndex * ROWS_PER_PAGE + ROWS_PER_PAGE)));
+                }
+                return tableView;
+            });
         });
-        tableView.setItems(filteredData);
     }
 }
 
