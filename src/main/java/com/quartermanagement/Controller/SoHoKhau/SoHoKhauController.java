@@ -51,14 +51,15 @@ public class SoHoKhauController implements Initializable {
 
         try {
             // Connecting Database
-            String SELECT_QUERY = "SELECT * FROM sohokhau";
+            String SELECT_QUERY = "select * from sohokhau, cccd \n" +
+                    "where sohokhau.MaChuHo = cccd.idNhankhau;";
             conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
             preparedStatement = conn.prepareStatement(SELECT_QUERY);
             ResultSet result = preparedStatement.executeQuery();
 
             // Loop the list of sohokhau
             while (result.next()) {
-                SoHoKhauList.add(new SoHoKhau(result.getString("MaChuHo"),
+                SoHoKhauList.add(new SoHoKhau(result.getString("CCCD"),
                         result.getString("DiaChi"), result.getString("MaHoKhau")
                 ));
             }
