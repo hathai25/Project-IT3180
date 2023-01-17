@@ -125,5 +125,10 @@
             <Font name="Segoe UI" size="18.0" />
          </font>
       </Text>
+      <Button fx:id="doiChuHoBtn" layoutX="424.0" layoutY="558.0" mnemonicParsing="false" onAction="#doiChuHo" prefHeight="28.0" prefWidth="165.0" style="-fx-background-color: #3f4d67;" text="Đổi chủ hộ" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI" size="14.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>

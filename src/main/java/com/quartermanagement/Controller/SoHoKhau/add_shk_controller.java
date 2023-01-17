@@ -291,8 +291,49 @@ public class add_shk_controller {
         }
     }
 
-    public void update(ActionEvent event) {
+    public void update(ActionEvent event) throws IOException, SQLException {
+        System.out.println("Nut update");
+        setDisableForAdd();
+        maHoKhauLabel.setVisible(true);
+        maHoKhauTextField.setVisible(true);
+        ngayTaoLabel.setVisible(true);
+        ngayTaoTextField.setVisible(true);
+        tableView.setVisible(true);
+        luaChonLabel.setVisible(true);
+        doiChuHoBtn.setVisible(true);
+        khoiTaoBangChuHo();
+    }
+    public void doiChuHo(ActionEvent event) throws SQLException, IOException {
+        ViewUtils viewUtils = new ViewUtils();
+        NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
+        if (selected == null) createDialog(Alert.AlertType.WARNING, "Từ từ đã đồng chí", "", "Vui lòng chọn hộ khẩu");
+        else {
+            Connection conn;
+            PreparedStatement preparedStatement = null;
+            String UPDATE_QUERY = "UPDATE sohokhau SET MaChuHo = ? WHERE ID = ?";
 
+
+
+
+            conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+            preparedStatement = conn.prepareStatement(UPDATE_QUERY);
+            preparedStatement.setInt(1, selected.getID());
+            preparedStatement.setInt(2, idHoKhau);
+
+            System.out.println(preparedStatement);
+            int result = preparedStatement.executeUpdate();
+
+            if (result == 1) {
+                //          swtich to admin-sohokhau-view
+                createDialog(
+                        Alert.AlertType.CONFIRMATION,
+                        "Thành công",
+                        "", "Đồng chí vất cả rồi!"
+                );
+                viewUtils.switchToSoHoKhau_Admin_view(event);
+        }
+
+        }
     }
 
     public void addthanhvien(ActionEvent event) throws IOException, SQLException {
@@ -388,7 +429,9 @@ public class add_shk_controller {
     }
     }
     @FXML
-    Text ngayTaoLabel, cccdLabel, tenChuHoLabel, maHoKhauLabel;
+    private Text ngayTaoLabel, cccdLabel, tenChuHoLabel, maHoKhauLabel;
+    @FXML
+    private Button doiChuHoBtn;
 
     public void setDisableForAdd(){
         ngayTaoLabel.setVisible(false);
@@ -403,12 +446,15 @@ public class add_shk_controller {
         updateThanhVienBtn.setVisible(false);
         maHoKhauLabel.setVisible(false);
         maHoKhauTextField.setVisible(false);
+        doiChuHoBtn.setVisible(false);
     }
     @FXML
     Text luaChonLabel;
-    public void setDisableForDetail(){
+    public void setDisableForDetail() throws SQLException {
+        doiChuHoBtn.setVisible(false);
         luaChonLabel.setVisible(false);
         tableView.setVisible(false);
+
     }
 
    /* public void update(ActionEvent event) throws IOException {
@@ -485,6 +531,7 @@ public class add_shk_controller {
         }
     }
     */
+
 
 
     // Getter and setter methods for all
