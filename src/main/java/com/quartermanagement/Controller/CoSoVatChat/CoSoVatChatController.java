@@ -190,18 +190,20 @@ public class CoSoVatChatController implements Initializable {
     private TextField searchTextField;
     public void search() {
         FilteredList<CoSoVatChat> filteredData = new FilteredList<>(coSoVatChatList, p -> true);
-
-        filteredData.setPredicate(coSoVatChat -> {
-            if (searchTextField.getText() == null || searchTextField.getText().isEmpty()) {
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(coSoVatChat -> {
+            if (newValue == null || newValue.isEmpty()) {
                 return true;
             }
-            String lowerCaseFilter = searchTextField.getText().toLowerCase();
+            String lowerCaseFilter = newValue.toLowerCase();
             if (coSoVatChat.getTenDoDung().toLowerCase().contains(lowerCaseFilter)) {
                 return true;
             } else {
                 return false;
             }
         });
+        });
+
         tableView.setItems(filteredData);
     }
 }

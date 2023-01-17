@@ -217,9 +217,9 @@ public class NhanKhauController implements Initializable {
 
     public void search() {
         FilteredList<NhanKhau> filteredData = new FilteredList<>(nhanKhauList, p -> true);
-
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(person -> {
-                if (searchTextField.getText() == null || searchTextField.getText().isEmpty()) {
+                if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
                 String lowerCaseFilter = searchTextField.getText().toLowerCase();
@@ -229,7 +229,11 @@ public class NhanKhauController implements Initializable {
                     return false;
                 }
             });
+        });
+
         tableView.setItems(filteredData);
     }
+
+
 }
 

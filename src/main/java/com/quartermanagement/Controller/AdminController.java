@@ -40,6 +40,7 @@ public class AdminController implements Initializable {
 
     public void switchToNhanKhau() throws IOException {
         viewUtils.changeAnchorPane(basePane, NHAN_KHAU_VIEW_FXML);
+
     }
 
     public void switchToCoSoVatChat() throws IOException {

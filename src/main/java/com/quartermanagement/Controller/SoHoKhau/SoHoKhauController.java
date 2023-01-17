@@ -189,17 +189,18 @@ public class SoHoKhauController implements Initializable {
     private TextField searchTextField;
     public void search() {
         FilteredList<SoHoKhau> filteredData = new FilteredList<>(SoHoKhauList, p -> true);
-
-        filteredData.setPredicate(soHoKhau -> {
-            if (searchTextField.getText() == null || searchTextField.getText().isEmpty()) {
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(soHoKhau -> {
+            if (newValue == null || newValue.isEmpty()) {
                 return true;
             }
-            String lowerCaseFilter = searchTextField.getText().toLowerCase();
+            String lowerCaseFilter = newValue.toLowerCase();
             if (soHoKhau.getDiaChi().toLowerCase().contains(lowerCaseFilter)) {
                 return true;
             } else {
                 return false;
             }
+        });
         });
         tableView.setItems(filteredData);
     }

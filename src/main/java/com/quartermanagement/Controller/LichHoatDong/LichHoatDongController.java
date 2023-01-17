@@ -189,17 +189,18 @@ public class LichHoatDongController implements Initializable {
     private TextField searchTextField;
     public void search() {
         FilteredList<LichHoatDong> filteredData = new FilteredList<>(lichHoatDongList, p -> true);
-
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
         filteredData.setPredicate(lichHoatDong -> {
-            if (searchTextField.getText() == null || searchTextField.getText().isEmpty()) {
+            if (newValue == null || newValue.isEmpty()) {
                 return true;
             }
-            String lowerCaseFilter = searchTextField.getText().toLowerCase();
+            String lowerCaseFilter = newValue.toLowerCase();
             if (lichHoatDong.getTenHoatDong().toLowerCase().contains(lowerCaseFilter)) {
                 return true;
             } else {
                 return false;
             }
+        });
         });
         tableView.setItems(filteredData);
     }
