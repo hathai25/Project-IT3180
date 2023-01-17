@@ -30,7 +30,7 @@
                 <Font name="Segoe UI" size="18.0" />
             </font>
         </Text>
-        <TextField fx:id="diaChiTextField" layoutX="183.0" layoutY="154.0" prefHeight="30.0" prefWidth="344.0" promptText="Địa chỉ" style="-fx-border-color: #3f4d67; -fx-border-radius: 10px; -fx-background-color: transparent;">
+        <TextField fx:id="diaChiTextField" layoutX="183.0" layoutY="154.0" prefHeight="30.0" prefWidth="484.0" promptText="Địa chỉ" style="-fx-border-color: #3f4d67; -fx-border-radius: 10px; -fx-background-color: transparent;">
             <font>
                 <Font name="Segoe UI Italic" size="14.0" />
             </font>
@@ -102,7 +102,7 @@
             <Font name="Segoe UI Italic" size="14.0" />
          </font>
       </TextField>
-      <TableView fx:id="tableView" layoutX="4.0" layoutY="228.0" prefHeight="282.0" prefWidth="726.0" stylesheets="@../styles/table.css">
+      <TableView fx:id="tableView" layoutX="182.0" layoutY="228.0" prefHeight="304.0" prefWidth="484.0" stylesheets="@../styles/table.css">
          <columns>
             <TableColumn fx:id="indexColumn" prefWidth="31.200008392333984" text="#" />
             <TableColumn fx:id="hoVaTenColumn" prefWidth="119.19998168945312" text="Họ và tên" />
@@ -120,7 +120,7 @@
             <TableColumn fx:id="ngheNghiepColumn" prefWidth="88.80001220703127" text="Nghề nghiệp" />
          </columns>
       </TableView>
-      <Text fx:id="luaChonLabel" layoutX="213.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lựa chọn chủ hộ" textAlignment="CENTER" wrappingWidth="257.3141098022461">
+      <Text fx:id="luaChonLabel" layoutX="28.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lựa chọn chủ hộ" textAlignment="CENTER" wrappingWidth="88.5140380859375">
          <font>
             <Font name="Segoe UI" size="18.0" />
          </font>
