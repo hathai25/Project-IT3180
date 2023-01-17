@@ -35,7 +35,7 @@
                 <Font name="Segoe UI Italic" size="14.0" />
             </font>
         </TextField>
-        <Text layoutX="38.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã hộ khẩu" textAlignment="CENTER" wrappingWidth="95.7140502929687">
+        <Text fx:id="maHoKhauLabel" layoutX="38.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã hộ khẩu" textAlignment="CENTER" wrappingWidth="95.7140502929687">
             <font>
                 <Font name="Segoe UI" size="18.0" />
             </font>

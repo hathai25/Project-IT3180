@@ -35,8 +35,7 @@ import static com.quartermanagement.Constants.DBConstants.*;
 
 import static com.quartermanagement.Constants.FXMLConstants.ADD_SOHOKHAU_VIEW_FXML;
 import static com.quartermanagement.Constants.FXMLConstants.NHAN_KHAU_VIEW_FXML;
-import static com.quartermanagement.Utils.Utils.convertDate;
-import static com.quartermanagement.Utils.Utils.createDialog;
+import static com.quartermanagement.Utils.Utils.*;
 
 public class add_shk_controller {
     @FXML
@@ -209,7 +208,7 @@ public class add_shk_controller {
         if (selected == null) createDialog(Alert.AlertType.WARNING, "Từ từ đã đồng chí", "", "Vui lòng chọn hộ khẩu");
         else {
         String diaChi = diaChiTextField.getText();
-        String maHoKhau = maHoKhauTextField.getText();
+        String maHoKhau = generateRandomNumber(9);
 
         if (diaChi.trim().equals("") || maHoKhau
                 .trim().equals("")) {
@@ -229,7 +228,7 @@ public class add_shk_controller {
                 System.out.println(maHoKhau + diaChi + selected.getID());
 
                 conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-                preparedStatement = conn.prepareStatement(INSERT_QUERY);
+                preparedStatement = conn.prepareStatement(INSERT_QUERY,Statement.RETURN_GENERATED_KEYS);
                 preparedStatement.setString(1, maHoKhau);
                 preparedStatement.setString(2, diaChi);
                 preparedStatement.setInt(3, selected.getID());
@@ -237,17 +236,46 @@ public class add_shk_controller {
                 System.out.println("thuc hien thanh cong 1");
                 System.out.println(preparedStatement);
                 int result = preparedStatement.executeUpdate();
+                ResultSet keys = preparedStatement.getGeneratedKeys();
+                if (keys.next()) {
+                    idHoKhau = keys.getInt(1);
 
+                }
                 System.out.println("thuc hien thanh cong");
 
                 if (result == 1) {
+
+                    //          swtich to admin-sohokhau-view
                     createDialog(
                             Alert.AlertType.CONFIRMATION,
                             "Thành công",
                             "", "Đồng chí vất cả rồi!"
                     );
-                    //          swtich to admin-sohokhau-view
-                    viewUtils.switchToSoHoKhau_Admin_view(event);
+
+
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Hãy đưa ra lựa chọn");
+                    alert.setHeaderText("Đồng chí có muốn thêm thành viên vào trong sổ hộ khẩu luôn không?");
+                    alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+
+                    Optional<ButtonType> ketqua = alert.showAndWait();
+                    if (ketqua.get() == ButtonType.YES){
+                        // Code for Option 1
+                        soHoKhau = new SoHoKhau(String.valueOf(selected.getID()),diaChi,maHoKhau);
+                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("/com/quartermanagement/views/addthanhvien-view.fxml"));
+                        Parent studentViewParent = loader.load();
+                        Scene scene = new Scene(studentViewParent);
+                        AddThanhVienController controller = loader.getController();
+                        controller.setIdHoKhau(idHoKhau);
+                        controller.setSoHoKhau(soHoKhau);
+                        controller.initTable(soHoKhau);
+                        stage.setScene(scene);
+                    } else {
+                        viewUtils.switchToSoHoKhau_Admin_view(event);
+                    }
+
                 } else {
                     createDialog(
                             Alert.AlertType.ERROR,
@@ -360,7 +388,7 @@ public class add_shk_controller {
     }
     }
     @FXML
-    Text ngayTaoLabel, cccdLabel, tenChuHoLabel;
+    Text ngayTaoLabel, cccdLabel, tenChuHoLabel, maHoKhauLabel;
 
     public void setDisableForAdd(){
         ngayTaoLabel.setVisible(false);
@@ -373,6 +401,8 @@ public class add_shk_controller {
         addThanhVienBtn.setVisible(false);
         deleteThanhVienBtn.setVisible(false);
         updateThanhVienBtn.setVisible(false);
+        maHoKhauLabel.setVisible(false);
+        maHoKhauTextField.setVisible(false);
     }
     @FXML
     Text luaChonLabel;
