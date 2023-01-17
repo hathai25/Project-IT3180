@@ -1,6 +1,8 @@
 package com.quartermanagement.Controller.LichHoatDong;
 
 import com.quartermanagement.Model.LichHoatDong;
+import com.quartermanagement.Model.SoHoKhau;
+import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.Pagination;
 import com.quartermanagement.Utils.ViewUtils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -183,5 +185,22 @@ public class LichHoatDongController implements Initializable {
         }
         return tableView;
     }
+    @FXML
+    private TextField searchTextField;
+    public void search() {
+        FilteredList<LichHoatDong> filteredData = new FilteredList<>(lichHoatDongList, p -> true);
 
+        filteredData.setPredicate(lichHoatDong -> {
+            if (searchTextField.getText() == null || searchTextField.getText().isEmpty()) {
+                return true;
+            }
+            String lowerCaseFilter = searchTextField.getText().toLowerCase();
+            if (lichHoatDong.getTenHoatDong().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        tableView.setItems(filteredData);
+    }
 }

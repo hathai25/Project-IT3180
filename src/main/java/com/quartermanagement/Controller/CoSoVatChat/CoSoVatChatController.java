@@ -1,7 +1,9 @@
 package com.quartermanagement.Controller.CoSoVatChat;
 
 import com.quartermanagement.Model.CoSoVatChat;
+import com.quartermanagement.Model.SoHoKhau;
 import com.quartermanagement.Utils.ViewUtils;
+import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.Pagination;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
@@ -184,5 +186,22 @@ public class CoSoVatChatController implements Initializable {
         }
         return tableView;
     }
+    @FXML
+    private TextField searchTextField;
+    public void search() {
+        FilteredList<CoSoVatChat> filteredData = new FilteredList<>(coSoVatChatList, p -> true);
 
+        filteredData.setPredicate(coSoVatChat -> {
+            if (searchTextField.getText() == null || searchTextField.getText().isEmpty()) {
+                return true;
+            }
+            String lowerCaseFilter = searchTextField.getText().toLowerCase();
+            if (coSoVatChat.getTenDoDung().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        tableView.setItems(filteredData);
+    }
 }

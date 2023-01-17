@@ -1,6 +1,7 @@
 package com.quartermanagement.Controller.NhanKhau;
 
 import com.quartermanagement.Utils.ViewUtils;
+import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.Pagination;
 import com.quartermanagement.Model.NhanKhau;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -50,7 +51,8 @@ public class NhanKhauController implements Initializable {
     // Connect to database
     private Connection conn;
     private PreparedStatement preparedStatement = null;
-
+    @FXML
+    private TextField searchTextField;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -212,4 +214,22 @@ public class NhanKhauController implements Initializable {
         }
         return tableView;
     }
+
+    public void search() {
+        FilteredList<NhanKhau> filteredData = new FilteredList<>(nhanKhauList, p -> true);
+
+            filteredData.setPredicate(person -> {
+                if (searchTextField.getText() == null || searchTextField.getText().isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = searchTextField.getText().toLowerCase();
+                if (person.getHoTen().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        tableView.setItems(filteredData);
+    }
 }
+

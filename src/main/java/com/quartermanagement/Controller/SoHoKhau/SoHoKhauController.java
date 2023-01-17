@@ -1,9 +1,11 @@
 package com.quartermanagement.Controller.SoHoKhau;
+import com.quartermanagement.Model.NhanKhau;
 import com.quartermanagement.Model.SoHoKhau;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -183,7 +185,24 @@ public class SoHoKhauController implements Initializable {
         return tableView;
 
     }
+    @FXML
+    private TextField searchTextField;
+    public void search() {
+        FilteredList<SoHoKhau> filteredData = new FilteredList<>(SoHoKhauList, p -> true);
 
+        filteredData.setPredicate(soHoKhau -> {
+            if (searchTextField.getText() == null || searchTextField.getText().isEmpty()) {
+                return true;
+            }
+            String lowerCaseFilter = searchTextField.getText().toLowerCase();
+            if (soHoKhau.getDiaChi().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        tableView.setItems(filteredData);
+    }
 }
 
 
