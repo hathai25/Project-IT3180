@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,7 +39,7 @@ public class Utils {
         warning.setTitle(title);
         warning.setHeaderText(headerText);
         warning.setContentText(contentText);
-        warning.show();
+        warning.showAndWait();
     }
 
     public static String convertDate(String date){
@@ -84,6 +85,15 @@ public class Utils {
     }
     public static String toUpperFirstLetter(String text) {
         return text.substring(0, 1).toUpperCase() + text.substring(1);
+    }
+
+    public static String generateRandomNumber(int num_length) {
+        Random r = new Random();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < num_length; i++) {
+            sb.append(r.nextInt(10));
+        }
+        return sb.toString();
     }
 }
 

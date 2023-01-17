@@ -1,11 +1,11 @@
 package com.quartermanagement.Model;
 
 public class SoHoKhau {
-    private int MaHoKhau;
+    private String MaHoKhau;
     private String MaChuHo, DiaChi;
 
     // constructor
-    public SoHoKhau(String MaChuHo, String diaChi, int maHoKhau) {
+    public SoHoKhau(String MaChuHo, String diaChi, String maHoKhau) {
         MaHoKhau = maHoKhau;
         this.MaChuHo = MaChuHo;
         DiaChi = diaChi;
@@ -14,11 +14,11 @@ public class SoHoKhau {
     // Getter and setter
 
 
-    public int getMaHoKhau() {
+    public String getMaHoKhau() {
         return MaHoKhau;
     }
 
-    public void setMaHoKhau(int maHoKhau) {
+    public void setMaHoKhau(String maHoKhau) {
         MaHoKhau = maHoKhau;
     }
 

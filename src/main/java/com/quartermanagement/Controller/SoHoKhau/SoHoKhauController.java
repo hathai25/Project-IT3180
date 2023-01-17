@@ -57,7 +57,7 @@ public class SoHoKhauController implements Initializable {
             // Loop the list of sohokhau
             while (result.next()) {
                 SoHoKhauList.add(new SoHoKhau(result.getString("MaChuHo"),
-                        result.getString("DiaChi"), result.getInt("MaHoKhau")
+                        result.getString("DiaChi"), result.getString("MaHoKhau")
                 ));
             }
             // Add sohokhau to table
@@ -74,7 +74,7 @@ public class SoHoKhauController implements Initializable {
     }
 
 
-    public void add(ActionEvent event) throws IOException {
+    public void add(ActionEvent event) throws IOException, SQLException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(ADD_SOHOKHAU_VIEW_FXML));
@@ -82,6 +82,8 @@ public class SoHoKhauController implements Initializable {
         Scene scene = new Scene(studentViewParent);
         add_shk_controller controller = loader.getController();
         controller.hide_update_btn();
+        controller.khoiTaoBangChuHo();
+        controller.setDisableForAdd();
         stage.setScene(scene);
     }
 
@@ -119,7 +121,7 @@ public class SoHoKhauController implements Initializable {
         }
     }
 
-    public void detail(ActionEvent event) throws IOException {
+    public void detail(ActionEvent event) throws IOException, SQLException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(ADD_SOHOKHAU_VIEW_FXML));
@@ -132,8 +134,10 @@ public class SoHoKhauController implements Initializable {
             controller.setSoHoKhau(selected);
             controller.hide_add_btn();
             controller.setTitle("Cập nhật hộ khẩu mới");
+            controller.setDisableForDetail();
             stage.setScene(scene);
         }
+
     }
 
     public Node createTableView(int pageIndex) {
