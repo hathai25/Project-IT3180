@@ -1,12 +1,14 @@
 package com.quartermanagement.Controller.NhanKhau;
 
 import com.quartermanagement.Model.NhanKhau;
+import com.quartermanagement.Services.NhanKhauServices;
 import com.quartermanagement.Utils.ViewUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
@@ -67,16 +69,16 @@ public class NhanKhauDetailViewController implements Initializable {
         diaChiHienNayTextField.setText(nhanKhau.getDiaChiHienNay());
         ngheNghiepTextField.setText(nhanKhau.getNgheNghiep());
     }
+
     public void goBack(ActionEvent event) throws IOException {
         ViewUtils viewUtils = new ViewUtils();
         viewUtils.switchToNhanKhau_Admin_view(event);
     }
 
 
-
     public void update(ActionEvent event) throws IOException {
         ViewUtils viewUtils = new ViewUtils();
-        if(ngaySinhDatePicker.getValue() == null)  createDialog(
+        if (ngaySinhDatePicker.getValue() == null) createDialog(
                 Alert.AlertType.WARNING,
                 "Đồng chí giữ bình tĩnh",
                 "", "Vui lòng nhập đủ thông tin!");
@@ -95,9 +97,9 @@ public class NhanKhauDetailViewController implements Initializable {
             String diaChiHienNay = diaChiHienNayTextField.getText();
             String ngheNghiep = ngheNghiepTextField.getText();
 
-            if (ngaySinhDatePicker.isPressed()||hoVaTen.trim().equals("") || ngaySinh.trim().equals("") || cccd.trim().equals("") ||
+            if (ngaySinhDatePicker.isPressed() || hoVaTen.trim().equals("") || ngaySinh.trim().equals("") || cccd.trim().equals("") ||
                     noiSinh.trim().equals("") || gioiTinh.trim().equals("") || nguyenQuan.trim().equals("") || danToc.trim().equals("") ||
-                    noiThuongTru.trim().equals("") || diaChiHienNay.trim().equals("") ) {
+                    noiThuongTru.trim().equals("") || diaChiHienNay.trim().equals("")) {
 
                 createDialog(
                         Alert.AlertType.WARNING,
@@ -108,41 +110,13 @@ public class NhanKhauDetailViewController implements Initializable {
                 //regex
                 if (isCccd(cccd)) {
                     createDialog(Alert.AlertType.WARNING, "Từ từ thôi đồng chí!", "Hãy nhập đúng định dạng CCCD", "");
-                }
-                else {
+                } else {
 
                     try {
-                        Connection conn;
-                        PreparedStatement preparedStatement1;
-                        String UPDATE_QUERY_NHAN_KHAU = "UPDATE `nhankhau` SET `HoTen`=?,`BiDanh`=?,`NgaySinh`=?,`NoiSinh`=?," +
-                                "`GioiTinh`=?,`NguyenQuan`=?,`DanToc`=?,`NoiThuongTru`=?,`TonGiao`=?,`QuocTich`=?,`DiaChiHienNay`=?," +
-                                "`NgheNghiep`=? WHERE `ID`=?";
-                        conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-                        preparedStatement1 = conn.prepareStatement(UPDATE_QUERY_NHAN_KHAU);
-                        preparedStatement1.setString(1, hoVaTen);
-                        preparedStatement1.setString(2, biDanh);
-                        preparedStatement1.setString(3, ngaySinh);
-                        preparedStatement1.setString(4, noiSinh);
-                        preparedStatement1.setString(5, gioiTinh);
-                        preparedStatement1.setString(6, nguyenQuan);
-                        preparedStatement1.setString(7, danToc);
-                        preparedStatement1.setString(8, noiThuongTru);
-                        preparedStatement1.setString(9, tonGiao);
-                        preparedStatement1.setString(10, quocTich);
-                        preparedStatement1.setString(11, diaChiHienNay);
-                        preparedStatement1.setString(12, ngheNghiep);
-                        preparedStatement1.setInt(13, ID);
-                        preparedStatement1.execute();
-
-                        PreparedStatement preparedStatement2 = null;
-                        String UPDATE_QUERY_CCCD = "UPDATE `cccd` SET `CCCD`=? WHERE `idNhankhau`=?";
-                        preparedStatement2 = conn.prepareStatement(UPDATE_QUERY_CCCD);
-                        preparedStatement2.setString(1, cccd);
-                        preparedStatement2.setInt(2, ID);
-                        preparedStatement2.execute();
-
-                        int result1 = preparedStatement1.executeUpdate();
-                        int result2 = preparedStatement2.executeUpdate();
+                        Connection conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+                        int result1 = NhanKhauServices.updateNhanKhau(conn, hoVaTen, biDanh, ngaySinh, noiSinh,
+                                gioiTinh, nguyenQuan, danToc, noiThuongTru, tonGiao, quocTich, diaChiHienNay, ngheNghiep, ID);
+                        int result2 = NhanKhauServices.updateCCCD(conn, cccd, ID);
                         if (result1 == 1 && result2 == 1) {
                             createDialog(
                                     Alert.AlertType.CONFIRMATION,
@@ -158,7 +132,6 @@ public class NhanKhauDetailViewController implements Initializable {
                                     "", "Oops, mời đồng chí nhập lại thông tin!"
                             );
                         }
-
                         conn.close();
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -172,7 +145,7 @@ public class NhanKhauDetailViewController implements Initializable {
 
     public void addnew(ActionEvent event) throws IOException {
         ViewUtils viewUtils = new ViewUtils();
-        if(ngaySinhDatePicker.getValue() == null)  createDialog(
+        if (ngaySinhDatePicker.getValue() == null) createDialog(
                 Alert.AlertType.WARNING,
                 "Đồng chí giữ bình tĩnh",
                 "", "Vui lòng nhập đủ thông tin!");
@@ -206,49 +179,18 @@ public class NhanKhauDetailViewController implements Initializable {
                 } else {
                     try {
                         //Add to nhankhau
-                        Connection conn;
-                        PreparedStatement preparedStatement = null;
-                        String INSERT_QUERY = "INSERT INTO `nhankhau`(`HoTen`, `BiDanh`, `NgaySinh`, `NoiSinh`, `GioiTinh`, `NguyenQuan`, `DanToc`, `NoiThuongTru`, `TonGiao`, `QuocTich`, `DiaChiHienNay`, `NgheNghiep`) " +
-                                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-                        conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-                        preparedStatement = conn.prepareStatement(INSERT_QUERY);
-                        preparedStatement.setString(1, hoVaTen);
-                        preparedStatement.setString(2, biDanh);
-                        preparedStatement.setString(3, ngaySinh);
-                        preparedStatement.setString(4, noiSinh);
-                        preparedStatement.setString(5, gioiTinh);
-                        preparedStatement.setString(6, nguyenQuan);
-                        preparedStatement.setString(7, danToc);
-                        preparedStatement.setString(8, noiThuongTru);
-                        if (tonGiao == "") preparedStatement.setString(9, "Không");
-                        else preparedStatement.setString(9, tonGiao);
-                        if (quocTich == "") preparedStatement.setString(10, "Việt Nam");
-                        else preparedStatement.setString(10, quocTich);
-                        preparedStatement.setString(11, diaChiHienNay);
-                        preparedStatement.setString(12, ngheNghiep);
-                        int result = preparedStatement.executeUpdate();
-
+                        Connection conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+                        int result = NhanKhauServices.addNhanKhau(conn, hoVaTen, biDanh, ngaySinh, noiSinh,
+                                gioiTinh, nguyenQuan, danToc, noiThuongTru, tonGiao, quocTich, diaChiHienNay, ngheNghiep);
                         //Find to id
-                        PreparedStatement preparedStatement1 = null;
-                        String SELECT_QUERY = "SELECT MAX(ID) AS ID FROM nhankhau";
-                        preparedStatement1 = conn.prepareStatement(SELECT_QUERY);
-                        ResultSet result1 = preparedStatement1.executeQuery();
-                        result1.next();
-                        int ID = result1.getInt("ID") ;
-
-
+                        int ID = NhanKhauServices.findNhanKhauID(conn);
                         //Add to cccd
-                        PreparedStatement preparedStatement2 = null;
-                        String INSERT_QUERY2 = "INSERT INTO `cccd`(`idNhankhau`,`CCCD`) VALUES (?,?)";
-                        preparedStatement2 = conn.prepareStatement(INSERT_QUERY2);
-                        preparedStatement2.setInt(1, ID);
-                        preparedStatement2.setString(2, cccd);
-                        int result2 = preparedStatement2.executeUpdate();
+                        int result2 = NhanKhauServices.addCCCD(conn, ID, cccd);
                         if (result == 1 && result2 == 1) {
                             createDialog(
                                     Alert.AlertType.CONFIRMATION,
                                     "Thành công",
-                                    "", "Đồng chí vất cả rồi!"
+                                    "", "Đồng chí vất vả rồi!"
                             );
                         } else {
                             createDialog(
@@ -257,17 +199,17 @@ public class NhanKhauDetailViewController implements Initializable {
                                     "", "Oops, mời đồng chí nhập lại thông tin!"
                             );
                         }
-
                         conn.close();
                     } catch (SQLException e) {
+                        e.printStackTrace();
                     }
-//          swtich to admin-nhankhau-view
                     viewUtils.switchToNhanKhau_Admin_view(event);
                 }
             }
         }
 
     }
+
     public void hide_add_btn() {
         add_btn.setVisible(false);
     }
@@ -366,6 +308,7 @@ public class NhanKhauDetailViewController implements Initializable {
     public void setNgheNghiepTextField(TextField ngheNghiepTextField) {
         this.ngheNghiepTextField = ngheNghiepTextField;
     }
+
     public void setTitle(String title) {
         this.title.setText(title);
     }

@@ -1,5 +1,6 @@
 package com.quartermanagement.Controller.NhanKhau;
 
+import com.quartermanagement.Services.NhanKhauServices;
 import com.quartermanagement.Utils.ViewUtils;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.Pagination;
@@ -57,13 +58,7 @@ public class NhanKhauController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            // Connecting Database
-            String SELECT_QUERY = "SELECT nhankhau.*, cccd.CCCD\n" +
-                                  "FROM nhankhau, cccd\n" +
-                                  "WHERE nhankhau.ID = cccd.idNhankhau";
-            conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-            preparedStatement = conn.prepareStatement(SELECT_QUERY);
-            ResultSet result = preparedStatement.executeQuery();
+            ResultSet result = NhanKhauServices.getAllNhanKhau();
             while (result.next()) {
                 nhanKhauList.add(new NhanKhau(result.getInt("ID"),result.getString("HoTen"), result.getString("BiDanh"),
                         convertDate(result.getString("NgaySinh")), result.getString("CCCD"), result.getString("NoiSinh"),
@@ -128,20 +123,8 @@ public class NhanKhauController implements Initializable {
                     // Delete in Database
                     try {
                         int ID = selected.getID();
-                        String DELETE_QUERY =   "DELETE FROM cccd " +
-                                "WHERE idNhankhau =?";
-                        PreparedStatement preparedStatement1 = null;
-                        conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-                        preparedStatement1 = conn.prepareStatement(DELETE_QUERY);
-                        preparedStatement1.setInt(1, ID);
-                        int result1 = preparedStatement1.executeUpdate();
-                        PreparedStatement preparedStatement2 = null;
-                        DELETE_QUERY =
-                                "DELETE FROM nhankhau " +
-                                        "WHERE ID =?";
-                        preparedStatement2 = conn.prepareStatement(DELETE_QUERY);
-                        preparedStatement2.setInt(1, ID);
-                        int result2 = preparedStatement2.executeUpdate();
+                        int result1 = NhanKhauServices.deleteNhanKhauViaCCCD(ID);
+                        int result2 = NhanKhauServices.deleteNhanKhau(ID);
                         if (result1 == 1 && result2 == 1) createDialog(Alert.AlertType.INFORMATION, "Thông báo", "Xóa thành công!", "");
                         else createDialog(Alert.AlertType.WARNING, "Thông báo", "Có lỗi, thử lại sau!", "");
                         ViewUtils viewUtils = new ViewUtils();
