@@ -34,7 +34,7 @@
                 <Font name="Segoe UI" size="14.0" />
             </font>
         </Button>
-        <TextField layoutX="66.0" layoutY="77.0" prefHeight="26.0" prefWidth="205.0" promptText="Lọc theo lịch hoạt động" style="-fx-border-color: #3f4d67; -fx-border-radius: 10px; -fx-background-color: transparent;">
+        <TextField fx:id="searchTextField" layoutX="66.0" layoutY="77.0" onMouseClicked="#search" prefHeight="26.0" prefWidth="205.0" promptText="Lọc theo lịch hoạt động" style="-fx-border-color: #3f4d67; -fx-border-radius: 10px; -fx-background-color: transparent;">
             <font>
                 <Font name="Segoe UI Italic" size="14.0" />
             </font>
