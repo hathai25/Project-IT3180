@@ -1,6 +1,7 @@
 package com.quartermanagement.Controller.SoHoKhau;
 import com.quartermanagement.Model.NhanKhau;
 import com.quartermanagement.Model.SoHoKhau;
+import com.quartermanagement.Utils.ViewUtils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -15,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import java.io.IOException;
@@ -22,22 +24,27 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 import static com.quartermanagement.Constants.DBConstants.*;
-import static com.quartermanagement.Constants.FXMLConstants.ADD_SOHOKHAU_VIEW_FXML;
+import static com.quartermanagement.Constants.FXMLConstants.*;
 import static com.quartermanagement.Utils.Utils.createDialog;
 
 
 public class SoHoKhauController implements Initializable {
     @FXML
+    private AnchorPane basePane;
+    @FXML
     private TableView<SoHoKhau> tableView;
     @FXML
     private TableColumn indexColumn;
     @FXML
-    private TableColumn<SoHoKhau, String> maChuHoColumn;
+    private TableColumn<SoHoKhau, String> tenChuHoColumn;
 
     @FXML
     private TableColumn<SoHoKhau, String> diaChiColumn;
     @FXML
     private TableColumn<SoHoKhau, Integer> maHoKhauColumn;
+    @FXML
+    private TableColumn<SoHoKhau, Integer> soLuongColumn;
+
     @FXML
     private Pagination pagination;
 
@@ -51,16 +58,18 @@ public class SoHoKhauController implements Initializable {
 
         try {
             // Connecting Database
-            String SELECT_QUERY = "select * from sohokhau, cccd \n" +
-                    "where sohokhau.MaChuHo = cccd.idNhankhau;";
+            String SELECT_QUERY = "select nhankhau.HoTen,sohokhau.DiaChi,sohokhau.MaHoKhau, count(thanhviencuaho.idNhanKhau)+1 as 'SoLuong' from sohokhau\n" +
+                    "left join thanhviencuaho on thanhviencuaho.idHoKhau = sohokhau.ID\n" +
+                    "inner join nhankhau on sohokhau.MaChuHo = nhankhau.ID\n" +
+                    "group by nhankhau.HoTen,sohokhau.DiaChi,sohokhau.MaHoKhau;";
             conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
             preparedStatement = conn.prepareStatement(SELECT_QUERY);
             ResultSet result = preparedStatement.executeQuery();
 
             // Loop the list of sohokhau
             while (result.next()) {
-                SoHoKhauList.add(new SoHoKhau(result.getString("CCCD"),
-                        result.getString("DiaChi"), result.getString("MaHoKhau")
+                SoHoKhauList.add(new SoHoKhau(result.getString("HoTen"),
+                        result.getString("DiaChi"), result.getString("MaHoKhau"),result.getInt("SoLuong")
                 ));
             }
             // Add sohokhau to table
@@ -107,15 +116,19 @@ public class SoHoKhauController implements Initializable {
                     SoHoKhauList.remove(selected);
                     // Delete in Database
                     try {
-                        String DELETE_QUERY = "DELETE FROM nhankhau WHERE `CCCD`= ?";
+                        String DELETE_QUERY = "DELETE FROM sohokhau WHERE MaHoKhau = ?";
                         conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
                         preparedStatement = conn.prepareStatement(DELETE_QUERY);
-                        preparedStatement.setString(1, selected.getMaChuHo());
+                        preparedStatement.setString(1, selected.getMaHoKhau());
                         int result = preparedStatement.executeUpdate();
                         if (result == 1) createDialog(Alert.AlertType.INFORMATION, "Thông báo", "Xóa thành công!", "");
                         else createDialog(Alert.AlertType.WARNING, "Thông báo", "Có lỗi, thử lại sau!", "");
+                        ViewUtils viewUtils = new ViewUtils();
+                        viewUtils.changeAnchorPane(basePane, SO_HO_KHAU_VIEW_FXML);
                     } catch (SQLException e) {
                         e.printStackTrace();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
                 } else if (type == noButton) {
                 } else {
@@ -165,11 +178,13 @@ public class SoHoKhauController implements Initializable {
         });
         indexColumn.setSortable(false);
 
-        maChuHoColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, String>("MaChuHo"));
+        tenChuHoColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, String>("tenChuHo"));
 
         diaChiColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, String>("DiaChi"));
 
         maHoKhauColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, Integer>("MaHoKhau"));
+
+        soLuongColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, Integer>("soLuongThanhVien"));
 
         int lastIndex = 0;
         int displace = SoHoKhauList.size() % ROWS_PER_PAGE;
@@ -228,11 +243,14 @@ public class SoHoKhauController implements Initializable {
                 });
                 indexColumn.setSortable(false);
 
-                maChuHoColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, String>("MaChuHo"));
+                tenChuHoColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, String>("tenChuHo"));
 
                 diaChiColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, String>("DiaChi"));
 
                 maHoKhauColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, Integer>("MaHoKhau"));
+
+                soLuongColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, Integer>("soLuongThanhVien"));
+
 
                 int lastIndex = 0;
                 int displace = filteredData.size() % ROWS_PER_PAGE;

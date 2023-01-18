@@ -261,7 +261,7 @@ public class add_shk_controller {
                     Optional<ButtonType> ketqua = alert.showAndWait();
                     if (ketqua.get() == ButtonType.YES){
                         // Code for Option 1
-                        soHoKhau = new SoHoKhau(String.valueOf(selected.getID()),diaChi,maHoKhau);
+                        soHoKhau = new SoHoKhau(selected.getHoTen(), diaChi,maHoKhau,1);
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                         FXMLLoader loader = new FXMLLoader();
                         loader.setLocation(getClass().getResource("/com/quartermanagement/views/addthanhvien-view.fxml"));
