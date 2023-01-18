@@ -1,7 +1,7 @@
 package com.quartermanagement.Controller.LichHoatDong;
 
 import com.quartermanagement.Model.LichHoatDong;
-import com.quartermanagement.Model.SoHoKhau;
+import com.quartermanagement.Model.NhanKhau;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.Pagination;
 import com.quartermanagement.Utils.ViewUtils;
@@ -18,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -70,6 +71,21 @@ public class LichHoatDongController implements Initializable {
         else pagination.setPageCount(lichHoatDongList.size() / ROWS_PER_PAGE);
         pagination.setMaxPageIndicatorCount(5);
         pagination.setPageFactory(this::createTableView);
+
+        tableView.setRowFactory(tv -> {
+            TableRow<LichHoatDong> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    // Perform actions with rowData
+                    try {
+                        detail(event);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            return row ;
+        });
     }
 
     public void add(ActionEvent event) throws IOException {
@@ -120,7 +136,7 @@ public class LichHoatDongController implements Initializable {
         }
     }
 
-    public void detail(ActionEvent event) throws IOException {
+    public void detail(MouseEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(DETAIL_LICH_HOAT_DONG_VIEW_FXML));
@@ -184,6 +200,7 @@ public class LichHoatDongController implements Initializable {
             }
         }
         return tableView;
+
     }
     @FXML
     private TextField searchTextField;

@@ -1,7 +1,7 @@
 package com.quartermanagement.Controller.CoSoVatChat;
 
 import com.quartermanagement.Model.CoSoVatChat;
-import com.quartermanagement.Model.SoHoKhau;
+import com.quartermanagement.Model.NhanKhau;
 import com.quartermanagement.Utils.ViewUtils;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.Pagination;
@@ -18,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -76,6 +77,21 @@ public class CoSoVatChatController implements Initializable {
         else pagination.setPageCount(coSoVatChatList.size() / ROWS_PER_PAGE);
         pagination.setMaxPageIndicatorCount(5);
         pagination.setPageFactory(this::createTableView);
+
+        tableView.setRowFactory(tv -> {
+            TableRow<CoSoVatChat> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    // Perform actions with rowData
+                    try {
+                        detail(event);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            return row ;
+        });
     }
 
 
@@ -126,7 +142,7 @@ public class CoSoVatChatController implements Initializable {
             }
         }
 
-    public void detail(ActionEvent event) throws IOException {
+    public void detail(MouseEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(DETAIL_CO_SO_VAT_CHAT_VIEW_FXML));
