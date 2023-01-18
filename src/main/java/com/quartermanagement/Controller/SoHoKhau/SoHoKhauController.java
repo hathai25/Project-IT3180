@@ -1,6 +1,7 @@
 package com.quartermanagement.Controller.SoHoKhau;
 import com.quartermanagement.Model.NhanKhau;
 import com.quartermanagement.Model.SoHoKhau;
+import com.quartermanagement.Utils.ViewUtils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -15,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import java.io.IOException;
@@ -22,11 +24,13 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 import static com.quartermanagement.Constants.DBConstants.*;
-import static com.quartermanagement.Constants.FXMLConstants.ADD_SOHOKHAU_VIEW_FXML;
+import static com.quartermanagement.Constants.FXMLConstants.*;
 import static com.quartermanagement.Utils.Utils.createDialog;
 
 
 public class SoHoKhauController implements Initializable {
+    @FXML
+    private AnchorPane basePane;
     @FXML
     private TableView<SoHoKhau> tableView;
     @FXML
@@ -96,37 +100,41 @@ public class SoHoKhauController implements Initializable {
     }
 
     public void delete(ActionEvent event) {
-//        SoHoKhau selected = tableView.getSelectionModel().getSelectedItem();
-//        if (selected == null) createDialog(Alert.AlertType.WARNING,
-//                "Cảnh báo",
-//                "Vui lòng chọn hộ khẩu để tiếp tục", "");
-//        else {
-//            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-//            alert.setTitle("Xác nhận xóa hộ khẩu");
-//            alert.setContentText("Đồng chí muốn xóa hộ khẩu này?");
-//            ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-//            ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
-//            alert.getButtonTypes().setAll(okButton, noButton);
-//            alert.showAndWait().ifPresent(type -> {
-//                if (type == okButton) {
-//                    SoHoKhauList.remove(selected);
-//                    // Delete in Database
-//                    try {
-//                        String DELETE_QUERY = "DELETE FROM nhankhau WHERE `CCCD`= ?";
-//                        conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-//                        preparedStatement = conn.prepareStatement(DELETE_QUERY);
-//                        preparedStatement.setString(1, selected.getMaChuHo());
-//                        int result = preparedStatement.executeUpdate();
-//                        if (result == 1) createDialog(Alert.AlertType.INFORMATION, "Thông báo", "Xóa thành công!", "");
-//                        else createDialog(Alert.AlertType.WARNING, "Thông báo", "Có lỗi, thử lại sau!", "");
-//                    } catch (SQLException e) {
-//                        e.printStackTrace();
-//                    }
-//                } else if (type == noButton) {
-//                } else {
-//                }
-//            });
-//        }
+        SoHoKhau selected = tableView.getSelectionModel().getSelectedItem();
+        if (selected == null) createDialog(Alert.AlertType.WARNING,
+                "Cảnh báo",
+                "Vui lòng chọn hộ khẩu để tiếp tục", "");
+        else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Xác nhận xóa hộ khẩu");
+            alert.setContentText("Đồng chí muốn xóa hộ khẩu này?");
+            ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+            ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+            alert.getButtonTypes().setAll(okButton, noButton);
+            alert.showAndWait().ifPresent(type -> {
+                if (type == okButton) {
+                    SoHoKhauList.remove(selected);
+                    // Delete in Database
+                    try {
+                        String DELETE_QUERY = "DELETE FROM sohokhau WHERE MaHoKhau = ?";
+                        conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+                        preparedStatement = conn.prepareStatement(DELETE_QUERY);
+                        preparedStatement.setString(1, selected.getMaHoKhau());
+                        int result = preparedStatement.executeUpdate();
+                        if (result == 1) createDialog(Alert.AlertType.INFORMATION, "Thông báo", "Xóa thành công!", "");
+                        else createDialog(Alert.AlertType.WARNING, "Thông báo", "Có lỗi, thử lại sau!", "");
+                        ViewUtils viewUtils = new ViewUtils();
+                        viewUtils.changeAnchorPane(basePane, SO_HO_KHAU_VIEW_FXML);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else if (type == noButton) {
+                } else {
+                }
+            });
+        }
     }
 
     public void detail(ActionEvent event) throws IOException, SQLException {
