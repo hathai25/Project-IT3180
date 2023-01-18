@@ -2,13 +2,15 @@ package com.quartermanagement.Model;
 
 public class SoHoKhau {
     private String MaHoKhau;
-    private String MaChuHo, DiaChi;
+    private String tenChuHo, DiaChi;
+    private int soLuongThanhVien;
 
     // constructor
-    public SoHoKhau(String MaChuHo, String diaChi, String maHoKhau) {
+    public SoHoKhau(String tenChuHo, String diaChi, String maHoKhau, int soLuongThanhVien) {
         MaHoKhau = maHoKhau;
-        this.MaChuHo = MaChuHo;
+        this.tenChuHo = tenChuHo;
         DiaChi = diaChi;
+        this.soLuongThanhVien = soLuongThanhVien;
     }
 
     // Getter and setter
@@ -22,12 +24,12 @@ public class SoHoKhau {
         MaHoKhau = maHoKhau;
     }
 
-    public String getMaChuHo() {
-        return MaChuHo;
+    public String getTenChuHo() {
+        return tenChuHo;
     }
 
-    public void setMaChuHo(String maChuHo) {
-        MaChuHo = maChuHo;
+    public void setTenChuHo(String tenChuHo) {
+        this.tenChuHo = tenChuHo;
     }
 
     public String getDiaChi() {
@@ -36,5 +38,13 @@ public class SoHoKhau {
 
     public void setDiaChi(String diaChi) {
         DiaChi = diaChi;
+    }
+
+    public int getSoLuongThanhVien() {
+        return soLuongThanhVien;
+    }
+
+    public void setSoLuongThanhVien(int soLuongThanhVien) {
+        this.soLuongThanhVien = soLuongThanhVien;
     }
 }

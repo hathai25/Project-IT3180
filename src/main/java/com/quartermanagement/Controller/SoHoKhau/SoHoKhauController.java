@@ -32,12 +32,15 @@ public class SoHoKhauController implements Initializable {
     @FXML
     private TableColumn indexColumn;
     @FXML
-    private TableColumn<SoHoKhau, String> maChuHoColumn;
+    private TableColumn<SoHoKhau, String> tenChuHoColumn;
 
     @FXML
     private TableColumn<SoHoKhau, String> diaChiColumn;
     @FXML
     private TableColumn<SoHoKhau, Integer> maHoKhauColumn;
+    @FXML
+    private TableColumn<SoHoKhau, Integer> soLuongColumn;
+
     @FXML
     private Pagination pagination;
 
@@ -51,16 +54,18 @@ public class SoHoKhauController implements Initializable {
 
         try {
             // Connecting Database
-            String SELECT_QUERY = "select * from sohokhau, cccd \n" +
-                    "where sohokhau.MaChuHo = cccd.idNhankhau;";
+            String SELECT_QUERY = "select nhankhau.HoTen,sohokhau.DiaChi,sohokhau.MaHoKhau, count(thanhviencuaho.idNhanKhau)+1 as 'SoLuong' from sohokhau\n" +
+                    "left join thanhviencuaho on thanhviencuaho.idHoKhau = sohokhau.ID\n" +
+                    "inner join nhankhau on sohokhau.MaChuHo = nhankhau.ID\n" +
+                    "group by nhankhau.HoTen,sohokhau.DiaChi,sohokhau.MaHoKhau;";
             conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
             preparedStatement = conn.prepareStatement(SELECT_QUERY);
             ResultSet result = preparedStatement.executeQuery();
 
             // Loop the list of sohokhau
             while (result.next()) {
-                SoHoKhauList.add(new SoHoKhau(result.getString("CCCD"),
-                        result.getString("DiaChi"), result.getString("MaHoKhau")
+                SoHoKhauList.add(new SoHoKhau(result.getString("HoTen"),
+                        result.getString("DiaChi"), result.getString("MaHoKhau"),result.getInt("SoLuong")
                 ));
             }
             // Add sohokhau to table
@@ -91,37 +96,37 @@ public class SoHoKhauController implements Initializable {
     }
 
     public void delete(ActionEvent event) {
-        SoHoKhau selected = tableView.getSelectionModel().getSelectedItem();
-        if (selected == null) createDialog(Alert.AlertType.WARNING,
-                "Cảnh báo",
-                "Vui lòng chọn hộ khẩu để tiếp tục", "");
-        else {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Xác nhận xóa hộ khẩu");
-            alert.setContentText("Đồng chí muốn xóa hộ khẩu này?");
-            ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-            ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
-            alert.getButtonTypes().setAll(okButton, noButton);
-            alert.showAndWait().ifPresent(type -> {
-                if (type == okButton) {
-                    SoHoKhauList.remove(selected);
-                    // Delete in Database
-                    try {
-                        String DELETE_QUERY = "DELETE FROM nhankhau WHERE `CCCD`= ?";
-                        conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-                        preparedStatement = conn.prepareStatement(DELETE_QUERY);
-                        preparedStatement.setString(1, selected.getMaChuHo());
-                        int result = preparedStatement.executeUpdate();
-                        if (result == 1) createDialog(Alert.AlertType.INFORMATION, "Thông báo", "Xóa thành công!", "");
-                        else createDialog(Alert.AlertType.WARNING, "Thông báo", "Có lỗi, thử lại sau!", "");
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                } else if (type == noButton) {
-                } else {
-                }
-            });
-        }
+//        SoHoKhau selected = tableView.getSelectionModel().getSelectedItem();
+//        if (selected == null) createDialog(Alert.AlertType.WARNING,
+//                "Cảnh báo",
+//                "Vui lòng chọn hộ khẩu để tiếp tục", "");
+//        else {
+//            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+//            alert.setTitle("Xác nhận xóa hộ khẩu");
+//            alert.setContentText("Đồng chí muốn xóa hộ khẩu này?");
+//            ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+//            ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+//            alert.getButtonTypes().setAll(okButton, noButton);
+//            alert.showAndWait().ifPresent(type -> {
+//                if (type == okButton) {
+//                    SoHoKhauList.remove(selected);
+//                    // Delete in Database
+//                    try {
+//                        String DELETE_QUERY = "DELETE FROM nhankhau WHERE `CCCD`= ?";
+//                        conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+//                        preparedStatement = conn.prepareStatement(DELETE_QUERY);
+//                        preparedStatement.setString(1, selected.getMaChuHo());
+//                        int result = preparedStatement.executeUpdate();
+//                        if (result == 1) createDialog(Alert.AlertType.INFORMATION, "Thông báo", "Xóa thành công!", "");
+//                        else createDialog(Alert.AlertType.WARNING, "Thông báo", "Có lỗi, thử lại sau!", "");
+//                    } catch (SQLException e) {
+//                        e.printStackTrace();
+//                    }
+//                } else if (type == noButton) {
+//                } else {
+//                }
+//            });
+//        }
     }
 
     public void detail(ActionEvent event) throws IOException, SQLException {
@@ -165,11 +170,13 @@ public class SoHoKhauController implements Initializable {
         });
         indexColumn.setSortable(false);
 
-        maChuHoColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, String>("MaChuHo"));
+        tenChuHoColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, String>("tenChuHo"));
 
         diaChiColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, String>("DiaChi"));
 
         maHoKhauColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, Integer>("MaHoKhau"));
+
+        soLuongColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, Integer>("soLuongThanhVien"));
 
         int lastIndex = 0;
         int displace = SoHoKhauList.size() % ROWS_PER_PAGE;
@@ -228,11 +235,14 @@ public class SoHoKhauController implements Initializable {
                 });
                 indexColumn.setSortable(false);
 
-                maChuHoColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, String>("MaChuHo"));
+                tenChuHoColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, String>("tenChuHo"));
 
                 diaChiColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, String>("DiaChi"));
 
                 maHoKhauColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, Integer>("MaHoKhau"));
+
+                soLuongColumn.setCellValueFactory(new PropertyValueFactory<SoHoKhau, Integer>("soLuongThanhVien"));
+
 
                 int lastIndex = 0;
                 int displace = filteredData.size() % ROWS_PER_PAGE;
