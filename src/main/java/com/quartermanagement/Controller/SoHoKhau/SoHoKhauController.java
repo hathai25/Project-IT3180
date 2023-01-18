@@ -1,6 +1,7 @@
 package com.quartermanagement.Controller.SoHoKhau;
-import com.quartermanagement.Model.NhanKhau;
+
 import com.quartermanagement.Model.SoHoKhau;
+import com.quartermanagement.Services.SoHoKhauServices;
 import com.quartermanagement.Utils.ViewUtils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
@@ -20,10 +21,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
+
 import static com.quartermanagement.Constants.DBConstants.*;
 import static com.quartermanagement.Constants.FXMLConstants.*;
 import static com.quartermanagement.Utils.Utils.createDialog;
@@ -52,30 +55,20 @@ public class SoHoKhauController implements Initializable {
     private ObservableList<SoHoKhau> SoHoKhauList = FXCollections.observableArrayList();
     // Connect to database
     private Connection conn;
-    private PreparedStatement preparedStatement = null;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         try {
-            // Connecting Database
-            String SELECT_QUERY = "select nhankhau.HoTen,sohokhau.DiaChi,sohokhau.MaHoKhau, count(thanhviencuaho.idNhanKhau)+1 as 'SoLuong' from sohokhau\n" +
-                    "left join thanhviencuaho on thanhviencuaho.idHoKhau = sohokhau.ID\n" +
-                    "inner join nhankhau on sohokhau.MaChuHo = nhankhau.ID\n" +
-                    "group by nhankhau.HoTen,sohokhau.DiaChi,sohokhau.MaHoKhau;";
             conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-            preparedStatement = conn.prepareStatement(SELECT_QUERY);
-            ResultSet result = preparedStatement.executeQuery();
-
+            ResultSet result = SoHoKhauServices.getAllSoHoKhau(conn);
             // Loop the list of sohokhau
             while (result.next()) {
-                SoHoKhauList.add(new SoHoKhau(result.getString("HoTen"),
-                        result.getString("DiaChi"), result.getString("MaHoKhau"),result.getInt("SoLuong")
-                ));
+                SoHoKhauList.add(new SoHoKhau(result.getString("HoTen"), result.getString("DiaChi"), result.getString("MaHoKhau"), result.getInt("SoLuong")));
             }
             // Add sohokhau to table
             tableView.setItems(SoHoKhauList);
-        } catch (SQLException e) {
+            conn.close();
+        } catch (SQLException ignored) {
         }
 
         int soDu = SoHoKhauList.size() % ROWS_PER_PAGE;
@@ -96,7 +89,7 @@ public class SoHoKhauController implements Initializable {
                     }
                 }
             });
-            return row ;
+            return row;
         });
     }
 
@@ -116,9 +109,8 @@ public class SoHoKhauController implements Initializable {
 
     public void delete(ActionEvent event) {
         SoHoKhau selected = tableView.getSelectionModel().getSelectedItem();
-        if (selected == null) createDialog(Alert.AlertType.WARNING,
-                "Cảnh báo",
-                "Vui lòng chọn hộ khẩu để tiếp tục", "");
+        if (selected == null)
+            createDialog(Alert.AlertType.WARNING, "Cảnh báo", "Vui lòng chọn hộ khẩu để tiếp tục", "");
         else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Xác nhận xóa hộ khẩu");
@@ -129,13 +121,8 @@ public class SoHoKhauController implements Initializable {
             alert.showAndWait().ifPresent(type -> {
                 if (type == okButton) {
                     SoHoKhauList.remove(selected);
-                    // Delete in Database
                     try {
-                        String DELETE_QUERY = "DELETE FROM sohokhau WHERE MaHoKhau = ?";
-                        conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-                        preparedStatement = conn.prepareStatement(DELETE_QUERY);
-                        preparedStatement.setString(1, selected.getMaHoKhau());
-                        int result = preparedStatement.executeUpdate();
+                        int result = SoHoKhauServices.deleteSoHoKhau(conn, selected);
                         if (result == 1) createDialog(Alert.AlertType.INFORMATION, "Thông báo", "Xóa thành công!", "");
                         else createDialog(Alert.AlertType.WARNING, "Thông báo", "Có lỗi, thử lại sau!", "");
                         ViewUtils viewUtils = new ViewUtils();
@@ -145,8 +132,6 @@ public class SoHoKhauController implements Initializable {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                } else if (type == noButton) {
-                } else {
                 }
             });
         }
@@ -158,7 +143,7 @@ public class SoHoKhauController implements Initializable {
         loader.setLocation(getClass().getResource(ADD_SOHOKHAU_VIEW_FXML));
         Parent studentViewParent = loader.load();
         Scene scene = new Scene(studentViewParent);
-        add_shk_controller controller= loader.getController();
+        add_shk_controller controller = loader.getController();
         SoHoKhau selected = tableView.getSelectionModel().getSelectedItem();
         if (selected == null) createDialog(Alert.AlertType.WARNING, "Từ từ đã đồng chí", "", "Vui lòng chọn hộ khẩu");
         else {
@@ -216,27 +201,29 @@ public class SoHoKhauController implements Initializable {
         return tableView;
 
     }
+
     @FXML
     private TextField searchTextField;
+
     public void search() {
         FilteredList<SoHoKhau> filteredData = new FilteredList<>(SoHoKhauList, p -> true);
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(soHoKhau -> {
-            if (newValue == null || newValue.isEmpty()) {
-                return true;
-            }
-            String lowerCaseFilter = newValue.toLowerCase();
-            if (soHoKhau.getDiaChi().toLowerCase().contains(lowerCaseFilter)) {
-                return true;
-            } else {
-                return false;
-            }
-        });
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+                if (soHoKhau.getDiaChi().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
             int soDu = filteredData.size() % ROWS_PER_PAGE;
             if (soDu != 0) pagination.setPageCount(filteredData.size() / ROWS_PER_PAGE + 1);
             else pagination.setPageCount(filteredData.size() / ROWS_PER_PAGE);
             pagination.setMaxPageIndicatorCount(5);
-            pagination.setPageFactory(pageIndex->{
+            pagination.setPageFactory(pageIndex -> {
                 indexColumn.setCellValueFactory((Callback<TableColumn.CellDataFeatures<SoHoKhau, SoHoKhau>, ObservableValue<SoHoKhau>>) p -> new ReadOnlyObjectWrapper(p.getValue()));
 
                 indexColumn.setCellFactory(new Callback<TableColumn<SoHoKhau, SoHoKhau>, TableCell<SoHoKhau, SoHoKhau>>() {
@@ -285,73 +272,4 @@ public class SoHoKhauController implements Initializable {
     }
 }
 
-
-
-    /*
-    public void add(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(DETAIL_NHAN_KHAU_VIEW_FXML));
-        Parent studentViewParent = loader.load();
-        Scene scene = new Scene(studentViewParent);
-        NhanKhauDetailViewController controller = loader.getController();
-        controller.hide_update_btn();
-        stage.setScene(scene);
-    }
-
-
-    public void delete(ActionEvent event) {
-        NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
-        if(selected == null) createDialog(Alert.AlertType.WARNING,
-                "Cảnh báo",
-                "Vui lòng chọn nhân khẩu để tiếp tục","");
-        else {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Xác nhận xóa nhân khẩu");
-            alert.setContentText("Đồng chí muốn xóa nhân khẩu này?");
-            ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-            ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
-            alert.getButtonTypes().setAll(okButton, noButton);
-            alert.showAndWait().ifPresent(type -> {
-                if (type == okButton) {
-                    SoHoKhauList.remove(selected);
-                    // Delete in Database
-                    try {
-                        String DELETE_QUERY = "DELETE FROM nhankhau WHERE `CCCD`= ?";
-                        conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-                        preparedStatement = conn.prepareStatement(DELETE_QUERY);
-                        preparedStatement.setString(1, selected.getCCCD());
-                        int result = preparedStatement.executeUpdate();
-                        if(result ==1) createDialog(Alert.AlertType.INFORMATION,"Thông báo","Xóa thành công!","");
-                        else createDialog(Alert.AlertType.WARNING,"Thông báo","Có lỗi, thử lại sau!","");
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                } else if (type == noButton) {
-                } else {
-                }
-            });
-        }
-    }
-
-
-
-    public void detail(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(DETAIL_NHAN_KHAU_VIEW_FXML));
-        Parent studentViewParent = loader.load();
-        Scene scene = new Scene(studentViewParent);
-        NhanKhauDetailViewController controller = loader.getController();
-        NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
-        if(selected == null) createDialog(Alert.AlertType.WARNING, "Từ từ đã đồng chí", "","Vui lòng chọn một nhân khẩu");
-        else {
-            controller.setNhanKhau(selected);
-            controller.hide_add_btn();
-            controller.setTitle("Cập nhật nhân khẩu mới");
-            stage.setScene(scene);
-        }
-    }
-
-     */
 
