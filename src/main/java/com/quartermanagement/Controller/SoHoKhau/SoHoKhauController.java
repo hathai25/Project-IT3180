@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -83,6 +84,20 @@ public class SoHoKhauController implements Initializable {
         pagination.setMaxPageIndicatorCount(5);
         pagination.setPageFactory(this::createTableView);
 
+        tableView.setRowFactory(tv -> {
+            TableRow<SoHoKhau> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    // Perform actions with rowData
+                    try {
+                        detail(event);
+                    } catch (IOException | SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            return row ;
+        });
     }
 
 
@@ -137,7 +152,7 @@ public class SoHoKhauController implements Initializable {
         }
     }
 
-    public void detail(ActionEvent event) throws IOException, SQLException {
+    public void detail(MouseEvent event) throws IOException, SQLException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(ADD_SOHOKHAU_VIEW_FXML));
