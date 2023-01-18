@@ -59,9 +59,9 @@
    <center>
       <AnchorPane fx:id="basePane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f4f6fb;" BorderPane.alignment="CENTER">
          <children>
-            <BarChart layoutX="31.0" layoutY="294.0" prefHeight="250.0" prefWidth="422.0" title="Top cơ sở vật chất sắp hết số lượng">
+            <BarChart fx:id="facilityChart" barGap="2.0" categoryGap="8.0" layoutX="31.0" layoutY="294.0" prefHeight="250.0" prefWidth="422.0" style="-fx-bar-fill: #1bbde4;" stylesheets="@../styles/bar-chart.css" title="Top cơ sở vật chất sắp hết số lượng">
               <xAxis>
-                <CategoryAxis side="BOTTOM" />
+                <CategoryAxis side="BOTTOM" stylesheets="@../styles/bar-chart.css" />
               </xAxis>
               <yAxis>
                 <NumberAxis side="LEFT" />

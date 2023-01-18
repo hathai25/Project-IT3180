@@ -1,16 +1,20 @@
 package com.quartermanagement.Controller;
 
+import com.quartermanagement.Services.CoSoVatChatServices;
 import com.quartermanagement.Services.NhanKhauServices;
 import com.quartermanagement.Services.SoHoKhauServices;
 import com.quartermanagement.Utils.ViewUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
@@ -24,6 +28,8 @@ public class AdminController implements Initializable {
     private Button signUpUserButton;
     @FXML
     private Label nhankhauLabel, hokhauLabel, usernameLabel;
+    @FXML
+    private BarChart facilityChart;
     //Save user role
     private static final Preferences userPreferences = Preferences.userRoot();
     public static final String userRole = userPreferences.get("role", "");
@@ -56,6 +62,12 @@ public class AdminController implements Initializable {
         nhankhauLabel.setText("" + NhanKhauServices.getTotalNhanKhau());
         hokhauLabel.setText("" + SoHoKhauServices.getTotalSoHoKhau());
         usernameLabel.setText(toUpperFirstLetter(userName));
+
+        XYChart.Series dataSeries = new XYChart.Series();
+        for (Map.Entry<String, Integer> entry : CoSoVatChatServices.getLeastFiveFacility().entrySet()) {
+            dataSeries.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
+        }
+        facilityChart.getData().add(dataSeries);
     }
 
     public void switchToLichHoatDong() throws IOException {
