@@ -1,6 +1,7 @@
 package com.quartermanagement.Controller.CoSoVatChat;
 
 import com.quartermanagement.Model.CoSoVatChat;
+import com.quartermanagement.Services.CoSoVatChatServices;
 import com.quartermanagement.Utils.ViewUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
@@ -51,12 +53,13 @@ public class CoSoVatChatDeTailController implements Initializable {
         soLuongKhaDungTextField.setText(String.valueOf(coSoVatChat.getSoLuongKhaDung()));
 
     }
-    public void goBack (ActionEvent event) throws IOException {
+
+    public void goBack(ActionEvent event) throws IOException {
         ViewUtils viewUtils = new ViewUtils();
         viewUtils.switchToCoSoVatChat_Admin_view(event);
     }
 
-    public void update (ActionEvent event) throws IOException {
+    public void update(ActionEvent event) throws IOException {
         ViewUtils viewUtils = new ViewUtils();
         String maDoDung = maDoDungTextField.getText();
         String tenDoDung = tenDoDungTextField.getText();
@@ -71,28 +74,16 @@ public class CoSoVatChatDeTailController implements Initializable {
                     "Đồng chí giữ bình tĩnh",
                     "", "Vui lòng nhập đủ thông tin!"
             );
-        } else if (Integer.parseInt(soLuongKhaDung) > Integer.parseInt(soLuong)){
+        } else if (Integer.parseInt(soLuongKhaDung) > Integer.parseInt(soLuong)) {
             createDialog(
                     Alert.AlertType.WARNING,
                     "Mời đồng chí nhập lại!",
                     "", "Mong đồng chí tham khảo thêm các định luật bảo toàn vật chất"
             );
-        }
-
-        else {
+        } else {
             try {
-                Connection conn;
-                PreparedStatement preparedStatement;
-                String UPDATE_QUERY ="UPDATE cosovatchat SET `MaDoDung`=?, `TenDoDung`=?, `SoLuong`=?, `SoLuongKhaDung`=? WHERE `MaDoDung`=?";
-                conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-                preparedStatement = conn.prepareStatement((UPDATE_QUERY));
-                preparedStatement.setString(1, maDoDung);
-                preparedStatement.setString(2, tenDoDung);
-                preparedStatement.setString(3, soLuong);
-                preparedStatement.setString(4, soLuongKhaDung);
-                preparedStatement.setString(5, maDoDung);
-
-                int result = preparedStatement.executeUpdate();
+                Connection conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+                int result = CoSoVatChatServices.updateFacility(conn, maDoDung, tenDoDung, soLuong, soLuongKhaDung);
                 if (result == 1) {
                     createDialog(
                             Alert.AlertType.CONFIRMATION,
@@ -114,7 +105,7 @@ public class CoSoVatChatDeTailController implements Initializable {
         }
     }
 
-    public void addnew (ActionEvent event) throws IOException {
+    public void addnew(ActionEvent event) throws IOException {
         ViewUtils viewUtils = new ViewUtils();
         String maDoDung;
         String tenDoDung = tenDoDungTextField.getText();
@@ -139,15 +130,7 @@ public class CoSoVatChatDeTailController implements Initializable {
                     check.setInt(1, rand);
                     rs = check.executeQuery();
                 } while (rs.next());
-
-                String INSERT_QUERY = "INSERT INTO cosovatchat VALUES(?,?,?,?)";
-                preparedStatement = conn.prepareStatement((INSERT_QUERY));
-                preparedStatement.setString(1, maDoDung);
-                preparedStatement.setString(2, tenDoDung);
-                preparedStatement.setString(3, soLuong);
-                preparedStatement.setString(4, soLuongKhaDung);
-
-                int result = preparedStatement.executeUpdate();
+                int result = CoSoVatChatServices.addFacility(conn, maDoDung, tenDoDung, soLuong, soLuongKhaDung);
                 if (result == 1) {
                     createDialog(
                             Alert.AlertType.CONFIRMATION,
@@ -169,7 +152,9 @@ public class CoSoVatChatDeTailController implements Initializable {
         }
     }
 
-    public void hide_add_btn() { add_btn.setVisible(false); }
+    public void hide_add_btn() {
+        add_btn.setVisible(false);
+    }
 
     public void hide_update_btn() {
         update_btn.setVisible(false);

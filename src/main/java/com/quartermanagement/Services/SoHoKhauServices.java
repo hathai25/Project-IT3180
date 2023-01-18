@@ -14,9 +14,10 @@ public class SoHoKhauServices {
     public static ResultSet getSoHoKhauViaMaHoKhau(Connection conn, SoHoKhau soHoKhau) throws SQLException {
         String query = "SELECT * FROM sohokhau, nhankhau, cccd where sohokhau.MaChuHo = nhankhau.ID and nhankhau.id = cccd.idNhankhau and sohokhau.MaHoKhau = ?";
         PreparedStatement preparedStatement = conn.prepareStatement(query);
-        preparedStatement.setString(1,soHoKhau.getMaHoKhau());
+        preparedStatement.setString(1, soHoKhau.getMaHoKhau());
         return preparedStatement.executeQuery();
     }
+
     public static ResultSet getAllSoHoKhau(Connection conn) throws SQLException {
         String SELECT_QUERY = "select nhankhau.HoTen,sohokhau.DiaChi,sohokhau.MaHoKhau, count(thanhviencuaho.idNhanKhau)+1 as 'SoLuong' from sohokhau\n" +
                 "left join thanhviencuaho on thanhviencuaho.idHoKhau = sohokhau.ID\n" +
@@ -31,7 +32,7 @@ public class SoHoKhauServices {
                 "where thanhviencuaho.idNhanKhau = nhankhau.ID and thanhviencuaho.idHoKhau = sohokhau.ID and cccd.idNhankhau = nhankhau.ID\n" +
                 "and sohokhau.MaHoKhau = ?;";
         PreparedStatement preparedStatement = conn.prepareStatement(query);
-        preparedStatement.setString(1,soHoKhau.getMaHoKhau());
+        preparedStatement.setString(1, soHoKhau.getMaHoKhau());
         return preparedStatement.executeQuery();
     }
 
@@ -42,6 +43,7 @@ public class SoHoKhauServices {
         preparedStatement.setString(1, selected.getMaHoKhau());
         return preparedStatement.executeUpdate();
     }
+
     public static ResultSet getChuHo(Connection conn) throws SQLException {
         String SELECT_QUERY = "SELECT nhankhau.*, cccd.CCCD\n" +
                 "FROM nhankhau\n" +
@@ -55,7 +57,7 @@ public class SoHoKhauServices {
 
     public static PreparedStatement addSoHoKhau(Connection conn, String maHoKhau, String diaChi, NhanKhau selected) throws SQLException {
         String INSERT_QUERY = "INSERT INTO `sohokhau`(`MaHoKhau`, `DiaChi`, `MaChuHo`,`NgayLap`) VALUES (?,?,?,?)";
-        PreparedStatement preparedStatement = conn.prepareStatement(INSERT_QUERY,Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement preparedStatement = conn.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setString(1, maHoKhau);
         preparedStatement.setString(2, diaChi);
         preparedStatement.setInt(3, selected.getID());
@@ -89,8 +91,8 @@ public class SoHoKhauServices {
                 "SET quanHeVoiChuHo = ?\n" +
                 "WHERE idNhanKhau in (SELECT nhankhau.ID FROM nhankhau JOIN cccd ON nhankhau.ID = cccd.idNhankhau WHERE cccd.CCCD = ?)\n";
         PreparedStatement preparedStatement = conn.prepareStatement(UPDATE_QUERY);
-        preparedStatement.setString(1,quanHe);
-        preparedStatement.setString(2,selected.getCCCD());
+        preparedStatement.setString(1, quanHe);
+        preparedStatement.setString(2, selected.getCCCD());
         return preparedStatement.executeUpdate();
     }
 
