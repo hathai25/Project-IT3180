@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 07, 2023 lúc 06:15 AM
+-- Thời gian đã tạo: Th1 18, 2023 lúc 02:40 PM
 -- Phiên bản máy phục vụ: 10.4.25-MariaDB
 -- Phiên bản PHP: 8.1.10
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `cccd` (
   `ID` int(11) NOT NULL,
   `idNhankhau` int(11) NOT NULL,
-  `CCCD` bigint(15) NOT NULL,
+  `CCCD` varchar(15) NOT NULL,
   `NgayCap` date DEFAULT '2020-01-01',
   `NoiCap` text DEFAULT 'Hà Nội'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -40,15 +40,16 @@ CREATE TABLE `cccd` (
 --
 
 INSERT INTO `cccd` (`ID`, `idNhankhau`, `CCCD`, `NgayCap`, `NoiCap`) VALUES
-(6, 1, 123456789258, '2020-01-01', 'Hà Nội'),
-(12, 25, 147445611111, '2020-01-01', 'Hà Nội'),
-(15, 23, 26202244, '0000-00-00', ''),
-(17, 30, 12345678, '2020-01-01', 'Hà Nội'),
-(19, 32, 25678916, '2020-01-01', 'Hà Nội'),
-(25, 51, 147896325456, '2020-01-01', 'Hà Nội'),
-(26, 53, 26202001235, '2020-01-01', 'Hà Nội'),
-(28, 57, 12345678915, '2020-01-01', 'Hà Nội'),
-(29, 59, 26202001456, '2020-01-01', 'Hà Nội');
+(6, 1, '123456789258', '2020-01-01', 'Hà Nội'),
+(15, 23, '26202244', '0000-00-00', ''),
+(19, 32, '25678916', '2020-01-01', 'Hà Nội'),
+(26, 53, '26202001235', '2020-01-01', 'Hà Nội'),
+(28, 57, '12345678915', '2020-01-01', 'Hà Nội'),
+(35, 65, '19274772366', '2020-01-01', 'Hà Nội'),
+(36, 66, '019207774621', '2020-01-01', 'Hà Nội'),
+(37, 67, '019202007421', '2020-01-01', 'Hà Nội'),
+(40, 70, '019202002411', '2020-01-01', 'Hà Nội'),
+(41, 71, '019202008372', '2020-01-01', 'Hà Nội');
 
 -- --------------------------------------------------------
 
@@ -195,8 +196,16 @@ INSERT INTO `nhankhau` (`ID`, `HoTen`, `BiDanh`, `NgaySinh`, `NoiSinh`, `GioiTin
 (56, 'vvvv', 'v', '2023-01-18', 'v', 'Nam', 'v', 'v', 'v', 'v', 'v', 'v', 'v'),
 (57, 'Nguyễn Xuân Bách', 'hh', '2023-02-01', 'hhh', 'Nam', 'hh', 'hh', 'hh', 'hh', 'hh', 'hh', 'hhhhh'),
 (58, 'Nguyễn Xuân Bách', 'hh', '2023-02-01', 'hhh', 'Nam', 'hh', 'hh', 'hh', 'hh', 'hh', 'hh', 'hhhhh'),
-(59, 'bách đây chứ đâu', 'b', '2023-01-10', 'b', 'Nam', 'b', 'b', 'b', 'b', 'b', 'b', 'b'),
-(60, 'bách đây chứ đâu', 'b', '2023-01-10', 'b', 'Nam', 'b', 'b', 'b', 'b', 'b', 'b', 'b');
+(60, 'bách đây chứ đâu', 'b', '2023-01-10', 'b', 'Nam', 'b', 'b', 'b', 'b', 'b', 'b', 'b'),
+(61, 'adsfads', 'adfa', '2023-01-10', 'ads', 'Nam', 'ads', 'ád', 'ad', 'ads', 'ads', 'sad', 'dsa'),
+(62, 'Hà Hiểu Thành', '12', '2023-01-04', 'adsf', 'Nam', 'adsf', 'adf', 'ádf', 'adsf', 'adf', 'ads', 'adsf'),
+(63, 'Hà Anh Tuấn', 'Tuấn', '2023-01-05', 'adsf', 'Nam', 'adsf', 'adsfa', 'ádfa', 'adsfa', 'dsfasdf', 'ádf', 'dfsd'),
+(64, 'Hà Thành', '123', '2023-01-05', 'adsf', 'Nam', 'fadsf', 'adfsa', 'à', 'dfads', 'fasd', 'adsf', 'dsfa'),
+(65, 'AHAHAHA', 'aa', '2023-01-11', 'adsf', 'Nam', 'sdfa', 'adsfa', 'dsfad', 'dsfa', 'sdfa', 'sfadsfadfa', 'dsfa'),
+(66, 'adsfa', 'đầ', '2023-01-04', 'adf', 'Nam', 'adsf', 'ádf', 'adsf', 'ads', 'ádf', 'ádf', 'ádf'),
+(67, 'adf', 'sad', '2023-01-11', 'ad', 'Nam', 'a', 'ads', 'sda', 'ád', 'ád', 'dsa', 'ads'),
+(70, 'Hà Hiểu Thành', '12', '2023-01-05', 'adsadsfadsfad', 'Nam', 'fadsfadf', 'sfadsfasdfads', 'adsfasdfa', 'dsfadsfas', 'dfadsfadsfads', 'sdfadsfadsfadsf', 'fadsfa'),
+(71, 'Hà Hiểu Thành 1a', 'd', '2023-02-02', 'adsfadsf', 'Nam', 'dsfadsf', 'dfadfadfadsf', 'adsfads', 'fadsfa', 'dsfadsfa', 'fadsfadf', 'adsfads');
 
 -- --------------------------------------------------------
 
@@ -219,15 +228,22 @@ CREATE TABLE `sohokhau` (
 --
 
 INSERT INTO `sohokhau` (`ID`, `MaHoKhau`, `DiaChi`, `MaChuHo`, `NgayLap`, `NgayChuyenDi`, `LyDoChuyen`) VALUES
-(1, '123123', 'phố 7 phường La Khê', 25, '0000-00-00', '0000-00-00', ''),
-(5, '123321', 'Dinh Hoa', 1, '0000-00-00', '0000-00-00', ''),
-(999, '123123123', 'phố 7 phường La Khê', 25, '0000-00-00', '0000-00-00', ''),
-(1000, '1234', 'so 8 la khe', 1, '0000-00-00', '0000-00-00', ''),
-(1001, '777', 'dia chi day', 1, '0000-00-00', '0000-00-00', ''),
-(1002, '987', 'thanh', 1, '0000-00-00', '0000-00-00', ''),
-(1003, '9876', 'thanh', 1, NULL, NULL, NULL),
-(1004, '98', 'thanh', 1, NULL, NULL, NULL),
-(1005, '999', 'thanhh', 1, NULL, NULL, NULL);
+(5, '123321', 'Dinh Hoa', 66, '2013-01-02', '0000-00-00', ''),
+(999, '123123123', 'phố 7 phường La Khê', 25, '2019-02-09', '0000-00-00', ''),
+(1000, '1234', 'so 8 la khe', 70, '2020-09-09', '0000-00-00', ''),
+(1001, '777', 'dia chi day', 1, '2012-02-28', '0000-00-00', ''),
+(1002, '987', 'thanh', 1, '2014-02-02', '0000-00-00', ''),
+(1004, '98', 'thanh', 1, '2011-01-01', NULL, NULL),
+(1005, '999', 'thanhh', 1, '2013-12-12', NULL, NULL),
+(1006, '3434', 'dhtn', 1, '2023-01-17', NULL, NULL),
+(1007, '789', 'Thái Nguyên', 30, '2023-01-17', NULL, NULL),
+(1008, 'aa', 'a', 30, '2023-01-17', NULL, NULL),
+(1009, 'hhh', 'hhh', 51, '2023-01-17', NULL, NULL),
+(1011, '188063175', 'ĐHTN', 53, '2023-01-17', NULL, NULL),
+(1012, '364464530', 'KAKAKKA', 23, '2023-01-17', NULL, NULL),
+(1013, '261287022', 'hihihihihihi', 57, '2023-01-17', NULL, NULL),
+(1015, '306037256', 'CHỢ CHU', 63, '2023-01-17', NULL, NULL),
+(1016, '513316587', 'JJJJJ', 64, '2023-01-17', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -270,6 +286,16 @@ CREATE TABLE `thanhviencuaho` (
   `idHoKhau` int(11) NOT NULL,
   `quanHeVoiChuHo` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Đang đổ dữ liệu cho bảng `thanhviencuaho`
+--
+
+INSERT INTO `thanhviencuaho` (`idNhanKhau`, `idHoKhau`, `quanHeVoiChuHo`) VALUES
+(32, 1001, 'Bo'),
+(61, 261287022, 'bo'),
+(65, 5, 'aa'),
+(71, 1000, '1a');
 
 -- --------------------------------------------------------
 
@@ -382,19 +408,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT cho bảng `cccd`
 --
 ALTER TABLE `cccd`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT cho bảng `nhankhau`
 --
 ALTER TABLE `nhankhau`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT cho bảng `sohokhau`
 --
 ALTER TABLE `sohokhau`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1006;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1017;
 
 --
 -- AUTO_INCREMENT cho bảng `user`
@@ -436,7 +462,7 @@ ALTER TABLE `lichhoatdong`
 -- Các ràng buộc cho bảng `sohokhau`
 --
 ALTER TABLE `sohokhau`
-  ADD CONSTRAINT `sohokhau_ibfk_1` FOREIGN KEY (`MaChuHo`) REFERENCES `nhankhau` (`ID`);
+  ADD CONSTRAINT `sohokhau_ibfk_1` FOREIGN KEY (`MaChuHo`) REFERENCES `nhankhau` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `tamtru`
