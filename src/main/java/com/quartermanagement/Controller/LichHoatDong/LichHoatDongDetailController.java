@@ -48,7 +48,6 @@ public class LichHoatDongDetailController implements Initializable {
     private Text title;
 
 
-
     @FXML
     private TableView<NhanKhau> tableView;
     @FXML
@@ -67,40 +66,34 @@ public class LichHoatDongDetailController implements Initializable {
         maHoatDongTextField.setText(String.valueOf(lichHoatDong.getMaHoatDong()));
         tenHoatDongTextField.setText(lichHoatDong.getTenHoatDong());
         String startTime = lichHoatDong.getStartTime();
-        String [] starttime = startTime.split(" ");
+        String[] starttime = startTime.split(" ");
         startDatePicker.setValue(LOCAL_DATE(starttime[1]));
         startTimeTextField.setText(starttime[0]);
         String endTime = lichHoatDong.getEndTime();
-        String [] endtime = endTime.split(" ");
+        String[] endtime = endTime.split(" ");
         endDatePicker.setValue(LOCAL_DATE(endtime[1]));
         endTimeTextField.setText(endtime[0]);
         statusChoiceBox.setValue(String.valueOf(lichHoatDong.getStatus()));
 //        maNguoiTaoChoiceBox.setValue(String.valueOf(lichHoatDong.getMaNguoiTao()));
     }
 
-    public void goBack (ActionEvent event) throws IOException {
+    public void goBack(ActionEvent event) throws IOException {
         ViewUtils viewUtils = new ViewUtils();
         viewUtils.switchToLichHoatDong_Admin_view(event);
     }
 
-    public void update (ActionEvent event) throws IOException {
+    public void update(ActionEvent event) throws IOException {
         ViewUtils viewUtils = new ViewUtils();
         String maHoatDong = maHoatDongTextField.getText();
         String tenHoatDong = tenHoatDongTextField.getText();
-        String startDateTime = startDatePicker.getValue().toString();
         String startTime = startTimeTextField.getText();
-        String starttime = startDateTime + " " + startTime;
-        String endDateTime = endDatePicker.getValue().toString();
         String endTime = endTimeTextField.getText();
-        String endtime = endDateTime + " " + endTime;
         String status = statusChoiceBox.getValue();
-
         NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
-        String maNguoiTao = String.valueOf(selected.getID());
 
-
-        if (maHoatDong.trim().equals("") || tenHoatDong.trim().equals("") || startTime.trim().equals("") || endTime.trim().equals("") || maNguoiTao.trim().equals("")
-                || startDateTime.trim().equals("") || endDateTime.trim().equals("")) {
+        if (selected == null) createDialog(Alert.AlertType.WARNING, "Từ từ đã đồng chí", "", "Vui lòng chọn nhân khẩu");
+        if (maHoatDong.trim().equals("") || tenHoatDong.trim().equals("") || startTime.trim().equals("") || endTime.trim().equals("")
+                || startDatePicker.getValue() == null || endDatePicker.getValue() == null) {
 
             createDialog(
                     Alert.AlertType.WARNING,
@@ -108,11 +101,17 @@ public class LichHoatDongDetailController implements Initializable {
                     "", "Vui lòng nhập đủ thông tin!"
             );
         } else {
+            String startDateTime = startDatePicker.getValue().toString();
+            String starttime = startDateTime + " " + startTime;
+            String endDateTime = endDatePicker.getValue().toString();
+            String endtime = endDateTime + " " + endTime;
+
+
             if (!isValidTime(startTime) || !isValidTime(endTime)) {
                 createDialog(Alert.AlertType.WARNING, "Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng hh:mm:ss", "");
-            } else if(!greaterTime(startDateTime, startTime, endDateTime, endTime)){
-                createDialog(Alert.AlertType.WARNING,"Từ từ thôi đồng chí!", "Thời gian kết thúc phải lớn hơn thời gian bắt đầu!", "");
-            }else {
+            } else if (!greaterTime(startDateTime, startTime, endDateTime, endTime)) {
+                createDialog(Alert.AlertType.WARNING, "Từ từ thôi đồng chí!", "Thời gian kết thúc phải lớn hơn thời gian bắt đầu!", "");
+            } else {
                 try {
                     Connection conn;
                     PreparedStatement preparedStatement;
@@ -124,7 +123,7 @@ public class LichHoatDongDetailController implements Initializable {
                     preparedStatement.setString(3, starttime);
                     preparedStatement.setString(4, endtime);
                     preparedStatement.setString(5, status);
-                    preparedStatement.setString(6, maNguoiTao);
+                    preparedStatement.setString(6, String.valueOf(selected.getID()));
                     preparedStatement.setString(7, maHoatDong);
 
                     int result = preparedStatement.executeUpdate();
@@ -150,37 +149,39 @@ public class LichHoatDongDetailController implements Initializable {
         }
     }
 
-    public void addnew (ActionEvent event) throws IOException {
+    public void addnew(ActionEvent event) throws IOException {
         ViewUtils viewUtils = new ViewUtils();
         String maHoatDong;
         String tenHoatDong = tenHoatDongTextField.getText();
-        String startDateTime = startDatePicker.getValue().toString();
         String startTime = startTimeTextField.getText();
-        String starttime = startDateTime + " " + startTime;
-        String endDateTime = endDatePicker.getValue().toString();
         String endTime = endTimeTextField.getText();
-        String endtime = endDateTime + " " + endTime;
         String status = "Chưa duyệt";
         LocalDateTime currentTime = LocalDateTime.now();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String thoiGianTao = dtf.format(currentTime);
 
         NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
-        String maNguoiTao = String.valueOf(selected.getID());
         if (selected == null) createDialog(Alert.AlertType.WARNING, "Từ từ đã đồng chí", "", "Vui lòng chọn nhân khẩu");
-            else if (tenHoatDong.trim().equals("") ||startTime.trim().equals("") || endTime.trim().equals("") || maNguoiTao.trim().equals("")
-                || startDateTime.trim().equals("") || endDateTime.trim().equals("")) {
+        if (tenHoatDong.trim().equals("") || startTime.trim().equals("") || endTime.trim().equals("")
+                || startDatePicker.getValue() == null || endDatePicker.getValue() == null) {
 
             createDialog(
                     Alert.AlertType.WARNING,
                     "Đồng chí giữ bình tĩnh",
                     "", "Vui lòng nhập đủ thông tin!"
             );
-        } else if(!isValidTime(startTime) || !isValidTime(endTime)){
-            createDialog(Alert.AlertType.WARNING,"Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng hh:mm:ss", "");
-        } else if(!greaterTime(startDateTime, startTime, endDateTime, endTime)){
-            createDialog(Alert.AlertType.WARNING,"Từ từ thôi đồng chí!", "Thời gian kết thúc phải lớn hơn thời gian bắt đầu!", "");
-        } else{
+        } else {
+            String startDateTime = startDatePicker.getValue().toString();
+            String starttime = startDateTime + " " + startTime;
+            String endDateTime = endDatePicker.getValue().toString();
+            String endtime = endDateTime + " " + endTime;
+
+            if (!isValidTime(startTime) || !isValidTime(endTime)) {
+                createDialog(Alert.AlertType.WARNING, "Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng hh:mm:ss", "");
+            } else if (!greaterTime(startDateTime, startTime, endDateTime, endTime)) {
+                createDialog(Alert.AlertType.WARNING, "Từ từ thôi đồng chí!", "Thời gian kết thúc phải lớn hơn thời gian bắt đầu!", "");
+            } else {
+
                 try {
                     Connection conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
                     PreparedStatement preparedStatement;
@@ -222,10 +223,13 @@ public class LichHoatDongDetailController implements Initializable {
                     e.printStackTrace();
                 }
                 viewUtils.switchToLichHoatDong_Admin_view(event);
+            }
         }
     }
 
-    public void hide_add_btn() { add_btn.setVisible(false); }
+    public void hide_add_btn() {
+        add_btn.setVisible(false);
+    }
 
     public void hide_update_btn() {
         update_btn.setVisible(false);
@@ -236,12 +240,12 @@ public class LichHoatDongDetailController implements Initializable {
         maHoatDongPane.setVisible(false);
     }
 
-    public void hide_statusPane(){
+    public void hide_statusPane() {
         statusPane.setVisible(false);
     }
 
     public void setTitle(String title) {
-       this.title.setText(title);
+        this.title.setText(title);
     }
 
     public void setRowSelected(LichHoatDong lichHoatDong) {
@@ -257,8 +261,6 @@ public class LichHoatDongDetailController implements Initializable {
     }
 
 
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         statusChoiceBox.getItems().add("Chưa duyệt");
@@ -270,7 +272,7 @@ public class LichHoatDongDetailController implements Initializable {
         try {
             ResultSet result = NhanKhauServices.getAllNhanKhau();
             while (result.next()) {
-                nhanKhauList.add(new NhanKhau(result.getInt("ID"),result.getString("HoTen"), result.getString("BiDanh"),
+                nhanKhauList.add(new NhanKhau(result.getInt("ID"), result.getString("HoTen"), result.getString("BiDanh"),
                         convertDate(result.getString("NgaySinh")), result.getString("CCCD"), result.getString("NoiSinh"),
                         result.getString("GioiTinh"), result.getString("NguyenQuan"), result.getString("DanToc"),
                         result.getString("NoiThuongTru"), result.getString("TonGiao"), result.getString("QuocTich"),
@@ -330,10 +332,6 @@ public class LichHoatDongDetailController implements Initializable {
 //        }
 
     }
-
-
-
-
 
 
 }
