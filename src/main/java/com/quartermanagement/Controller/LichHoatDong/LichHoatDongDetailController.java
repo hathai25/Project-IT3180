@@ -2,13 +2,13 @@ package com.quartermanagement.Controller.LichHoatDong;
 
 import com.quartermanagement.Model.LichHoatDong;
 import com.quartermanagement.Model.NhanKhau;
-import com.quartermanagement.Controller.NhanKhau.NhanKhauController;
 import com.quartermanagement.Services.NhanKhauServices;
 import com.quartermanagement.Utils.ViewUtils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,6 +23,7 @@ import java.net.URL;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -108,7 +109,7 @@ public class LichHoatDongDetailController implements Initializable {
             );
         } else {
             if (!isValidTime(startTime) || !isValidTime(endTime)) {
-                createDialog(Alert.AlertType.WARNING, "Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng hh:mm", "");
+                createDialog(Alert.AlertType.WARNING, "Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng hh:mm:ss", "");
             } else if(!greaterTime(startDateTime, startTime, endDateTime, endTime)){
                 createDialog(Alert.AlertType.WARNING,"Từ từ thôi đồng chí!", "Thời gian kết thúc phải lớn hơn thời gian bắt đầu!", "");
             }else {
@@ -176,7 +177,7 @@ public class LichHoatDongDetailController implements Initializable {
                     "", "Vui lòng nhập đủ thông tin!"
             );
         } else if(!isValidTime(startTime) || !isValidTime(endTime)){
-            createDialog(Alert.AlertType.WARNING,"Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng hh:mm", "");
+            createDialog(Alert.AlertType.WARNING,"Từ từ thôi đồng chí!", "Hãy chọn đúng định dạng hh:mm:ss", "");
         } else if(!greaterTime(startDateTime, startTime, endDateTime, endTime)){
             createDialog(Alert.AlertType.WARNING,"Từ từ thôi đồng chí!", "Thời gian kết thúc phải lớn hơn thời gian bắt đầu!", "");
         } else{
@@ -242,6 +243,19 @@ public class LichHoatDongDetailController implements Initializable {
     public void setTitle(String title) {
        this.title.setText(title);
     }
+
+    public void setRowSelected(LichHoatDong lichHoatDong) {
+        int maNguoiTao = lichHoatDong.getMaNguoiTao();
+        int index = -1;
+        for (int i = 0; i < nhanKhauList.size(); i++) {
+            if (nhanKhauList.get(i).getID() == maNguoiTao) {
+                index = i;
+                break;
+            }
+        }
+        tableView.getSelectionModel().select(index);
+    }
+
 
 
 
