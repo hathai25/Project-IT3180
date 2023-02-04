@@ -60,7 +60,7 @@ public class Utils {
     public static boolean isValidTime(String time)
     {
 //        String regex = "^(2[0-3]{2}|[01]?[0-9]{2}):([0-5]?[0-9]{2})$";
-        String regex = "^(2[0-3]|[1][0-9]|[0][0-9]):(0[0-9]|[1-5][0-9])$";
+        String regex = "^(2[0-3]|[1][0-9]|[0][0-9]):(0[0-9]|[1-5][0-9]):(0[0-9]|[1-5][0-9])$";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(time);
         return m.matches();
@@ -71,8 +71,8 @@ public class Utils {
         String[] startTimeArr = startTime.split(":");
         String[] endDateArr = endDate.split("-");
         String[] endTimeArr = endTime.split(":");
-        String starttime = startDateArr[0] + startDateArr[1] + startDateArr[2] + startTimeArr[0]+ startTimeArr[1];
-        String endtime = endDateArr[0] + endDateArr[1] + endDateArr[2] + endTimeArr[0] + endTimeArr[1];
+        String starttime = startDateArr[0] + startDateArr[1] + startDateArr[2] + startTimeArr[0]+ startTimeArr[1] + startTimeArr[2];
+        String endtime = endDateArr[0] + endDateArr[1] + endDateArr[2] + endTimeArr[0] + endTimeArr[1] + endTimeArr[2];
         if(Long.parseLong(endtime) > Long.parseLong(starttime)) return true;
         else return false;
     }
