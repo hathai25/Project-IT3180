@@ -74,7 +74,7 @@ public class CoSoVatChatDeTailController implements Initializable {
                     "Đồng chí giữ bình tĩnh",
                     "", "Vui lòng nhập đủ thông tin!"
             );
-        } else if (Integer.parseInt(soLuongKhaDung) > Integer.parseInt(soLuong)) {
+        } else if (Integer.parseInt(soLuongKhaDung) > Integer.parseInt(soLuong) || Integer.parseInt(soLuongKhaDung) < 0) {
             createDialog(
                     Alert.AlertType.WARNING,
                     "Mời đồng chí nhập lại!",
