@@ -136,35 +136,81 @@ public class LichHoatDongDetailController implements Initializable {
                 try {
                     Connection conn;
                     PreparedStatement preparedStatement;
-                    String UPDATE_QUERY = "UPDATE lichhoatdong SET `MaHoatDong`=?, `TenHoatDong`=?, `ThoiGianBatDau`=?, `ThoiGianKetThuc`=?, `DuocDuyet`=?, `MaNguoiTao`=? WHERE `MaHoatDong`=?";
                     conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-                    preparedStatement = conn.prepareStatement((UPDATE_QUERY));
-                    preparedStatement.setString(1, maHoatDong);
-                    preparedStatement.setString(2, tenHoatDong);
-                    preparedStatement.setString(3, starttime);
-                    preparedStatement.setString(4, endtime);
-                    preparedStatement.setString(5, status);
-                    preparedStatement.setString(6, maNguoiTao);
-                    preparedStatement.setString(7, maHoatDong);
+                    int result = 0;
 
-                    int result = preparedStatement.executeUpdate();
                     System.out.println(pre_status + "|||" + status);
+
                     if (pre_status.equals("Chưa duyệt") && status.equals("Chấp nhận")) {
-                        String UPDATE_SOLUONG_QUERY = "UPDATE cosovatchat c JOIN hoatdong_cosovatchat s ON c.MaDoDung = s.MaDoDung SET c.SoLuongKhaDung = c.SoLuongKhaDung - s.SoLuong " +
-                                "WHERE s.MaHoatDong = ?";
-                        preparedStatement = conn.prepareStatement(UPDATE_SOLUONG_QUERY);
+                        boolean check = true;
+                        String CHECK_QUERY = "SELECT hdcsvc.SoLuong, csvc.SoLuongKhaDung " +
+                                "FROM hoatdong_cosovatchat hdcsvc, cosovatchat csvc " +
+                                "WHERE hdcsvc.MaDoDung = csvc.MaDoDung AND hdcsvc.MaHoatDong = ?";
+                        preparedStatement = conn.prepareStatement(CHECK_QUERY);
                         preparedStatement.setInt(1,lichHoatDong.getMaHoatDong());
-                        System.out.println(preparedStatement);
-                        preparedStatement.executeUpdate();
+                        ResultSet rs = preparedStatement.executeQuery();
+                        while (rs.next()) {
+                            if (rs.getInt(1) > rs.getInt(2)) check = false;
+                        }
+
+                        if (check) {
+                            String UPDATE_QUERY = "UPDATE lichhoatdong SET `MaHoatDong`=?, `TenHoatDong`=?, `ThoiGianBatDau`=?, `ThoiGianKetThuc`=?, `DuocDuyet`=?, `MaNguoiTao`=? WHERE `MaHoatDong`=?";
+                            preparedStatement = conn.prepareStatement((UPDATE_QUERY));
+                            preparedStatement.setString(1, maHoatDong);
+                            preparedStatement.setString(2, tenHoatDong);
+                            preparedStatement.setString(3, starttime);
+                            preparedStatement.setString(4, endtime);
+                            preparedStatement.setString(5, status);
+                            preparedStatement.setString(6, maNguoiTao);
+                            preparedStatement.setString(7, maHoatDong);
+                            result = preparedStatement.executeUpdate();
+
+                            String UPDATE_SOLUONG_QUERY = "UPDATE cosovatchat c JOIN hoatdong_cosovatchat s ON c.MaDoDung = s.MaDoDung SET c.SoLuongKhaDung = c.SoLuongKhaDung - s.SoLuong " +
+                                    "WHERE s.MaHoatDong = ?";
+                            preparedStatement = conn.prepareStatement(UPDATE_SOLUONG_QUERY);
+                            preparedStatement.setInt(1,lichHoatDong.getMaHoatDong());
+                            System.out.println(preparedStatement);
+                            preparedStatement.executeUpdate();
+                        }
+                        else {
+                            createDialog(
+                                    Alert.AlertType.ERROR,
+                                    "Thất bại",
+                                    "", "Có vẻ như hoạt động này yêu cầu nhiều hơn số lượng khả dụng hiện có"
+                            );
+                        }
                     }
 
-                    if (pre_status.equals("Chấp nhận") && status.equals("Chưa duyệt")) {
+                    else if (pre_status.equals("Chấp nhận") && status.equals("Chưa duyệt")) {
+                        String UPDATE_QUERY = "UPDATE lichhoatdong SET `MaHoatDong`=?, `TenHoatDong`=?, `ThoiGianBatDau`=?, `ThoiGianKetThuc`=?, `DuocDuyet`=?, `MaNguoiTao`=? WHERE `MaHoatDong`=?";
+                        preparedStatement = conn.prepareStatement((UPDATE_QUERY));
+                        preparedStatement.setString(1, maHoatDong);
+                        preparedStatement.setString(2, tenHoatDong);
+                        preparedStatement.setString(3, starttime);
+                        preparedStatement.setString(4, endtime);
+                        preparedStatement.setString(5, status);
+                        preparedStatement.setString(6, maNguoiTao);
+                        preparedStatement.setString(7, maHoatDong);
+                        result = preparedStatement.executeUpdate();
+
                         String UPDATE_SOLUONG_QUERY = "UPDATE cosovatchat c JOIN hoatdong_cosovatchat s ON c.MaDoDung = s.MaDoDung SET c.SoLuongKhaDung = c.SoLuongKhaDung + s.SoLuong " +
                                 "WHERE s.MaHoatDong = ?";
                         preparedStatement = conn.prepareStatement(UPDATE_SOLUONG_QUERY);
                         preparedStatement.setInt(1, lichHoatDong.getMaHoatDong());
                         System.out.println(preparedStatement);
                         preparedStatement.executeUpdate();
+                    }
+                    else {
+                        String UPDATE_QUERY = "UPDATE lichhoatdong SET `MaHoatDong`=?, `TenHoatDong`=?, `ThoiGianBatDau`=?, `ThoiGianKetThuc`=?, `DuocDuyet`=?, `MaNguoiTao`=? WHERE `MaHoatDong`=?";
+                        preparedStatement = conn.prepareStatement((UPDATE_QUERY));
+                        preparedStatement.setString(1, maHoatDong);
+                        preparedStatement.setString(2, tenHoatDong);
+                        preparedStatement.setString(3, starttime);
+                        preparedStatement.setString(4, endtime);
+                        preparedStatement.setString(5, status);
+                        preparedStatement.setString(6, maNguoiTao);
+                        preparedStatement.setString(7, maHoatDong);
+                        result = preparedStatement.executeUpdate();
                     }
 
                     if (result == 1) {
@@ -173,6 +219,7 @@ public class LichHoatDongDetailController implements Initializable {
                                 "Thành công",
                                 "", "Đồng chí vất vả rồi!"
                         );
+                        viewUtils.switchToLichHoatDong_Admin_view(event);
                     } else {
                         createDialog(
                                 Alert.AlertType.ERROR,
@@ -184,7 +231,7 @@ public class LichHoatDongDetailController implements Initializable {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                viewUtils.switchToLichHoatDong_Admin_view(event);
+
             }
         }
     }
@@ -307,13 +354,15 @@ public class LichHoatDongDetailController implements Initializable {
        this.title.setText(title);
     }
 
-
-
+// select hdcsvc.SoLuong, csvc.SoLuongKhaDung
+//  from ... where hdcsvc.MaDoDung = csvc.MaDoDung and
+//
+//
+//
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         statusChoiceBox.getItems().add("Chưa duyệt");
         statusChoiceBox.getItems().add("Chấp nhận");
-        statusChoiceBox.getItems().add("Từ chối");
         statusChoiceBox.setValue("Chưa duyệt");
         statusPane.setVisible(userRole.equals("totruong"));
 
