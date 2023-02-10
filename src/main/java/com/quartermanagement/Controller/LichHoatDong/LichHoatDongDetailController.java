@@ -426,6 +426,4 @@ public class LichHoatDongDetailController implements Initializable {
         controller.init(lichHoatDong);
         stage.setScene(scene);
     }
-
-
 }
