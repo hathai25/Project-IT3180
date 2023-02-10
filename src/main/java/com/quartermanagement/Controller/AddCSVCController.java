@@ -110,7 +110,7 @@ public class AddCSVCController implements Initializable {
                     CoSoVatChat selected = tableView.getSelectionModel().getSelectedItem();
                     TextInputDialog dialog = new TextInputDialog();
                     dialog.setTitle("Nhập số lượng: ");
-                    dialog.setHeaderText("Số lượng:");
+                    dialog.setHeaderText(selected.getTenDoDung());
                     dialog.setContentText("Số lượng:");
                     Optional<String> result = dialog.showAndWait();
                     result.ifPresent(soLuong -> {
@@ -162,7 +162,7 @@ public class AddCSVCController implements Initializable {
                     CoSoVatChatHienCo selected = coSoVatChatHienCoTableView.getSelectionModel().getSelectedItem();
                     TextInputDialog dialog = new TextInputDialog();
                     dialog.setTitle("Nhập số lượng cập nhật: ");
-                    dialog.setHeaderText("Số lượng cập nhật:");
+                    dialog.setHeaderText(selected.getTenDoDung());
                     dialog.setContentText("Số lượng cập nhật:");
                     Optional<String> result = dialog.showAndWait();
                     result.ifPresent(soLuong -> {

@@ -85,12 +85,12 @@
          </children>
       </Pane>
       <DatePicker fx:id="startDatePicker" layoutX="233.0" layoutY="218.0" prefHeight="25.0" prefWidth="205.0" />
-      <TextField fx:id="startTimeTextField" layoutX="454.0" layoutY="218.0" prefHeight="25.0" prefWidth="205.0" promptText="hh:mm" style="-fx-border-radius: 10px; -fx-border-color: #3f4d67; -fx-background-color: transparent;">
+      <TextField fx:id="startTimeTextField" layoutX="454.0" layoutY="218.0" prefHeight="25.0" prefWidth="205.0" promptText="hh:mm:ss" style="-fx-border-radius: 10px; -fx-border-color: #3f4d67; -fx-background-color: transparent;">
          <font>
             <Font name="Segoe UI Italic" size="14.0" />
          </font>
       </TextField>
-      <TextField fx:id="endTimeTextField" layoutX="454.0" layoutY="270.0" prefHeight="25.0" prefWidth="205.0" promptText="hh:mm" style="-fx-border-radius: 10px; -fx-border-color: #3f4d67; -fx-background-color: transparent;">
+      <TextField fx:id="endTimeTextField" layoutX="454.0" layoutY="270.0" prefHeight="25.0" prefWidth="205.0" promptText="hh:mm:ss" style="-fx-border-radius: 10px; -fx-border-color: #3f4d67; -fx-background-color: transparent;">
          <font>
             <Font name="Segoe UI Italic" size="14.0" />
          </font>
