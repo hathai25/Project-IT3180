@@ -1,5 +1,13 @@
 package com.quartermanagement.Model;
 
+import com.quartermanagement.Services.LichHoatDongServices;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+import static com.quartermanagement.Constants.DBConstants.*;
+
 public class LichHoatDong {
     private int maHoatDong;
     private String tenHoatDong;
@@ -10,11 +18,12 @@ public class LichHoatDong {
     private String madeTime;
 
     private int maNguoiTao;
+    private String tenNguoiTao;
+    private Connection conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
 
-    public LichHoatDong(){}
-
+    public LichHoatDong() throws SQLException {}
     public LichHoatDong(int maHoatDong, String tenHoatDong, String startTime, String endTime, String status,
-    String madeTime, int maNguoiTao) {
+    String madeTime, int maNguoiTao) throws SQLException {
         this.maHoatDong = maHoatDong;
         this.tenHoatDong = tenHoatDong;
         this.startTime = startTime;
@@ -22,6 +31,7 @@ public class LichHoatDong {
         this.status = status;
         this.madeTime = madeTime;
         this.maNguoiTao = maNguoiTao;
+        this.tenNguoiTao = LichHoatDongServices.getNamebyID(conn, maNguoiTao);
     }
 
     public int getMaHoatDong() {
@@ -78,5 +88,13 @@ public class LichHoatDong {
 
     public void setMaNguoiTao(int maNguoiTao) {
         this.maNguoiTao = maNguoiTao;
+    }
+
+    public String getTenNguoiTao() {
+        return tenNguoiTao;
+    }
+
+    public void setTenNguoiTao(String tenNguoiTao) {
+        this.tenNguoiTao = tenNguoiTao;
     }
 }

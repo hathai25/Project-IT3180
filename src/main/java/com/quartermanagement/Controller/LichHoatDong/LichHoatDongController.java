@@ -44,7 +44,9 @@ public class LichHoatDongController implements Initializable {
     private TableColumn<LichHoatDong, String> tenHoatDongColumn,
             startTimeColumn, endTimeColumn, statusColumn, madeTimeColumn;
     @FXML
-    private TableColumn<LichHoatDong, Integer> maHoatDongColumn, maNguoiTaoColumn;
+    private TableColumn<LichHoatDong, Integer> maHoatDongColumn;
+    @FXML
+    private TableColumn<LichHoatDong, String> maNguoiTaoColumn;
     @FXML
     private Pagination pagination;
     private ObservableList<LichHoatDong> lichHoatDongList = FXCollections.observableArrayList();
@@ -187,7 +189,7 @@ public class LichHoatDongController implements Initializable {
         endTimeColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("endTime"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("status"));
         madeTimeColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("madeTime"));
-        maNguoiTaoColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, Integer>("maNguoiTao"));
+        maNguoiTaoColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("tenNguoiTao"));
 
         int lastIndex = 0;
         int displace = lichHoatDongList.size() % ROWS_PER_PAGE;
@@ -254,7 +256,7 @@ public class LichHoatDongController implements Initializable {
                 endTimeColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("endTime"));
                 statusColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("status"));
                 madeTimeColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("madeTime"));
-                maNguoiTaoColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, Integer>("maNguoiTao"));
+                maNguoiTaoColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("tenNguoiTao"));
 
                 int lastIndex = 0;
                 int displace = filteredData.size() % ROWS_PER_PAGE;
