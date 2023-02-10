@@ -45,6 +45,8 @@ public class AddCSVCController implements Initializable {
     @FXML
     private TableView<CoSoVatChat> tableView;
     @FXML
+    private Label tenHoatDong;
+    @FXML
     TableColumn indexColumn;
     @FXML
     TableColumn<CoSoVatChat, Integer> maDoDungColumn;
@@ -142,6 +144,7 @@ public class AddCSVCController implements Initializable {
     }
     public void init(LichHoatDong lichHoatDong) throws SQLException {
         this.lichHoatDong = lichHoatDong;
+        tenHoatDong.setText(lichHoatDong.getTenHoatDong());
         System.out.println(lichHoatDong.getMaHoatDong());
         ResultSet rs = LichHoatDongServices.getCoSoVatChatFromLichHoatDong(conn,lichHoatDong);
         while (rs.next()) {
