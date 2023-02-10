@@ -1,8 +1,12 @@
 package com.quartermanagement.Controller.LichHoatDong;
 
+import com.quartermanagement.Controller.AddCSVCController;
+import com.quartermanagement.Controller.AddThanhVienController;
 import com.quartermanagement.Model.LichHoatDong;
 import com.quartermanagement.Model.NhanKhau;
 import com.quartermanagement.Controller.NhanKhau.NhanKhauController;
+import com.quartermanagement.Model.SoHoKhau;
+import com.quartermanagement.Services.LichHoatDongServices;
 import com.quartermanagement.Services.NhanKhauServices;
 import com.quartermanagement.Utils.ViewUtils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -11,18 +15,25 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -34,7 +45,7 @@ public class LichHoatDongDetailController implements Initializable {
     @FXML
     private Button add_btn, update_btn;
     @FXML
-    private TextField endTimeTextField, startTimeTextField, maHoatDongTextField, tenHoatDongTextField;
+    private TextField endTimeTextField, startTimeTextField, maHoatDongTextField, tenHoatDongTextField, nguoiTaoTextField;
     @FXML
     private DatePicker startDatePicker, endDatePicker;
     @FXML
@@ -45,7 +56,7 @@ public class LichHoatDongDetailController implements Initializable {
     private Pane statusPane;
     @FXML
     private Text title;
-
+    private LichHoatDong lichHoatDong;
 
 
     @FXML
@@ -59,22 +70,30 @@ public class LichHoatDongDetailController implements Initializable {
     private Pagination pagination;
     private ObservableList<NhanKhau> nhanKhauList = FXCollections.observableArrayList();
     // Connect to database
-    private Connection conn;
+    private Connection conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
     private PreparedStatement preparedStatement = null;
+    private String pre_status = "";
+    public LichHoatDongDetailController() throws SQLException {
+    }
 
-    public void setLichHoatDong(LichHoatDong lichHoatDong) {
+    public void setLichHoatDong(LichHoatDong lichHoatDong) throws SQLException {
+        this.lichHoatDong = lichHoatDong;
+        System.out.println(lichHoatDong.getMaHoatDong());
+        pre_status = lichHoatDong.getStatus();
+        System.out.println(pre_status);
         maHoatDongTextField.setText(String.valueOf(lichHoatDong.getMaHoatDong()));
         tenHoatDongTextField.setText(lichHoatDong.getTenHoatDong());
         String startTime = lichHoatDong.getStartTime();
+        System.out.println(startTime);
         String [] starttime = startTime.split(" ");
         startDatePicker.setValue(LOCAL_DATE(starttime[1]));
-        startTimeTextField.setText(starttime[0]);
+        startTimeTextField.setText(starttime[0].substring(0,5));
         String endTime = lichHoatDong.getEndTime();
         String [] endtime = endTime.split(" ");
         endDatePicker.setValue(LOCAL_DATE(endtime[1]));
-        endTimeTextField.setText(endtime[0]);
+        endTimeTextField.setText(endtime[0].substring(0,5));
         statusChoiceBox.setValue(String.valueOf(lichHoatDong.getStatus()));
-//        maNguoiTaoChoiceBox.setValue(String.valueOf(lichHoatDong.getMaNguoiTao()));
+        nguoiTaoTextField.setText(String.valueOf(LichHoatDongServices.getNamebyID(conn, lichHoatDong.getMaNguoiTao())));
     }
 
     public void goBack (ActionEvent event) throws IOException {
@@ -93,9 +112,11 @@ public class LichHoatDongDetailController implements Initializable {
         String endTime = endTimeTextField.getText();
         String endtime = endDateTime + " " + endTime;
         String status = statusChoiceBox.getValue();
-
+        String maNguoiTao = String.valueOf(lichHoatDong.getMaNguoiTao());
         NhanKhau selected = tableView.getSelectionModel().getSelectedItem();
-        String maNguoiTao = String.valueOf(selected.getID());
+        if (selected != null) {
+            maNguoiTao = String.valueOf(selected.getID());
+        }
 
 
         if (maHoatDong.trim().equals("") || tenHoatDong.trim().equals("") || startTime.trim().equals("") || endTime.trim().equals("") || maNguoiTao.trim().equals("")
@@ -127,6 +148,25 @@ public class LichHoatDongDetailController implements Initializable {
                     preparedStatement.setString(7, maHoatDong);
 
                     int result = preparedStatement.executeUpdate();
+                    System.out.println(pre_status + "|||" + status);
+                    if (pre_status.equals("Chưa duyệt") && status.equals("Chấp nhận")) {
+                        String UPDATE_SOLUONG_QUERY = "UPDATE cosovatchat c JOIN hoatdong_cosovatchat s ON c.MaDoDung = s.MaDoDung SET c.SoLuongKhaDung = c.SoLuongKhaDung - s.SoLuong " +
+                                "WHERE s.MaHoatDong = ?";
+                        preparedStatement = conn.prepareStatement(UPDATE_SOLUONG_QUERY);
+                        preparedStatement.setInt(1,lichHoatDong.getMaHoatDong());
+                        System.out.println(preparedStatement);
+                        preparedStatement.executeUpdate();
+                    }
+
+                    if (pre_status.equals("Chấp nhận") && status.equals("Chưa duyệt")) {
+                        String UPDATE_SOLUONG_QUERY = "UPDATE cosovatchat c JOIN hoatdong_cosovatchat s ON c.MaDoDung = s.MaDoDung SET c.SoLuongKhaDung = c.SoLuongKhaDung + s.SoLuong " +
+                                "WHERE s.MaHoatDong = ?";
+                        preparedStatement = conn.prepareStatement(UPDATE_SOLUONG_QUERY);
+                        preparedStatement.setInt(1, lichHoatDong.getMaHoatDong());
+                        System.out.println(preparedStatement);
+                        preparedStatement.executeUpdate();
+                    }
+
                     if (result == 1) {
                         createDialog(
                                 Alert.AlertType.CONFIRMATION,
@@ -209,6 +249,21 @@ public class LichHoatDongDetailController implements Initializable {
                                 "Thành công",
                                 "", "Đồng chí vất vả rồi!"
                         );
+                        // we will do somthing here
+                        lichHoatDong = new LichHoatDong(Integer.valueOf(maHoatDong),tenHoatDong,convertDateWhenAddLichHD(starttime),convertDateWhenAddLichHD(endtime), status,thoiGianTao,selected.getID());
+                        System.out.println(maHoatDong);
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Hãy đưa ra lựa chọn");
+                        alert.setHeaderText("Đồng chí có muốn chọn đồ dùng muốn mượn luôn không?");
+                        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+
+                        Optional<ButtonType> ketqua = alert.showAndWait();
+                        if (ketqua.get() == ButtonType.YES) {
+                            // Code for Option 1
+                            addCSVC(event);
+                        } else {
+                            viewUtils.switchToSoHoKhau_Admin_view(event);
+                        }
                     } else {
                         createDialog(
                                 Alert.AlertType.ERROR,
@@ -219,16 +274,25 @@ public class LichHoatDongDetailController implements Initializable {
                     conn.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
                 }
-                viewUtils.switchToLichHoatDong_Admin_view(event);
+            viewUtils.switchToLichHoatDong_Admin_view(event);
         }
     }
 
-    public void hide_add_btn() { add_btn.setVisible(false); }
-
+    public void hide_add_btn() {
+        add_btn.setVisible(false);
+        tableView.setVisible(false);
+    }
+    @FXML
+    private Button doiNguoiTaoBtn, addCSVCBtn;
     public void hide_update_btn() {
         update_btn.setVisible(false);
         add_btn.setTranslateX(100);
+        nguoiTaoTextField.setVisible(false);
+        doiNguoiTaoBtn.setVisible(false);
+        addCSVCBtn.setVisible(false);
     }
 
     public void hide_maHoatDongPane() {
@@ -300,26 +364,33 @@ public class LichHoatDongDetailController implements Initializable {
         diaChiHienNayColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("DiaChiHienNay"));
         ngheNghiepColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NgheNghiep"));
         tableView.setItems(FXCollections.observableArrayList(nhanKhauList));
-
 //        try {
-//            Connection conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-//            PreparedStatement preparedStatement;
-//            // Connecting Database
-//            String SELECT_QUERY = "SELECT `ID` FROM nhankhau";
-//            preparedStatement = conn.prepareStatement(SELECT_QUERY);
-//            ResultSet result = preparedStatement.executeQuery();
-//            while (result.next()) {
-//                maNguoiTaoChoiceBox.getItems().add(result.getString("ID"));
+//            ResultSet rs = LichHoatDongServices.getAllPeople(conn);
+//            while (rs.next()) {
+//                nguoiTaoChoiceBox.getItems().add(rs.getString(1));
 //            }
 //        } catch (SQLException e) {
-//            e.printStackTrace();
+//            throw new RuntimeException(e);
 //        }
-
+//
     }
 
-
-
-
+    public void doiNguoiTao() {
+        tableView.setVisible(true);
+        doiNguoiTaoBtn.setVisible(false);
+        nguoiTaoTextField.setTranslateX(-200);
+        nguoiTaoTextField.setTranslateY(45);
+    }
+    public void addCSVC(ActionEvent event) throws IOException, SQLException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/com/quartermanagement/views/add-CSVC.fxml"));
+        Parent studentViewParent = loader.load();
+        Scene scene = new Scene(studentViewParent);
+        AddCSVCController controller = loader.getController();
+        controller.init(lichHoatDong);
+        stage.setScene(scene);
+    }
 
 
 }

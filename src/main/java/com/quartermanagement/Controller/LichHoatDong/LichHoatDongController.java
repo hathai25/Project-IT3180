@@ -81,6 +81,8 @@ public class LichHoatDongController implements Initializable {
                         detail(event);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
                     }
                 }
             });
@@ -136,7 +138,7 @@ public class LichHoatDongController implements Initializable {
         }
     }
 
-    public void detail(MouseEvent event) throws IOException {
+    public void detail(MouseEvent event) throws IOException, SQLException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(DETAIL_LICH_HOAT_DONG_VIEW_FXML));
