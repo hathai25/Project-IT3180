@@ -143,34 +143,22 @@ public class LichHoatDongDetailController implements Initializable {
 
                     if (pre_status.equals("Chưa duyệt") && status.equals("Chấp nhận")) {
                         boolean check = true;
-                        String CHECK_QUERY = "SELECT hdcsvc.SoLuong, csvc.SoLuongKhaDung " +
-                                "FROM hoatdong_cosovatchat hdcsvc, cosovatchat csvc " +
-                                "WHERE hdcsvc.MaDoDung = csvc.MaDoDung AND hdcsvc.MaHoatDong = ?";
-                        preparedStatement = conn.prepareStatement(CHECK_QUERY);
-                        preparedStatement.setInt(1,lichHoatDong.getMaHoatDong());
-                        ResultSet rs = preparedStatement.executeQuery();
+                        ResultSet rs = LichHoatDongServices.getCheck(conn, lichHoatDong);
                         while (rs.next()) {
                             if (rs.getInt(1) > rs.getInt(2)) check = false;
                         }
 
                         if (check) {
-                            String UPDATE_QUERY = "UPDATE lichhoatdong SET `MaHoatDong`=?, `TenHoatDong`=?, `ThoiGianBatDau`=?, `ThoiGianKetThuc`=?, `DuocDuyet`=?, `MaNguoiTao`=? WHERE `MaHoatDong`=?";
-                            preparedStatement = conn.prepareStatement((UPDATE_QUERY));
-                            preparedStatement.setString(1, maHoatDong);
-                            preparedStatement.setString(2, tenHoatDong);
-                            preparedStatement.setString(3, starttime);
-                            preparedStatement.setString(4, endtime);
-                            preparedStatement.setString(5, status);
-                            preparedStatement.setString(6, maNguoiTao);
-                            preparedStatement.setString(7, maHoatDong);
-                            result = preparedStatement.executeUpdate();
-
-                            String UPDATE_SOLUONG_QUERY = "UPDATE cosovatchat c JOIN hoatdong_cosovatchat s ON c.MaDoDung = s.MaDoDung SET c.SoLuongKhaDung = c.SoLuongKhaDung - s.SoLuong " +
-                                    "WHERE s.MaHoatDong = ?";
-                            preparedStatement = conn.prepareStatement(UPDATE_SOLUONG_QUERY);
-                            preparedStatement.setInt(1,lichHoatDong.getMaHoatDong());
-                            System.out.println(preparedStatement);
-                            preparedStatement.executeUpdate();
+                            result = LichHoatDongServices.updateLichHoatDong(conn, maHoatDong, tenHoatDong, starttime, endtime, status, maNguoiTao);
+                            LichHoatDongServices.updateTruSoLuongKhaDung(conn, lichHoatDong);
+                            if (result == 1) {
+                                createDialog(
+                                        Alert.AlertType.CONFIRMATION,
+                                        "Thành công",
+                                        "", "Đồng chí vất vả rồi!"
+                                );
+                                viewUtils.switchToLichHoatDong_Admin_view(event);
+                            }
                         }
                         else {
                             createDialog(
@@ -182,50 +170,41 @@ public class LichHoatDongDetailController implements Initializable {
                     }
 
                     else if (pre_status.equals("Chấp nhận") && status.equals("Chưa duyệt")) {
-                        String UPDATE_QUERY = "UPDATE lichhoatdong SET `MaHoatDong`=?, `TenHoatDong`=?, `ThoiGianBatDau`=?, `ThoiGianKetThuc`=?, `DuocDuyet`=?, `MaNguoiTao`=? WHERE `MaHoatDong`=?";
-                        preparedStatement = conn.prepareStatement((UPDATE_QUERY));
-                        preparedStatement.setString(1, maHoatDong);
-                        preparedStatement.setString(2, tenHoatDong);
-                        preparedStatement.setString(3, starttime);
-                        preparedStatement.setString(4, endtime);
-                        preparedStatement.setString(5, status);
-                        preparedStatement.setString(6, maNguoiTao);
-                        preparedStatement.setString(7, maHoatDong);
-                        result = preparedStatement.executeUpdate();
+                        result = LichHoatDongServices.updateLichHoatDong(conn, maHoatDong, tenHoatDong, starttime, endtime, status, maNguoiTao);
+                        LichHoatDongServices.updateCongSoLuongKhaDung(conn, lichHoatDong);
+                        if (result == 1) {
+                            createDialog(
+                                    Alert.AlertType.CONFIRMATION,
+                                    "Thành công",
+                                    "", "Đồng chí vất vả rồi!"
+                            );
+                            viewUtils.switchToLichHoatDong_Admin_view(event);
+                        } else {
+                            createDialog(
+                                    Alert.AlertType.ERROR,
+                                    "Thất bại",
+                                    "", "Thất bại là mẹ thành công! Mong đồng chí thử lại"
+                            );
+                        }
 
-                        String UPDATE_SOLUONG_QUERY = "UPDATE cosovatchat c JOIN hoatdong_cosovatchat s ON c.MaDoDung = s.MaDoDung SET c.SoLuongKhaDung = c.SoLuongKhaDung + s.SoLuong " +
-                                "WHERE s.MaHoatDong = ?";
-                        preparedStatement = conn.prepareStatement(UPDATE_SOLUONG_QUERY);
-                        preparedStatement.setInt(1, lichHoatDong.getMaHoatDong());
-                        System.out.println(preparedStatement);
-                        preparedStatement.executeUpdate();
                     }
                     else {
-                        String UPDATE_QUERY = "UPDATE lichhoatdong SET `MaHoatDong`=?, `TenHoatDong`=?, `ThoiGianBatDau`=?, `ThoiGianKetThuc`=?, `DuocDuyet`=?, `MaNguoiTao`=? WHERE `MaHoatDong`=?";
-                        preparedStatement = conn.prepareStatement((UPDATE_QUERY));
-                        preparedStatement.setString(1, maHoatDong);
-                        preparedStatement.setString(2, tenHoatDong);
-                        preparedStatement.setString(3, starttime);
-                        preparedStatement.setString(4, endtime);
-                        preparedStatement.setString(5, status);
-                        preparedStatement.setString(6, maNguoiTao);
-                        preparedStatement.setString(7, maHoatDong);
-                        result = preparedStatement.executeUpdate();
-                    }
+                        result = LichHoatDongServices.updateLichHoatDong(conn, maHoatDong, tenHoatDong, starttime, endtime, status, maNguoiTao);
+                        if (result == 1) {
+                            createDialog(
+                                    Alert.AlertType.CONFIRMATION,
+                                    "Thành công",
+                                    "", "Đồng chí vất vả rồi!"
+                            );
+                            viewUtils.switchToLichHoatDong_Admin_view(event);
+                        } else {
+                            createDialog(
+                                    Alert.AlertType.ERROR,
+                                    "Thất bại",
+                                    "", "Thất bại là mẹ thành công! Mong đồng chí thử lại"
+                            );
+                        }
 
-                    if (result == 1) {
-                        createDialog(
-                                Alert.AlertType.CONFIRMATION,
-                                "Thành công",
-                                "", "Đồng chí vất vả rồi!"
-                        );
-                        viewUtils.switchToLichHoatDong_Admin_view(event);
-                    } else {
-                        createDialog(
-                                Alert.AlertType.ERROR,
-                                "Thất bại",
-                                "", "Thất bại là mẹ thành công! Mong đồng chí thử lại"
-                        );
                     }
                     conn.close();
                 } catch (SQLException e) {
@@ -279,17 +258,7 @@ public class LichHoatDongDetailController implements Initializable {
                         rs = check.executeQuery();
                     } while (rs.next());
 
-                    String INSERT_QUERY = "INSERT INTO lichhoatdong VALUES(?,?,?,?,?,?,?)";
-                    preparedStatement = conn.prepareStatement((INSERT_QUERY));
-                    preparedStatement.setString(1, maHoatDong);
-                    preparedStatement.setString(2, tenHoatDong);
-                    preparedStatement.setString(3, starttime);
-                    preparedStatement.setString(4, endtime);
-                    preparedStatement.setString(5, status);
-                    preparedStatement.setString(6, thoiGianTao);
-                    preparedStatement.setString(7, String.valueOf(selected.getID()));
-
-                    int result = preparedStatement.executeUpdate();
+                    int result = LichHoatDongServices.insertLichHoatDong(conn, maHoatDong, tenHoatDong, starttime, endtime, status, thoiGianTao, selected);
                     if (result == 1) {
                         createDialog(
                                 Alert.AlertType.CONFIRMATION,

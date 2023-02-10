@@ -2,6 +2,7 @@ package com.quartermanagement.Controller.LichHoatDong;
 
 import com.quartermanagement.Model.LichHoatDong;
 import com.quartermanagement.Model.NhanKhau;
+import com.quartermanagement.Services.LichHoatDongServices;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.Pagination;
 import com.quartermanagement.Utils.ViewUtils;
@@ -47,8 +48,11 @@ public class LichHoatDongController implements Initializable {
     @FXML
     private Pagination pagination;
     private ObservableList<LichHoatDong> lichHoatDongList = FXCollections.observableArrayList();
-    private Connection conn;
+    private Connection conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
     private PreparedStatement preparedStatement = null;
+
+    public LichHoatDongController() throws SQLException {
+    }
 
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -119,20 +123,9 @@ public class LichHoatDongController implements Initializable {
                 if (type == okButton) {
                     try {
                         if (selected.getStatus().equals("Chấp nhận")) {
-                            String UPDATE_SOLUONG_QUERY = "UPDATE cosovatchat c JOIN hoatdong_cosovatchat s ON c.MaDoDung = s.MaDoDung SET c.SoLuongKhaDung = c.SoLuongKhaDung + s.SoLuong " +
-                                    "WHERE s.MaHoatDong = ?";
-                            preparedStatement = conn.prepareStatement(UPDATE_SOLUONG_QUERY);
-                            preparedStatement.setInt(1, selected.getMaHoatDong());
-                            System.out.println(preparedStatement);
-                            preparedStatement.executeUpdate();
+                            LichHoatDongServices.updateCongSoLuongKhaDung(conn, selected);
                         }
-
-                        String DELETE_QUERY = "DELETE FROM lichhoatdong WHERE `MaHoatDong`= ?";
-                        conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-                        preparedStatement = conn.prepareStatement(DELETE_QUERY);
-                        preparedStatement.setString(1, String.valueOf(selected.getMaHoatDong()));
-                        int result = preparedStatement.executeUpdate();
-
+                        int result = LichHoatDongServices.deleteLichHoatDong(conn, selected);
                         if (result == 1)
                             createDialog(Alert.AlertType.INFORMATION, "Xoá thành công!", "", "Quá đơn giản phải không đồng chí?");
                         else createDialog(Alert.AlertType.WARNING, "Thông báo", "", "Oops, mời đồng chí thử lại!");
