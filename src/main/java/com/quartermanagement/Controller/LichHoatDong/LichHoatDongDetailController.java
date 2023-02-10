@@ -354,11 +354,6 @@ public class LichHoatDongDetailController implements Initializable {
        this.title.setText(title);
     }
 
-// select hdcsvc.SoLuong, csvc.SoLuongKhaDung
-//  from ... where hdcsvc.MaDoDung = csvc.MaDoDung and
-//
-//
-//
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         statusChoiceBox.getItems().add("Chưa duyệt");
@@ -413,15 +408,6 @@ public class LichHoatDongDetailController implements Initializable {
         diaChiHienNayColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("DiaChiHienNay"));
         ngheNghiepColumn.setCellValueFactory(new PropertyValueFactory<NhanKhau, String>("NgheNghiep"));
         tableView.setItems(FXCollections.observableArrayList(nhanKhauList));
-//        try {
-//            ResultSet rs = LichHoatDongServices.getAllPeople(conn);
-//            while (rs.next()) {
-//                nguoiTaoChoiceBox.getItems().add(rs.getString(1));
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//
     }
 
     public void doiNguoiTao() {
