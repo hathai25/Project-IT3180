@@ -100,7 +100,7 @@ public class Utils {
     }
 
     public static String convertDateWhenAddLichHD(String dateString) throws ParseException {
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = inputFormat.parse(dateString);
         SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm:ss.0 dd/MM/yyyy");
         return outputFormat.format(date);

@@ -88,11 +88,11 @@ public class LichHoatDongDetailController implements Initializable {
         String startTime = lichHoatDong.getStartTime();System.out.println(startTime);
         String [] starttime = startTime.split(" ");
         startDatePicker.setValue(LOCAL_DATE(starttime[1]));
-        startTimeTextField.setText(starttime[0].substring(0,5));
+        startTimeTextField.setText(starttime[0].substring(0,8));
         String endTime = lichHoatDong.getEndTime();
         String[] endtime = endTime.split(" ");
         endDatePicker.setValue(LOCAL_DATE(endtime[1]));
-        endTimeTextField.setText(endtime[0].substring(0,5));
+        endTimeTextField.setText(endtime[0].substring(0,8));
         statusChoiceBox.setValue(String.valueOf(lichHoatDong.getStatus()));
         nguoiTaoTextField.setText(String.valueOf(LichHoatDongServices.getNamebyID(conn, lichHoatDong.getMaNguoiTao())));
     }
@@ -114,12 +114,8 @@ public class LichHoatDongDetailController implements Initializable {
         if (selected != null) {
             maNguoiTao = String.valueOf(selected.getID());
         }
-
-
-        if (selected == null) createDialog(Alert.AlertType.WARNING, "Từ từ đã đồng chí", "", "Vui lòng chọn nhân khẩu");
         if (maHoatDong.trim().equals("") || tenHoatDong.trim().equals("") || startTime.trim().equals("") || endTime.trim().equals("")
                 || startDatePicker.getValue() == null || endDatePicker.getValue() == null) {
-
             createDialog(
                     Alert.AlertType.WARNING,
                     "Đồng chí giữ bình tĩnh",
