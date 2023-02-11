@@ -21,7 +21,7 @@
                 <TableColumn fx:id="endTimeColumn" minWidth="0.0" prefWidth="108.0" text="Thời gian kết thúc" />
             <TableColumn fx:id="statusColumn" prefWidth="96.0" text="Được duyêt" />
             <TableColumn fx:id="madeTimeColumn" prefWidth="74.39996337890625" text="Thời gian tạo" />
-            <TableColumn fx:id="maNguoiTaoColumn" prefWidth="96.79998779296875" text="Mã người tạo" />
+            <TableColumn fx:id="maNguoiTaoColumn" prefWidth="96.79998779296875" text="Tên người tạo" />
             </columns>
         </TableView>
         <Text layoutX="37.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lịch hoạt động" textAlignment="CENTER" wrappingWidth="192.9140625">

@@ -3,8 +3,11 @@ package com.quartermanagement.Utils;
 import javafx.scene.control.Alert;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -94,6 +97,13 @@ public class Utils {
             sb.append(r.nextInt(10));
         }
         return sb.toString();
+    }
+
+    public static String convertDateWhenAddLichHD(String dateString) throws ParseException {
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = inputFormat.parse(dateString);
+        SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm:ss.0 dd/MM/yyyy");
+        return outputFormat.format(date);
     }
 }
 

@@ -2,6 +2,7 @@ package com.quartermanagement.Controller.LichHoatDong;
 
 import com.quartermanagement.Model.LichHoatDong;
 import com.quartermanagement.Model.NhanKhau;
+import com.quartermanagement.Services.LichHoatDongServices;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.Pagination;
 import com.quartermanagement.Utils.ViewUtils;
@@ -43,12 +44,17 @@ public class LichHoatDongController implements Initializable {
     private TableColumn<LichHoatDong, String> tenHoatDongColumn,
             startTimeColumn, endTimeColumn, statusColumn, madeTimeColumn;
     @FXML
-    private TableColumn<LichHoatDong, Integer> maHoatDongColumn, maNguoiTaoColumn;
+    private TableColumn<LichHoatDong, Integer> maHoatDongColumn;
+    @FXML
+    private TableColumn<LichHoatDong, String> maNguoiTaoColumn;
     @FXML
     private Pagination pagination;
     private ObservableList<LichHoatDong> lichHoatDongList = FXCollections.observableArrayList();
-    private Connection conn;
+    private Connection conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
     private PreparedStatement preparedStatement = null;
+
+    public LichHoatDongController() throws SQLException {
+    }
 
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -80,6 +86,8 @@ public class LichHoatDongController implements Initializable {
                     try {
                         detail(event);
                     } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
                 }
@@ -116,11 +124,10 @@ public class LichHoatDongController implements Initializable {
             alert.showAndWait().ifPresent(type -> {
                 if (type == okButton) {
                     try {
-                        String DELETE_QUERY = "DELETE FROM lichhoatdong WHERE `MaHoatDong`= ?";
-                        conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-                        preparedStatement = conn.prepareStatement(DELETE_QUERY);
-                        preparedStatement.setString(1, String.valueOf(selected.getMaHoatDong()));
-                        int result = preparedStatement.executeUpdate();
+                        if (selected.getStatus().equals("Chấp nhận")) {
+                            LichHoatDongServices.updateCongSoLuongKhaDung(conn, selected);
+                        }
+                        int result = LichHoatDongServices.deleteLichHoatDong(conn, selected);
                         if (result == 1)
                             createDialog(Alert.AlertType.INFORMATION, "Xoá thành công!", "", "Quá đơn giản phải không đồng chí?");
                         else createDialog(Alert.AlertType.WARNING, "Thông báo", "", "Oops, mời đồng chí thử lại!");
@@ -136,7 +143,7 @@ public class LichHoatDongController implements Initializable {
         }
     }
 
-    public void detail(MouseEvent event) throws IOException {
+    public void detail(MouseEvent event) throws IOException, SQLException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(DETAIL_LICH_HOAT_DONG_VIEW_FXML));
@@ -150,7 +157,6 @@ public class LichHoatDongController implements Initializable {
             controller.hide_add_btn();
             controller.hide_maHoatDongPane();
             controller.setTitle("Cập nhật lịch hoat động");
-            controller.setRowSelected(selected);
             stage.setScene(scene);
         }
     }
@@ -183,7 +189,7 @@ public class LichHoatDongController implements Initializable {
         endTimeColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("endTime"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("status"));
         madeTimeColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("madeTime"));
-        maNguoiTaoColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, Integer>("maNguoiTao"));
+        maNguoiTaoColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("tenNguoiTao"));
 
         int lastIndex = 0;
         int displace = lichHoatDongList.size() % ROWS_PER_PAGE;
@@ -250,7 +256,7 @@ public class LichHoatDongController implements Initializable {
                 endTimeColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("endTime"));
                 statusColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("status"));
                 madeTimeColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("madeTime"));
-                maNguoiTaoColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, Integer>("maNguoiTao"));
+                maNguoiTaoColumn.setCellValueFactory(new PropertyValueFactory<LichHoatDong, String>("tenNguoiTao"));
 
                 int lastIndex = 0;
                 int displace = filteredData.size() % ROWS_PER_PAGE;
