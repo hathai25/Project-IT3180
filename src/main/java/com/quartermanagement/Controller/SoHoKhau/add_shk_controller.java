@@ -76,6 +76,10 @@ public class add_shk_controller {
     private TextField ngayTaoTextField;
     private SoHoKhau soHoKhau;
     private int idHoKhau;
+    private Connection conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+
+    public add_shk_controller() throws SQLException {
+    }
 
     public void setSoHoKhau(SoHoKhau soHoKhau) throws SQLException {
         this.soHoKhau = soHoKhau;
@@ -253,15 +257,43 @@ public class add_shk_controller {
     }
 
     public void update(ActionEvent event) throws IOException, SQLException {
-        setDisableForAdd();
-        maHoKhauLabel.setVisible(true);
-        maHoKhauTextField.setVisible(true);
-        ngayTaoLabel.setVisible(true);
-        ngayTaoTextField.setVisible(true);
-        tableView.setVisible(true);
-        luaChonLabel.setVisible(true);
-        doiChuHoBtn.setVisible(true);
-        khoiTaoBangChuHo();
+        ViewUtils viewUtils = new ViewUtils();
+        SoHoKhauServices.update(conn, idHoKhau, maHoKhauTextField.getText(), diaChiTextField.getText());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Xác nhận đổi chủ hộ");
+        alert.setContentText("Đồng chí có muốn thay đổi chủ hộ?");
+        ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+        ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(okButton, noButton);
+        alert.showAndWait().ifPresent(type -> {
+            if (type == okButton) {
+                try {
+                    setDisableForAdd();
+                    maHoKhauLabel.setVisible(true);
+                    maHoKhauTextField.setVisible(true);
+                    ngayTaoLabel.setVisible(true);
+                    ngayTaoTextField.setVisible(true);
+                    tableView.setVisible(true);
+                    luaChonLabel.setVisible(true);
+                    doiChuHoBtn.setVisible(true);
+                    khoiTaoBangChuHo();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else {
+                createDialog(
+                        Alert.AlertType.CONFIRMATION,
+                        "Thành công",
+                        "", "Đồng chí vất vả rồi!"
+                );
+                try {
+                    viewUtils.switchToSoHoKhau_Admin_view(event);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     public void doiChuHo(ActionEvent event) throws SQLException, IOException {

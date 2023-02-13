@@ -73,6 +73,14 @@ public class SoHoKhauServices {
         return preparedStatement.executeUpdate();
     }
 
+    public static int update(Connection conn, int idHoKhau, String maHoKhau, String diaChi) throws SQLException {
+        String UPDATE_QUERY = "UPDATE sohokhau SET sohokhau.MaHoKhau = ?, sohokhau.DiaChi = ? WHERE ID = ?";
+        PreparedStatement preparedStatement = conn.prepareStatement(UPDATE_QUERY);
+        preparedStatement.setString(1, maHoKhau);
+        preparedStatement.setString(2, diaChi);
+        preparedStatement.setInt(3, idHoKhau);
+        return preparedStatement.executeUpdate();
+    }
     public static int deleteThanhVienInSoHoKhau(Connection conn, ThanhVien selected) throws SQLException {
         String DELETE_QUERY = "DELETE thanhviencuaho\n" +
                 "FROM thanhviencuaho\n" +
