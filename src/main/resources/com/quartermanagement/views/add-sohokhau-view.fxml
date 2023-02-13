@@ -70,7 +70,7 @@
             <Font name="Segoe UI Italic" size="14.0" />
          </font>
       </TextField>
-      <TableView fx:id="thanhVienTable" layoutX="25.0" layoutY="277.0" prefHeight="255.0" prefWidth="634.0">
+      <TableView fx:id="thanhVienTable" layoutX="25.0" layoutY="277.0" prefHeight="255.0" prefWidth="634.0" stylesheets="@../styles/table.css">
         <columns>
           <TableColumn fx:id="hoTenColumn" prefWidth="201.59997940063477" text="Họ và tên" />
           <TableColumn fx:id="cccdColumn" prefWidth="226.40000915527344" text="CCCD" />

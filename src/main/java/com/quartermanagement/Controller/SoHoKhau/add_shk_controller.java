@@ -366,11 +366,8 @@ public class add_shk_controller {
         cccdLabel.setVisible(false);
         tenChuHoLabel.setVisible(false);
         ngayTaoTextField.setVisible(false);
-        ;
         maChuHoTextField.setVisible(false);
-        ;
         tenChuHoTextField.setVisible(false);
-        ;
         thanhVienTable.setVisible(false);
         addThanhVienBtn.setVisible(false);
         deleteThanhVienBtn.setVisible(false);

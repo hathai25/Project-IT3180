@@ -155,7 +155,7 @@ public class LichHoatDongController implements Initializable {
         else {
             controller.setLichHoatDong(selected);
             controller.hide_add_btn();
-            controller.hide_maHoatDongPane();
+            //controller.hide_maHoatDongPane();
             controller.setTitle("Cập nhật lịch hoat động");
             stage.setScene(scene);
         }

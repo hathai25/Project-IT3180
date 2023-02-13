@@ -14,7 +14,7 @@
 <AnchorPane prefHeight="600.0" prefWidth="710.0" style="-fx-background-color: transparent;" stylesheets="@../styles/lichhoatdong-detail.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quartermanagement.Controller.LichHoatDong.LichHoatDongDetailController">
     <children>
         <!-- Title -->
-        <Text fx:id="title" layoutX="228.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thêm lịch hoạt động mới" textAlignment="CENTER" wrappingWidth="235.31402587890625">
+        <Text fx:id="title" layoutX="231.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thêm lịch hoạt động mới" textAlignment="CENTER" wrappingWidth="235.31402587890625">
             <font>
                 <Font name="Segoe UI" size="18.0" />
             </font>
@@ -37,7 +37,7 @@
             </font>
         </Text>
         <!--Thêm mới-->
-        <Button fx:id="add_btn" layoutX="406.0" layoutY="559.0" mnemonicParsing="false" onAction="#addnew" prefHeight="28.0" prefWidth="74.0" style="-fx-background-color: #3f4d67;" text="Thêm" textFill="WHITE">
+        <Button fx:id="add_btn" layoutX="401.0" layoutY="559.0" mnemonicParsing="false" onAction="#addnew" prefHeight="28.0" prefWidth="74.0" style="-fx-background-color: #3f4d67;" text="Thêm" textFill="WHITE">
             <font>
                 <Font name="Segoe UI" size="14.0" />
             </font>
@@ -60,7 +60,7 @@
                   <Font name="Segoe UI" size="18.0" />
               </font>
           </Text>
-      <Pane fx:id="maHoatDongPane" layoutX="31.0" layoutY="74.0" prefHeight="76.0" prefWidth="640.0">
+      <Pane fx:id="maHoatDongPane" layoutX="31.0" layoutY="83.0" prefHeight="76.0" prefWidth="640.0">
          <children>
             <Text layoutX="2.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã hoạt động" wrappingWidth="143.5140380859375">
                <font>
@@ -74,16 +74,15 @@
             </TextField>
          </children>
       </Pane>
-      <Pane fx:id="statusPane" layoutX="21.0" layoutY="503.0" prefHeight="30.0" prefWidth="656.0">
+      <Pane fx:id="statusPane" layoutX="23.0" layoutY="68.0" prefHeight="30.0" prefWidth="656.0">
          <children>
-            <ChoiceBox fx:id="statusChoiceBox" layoutX="208.0" layoutY="2.0" prefHeight="25.0" prefWidth="315.0" style="-fx-border-color: #3f4d67; -fx-border-radius: 10px; -fx-background-color: transparent;" />
-            <Text layoutX="21.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Trạng thái" wrappingWidth="167.5140380859375">
+            <ChoiceBox fx:id="statusChoiceBox" layoutX="209.0" layoutY="1.0" prefHeight="25.0" prefWidth="315.0" style="-fx-border-color: #3f4d67; -fx-border-radius: 10px; -fx-background-color: transparent;" />
+            <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Trạng thái" wrappingWidth="167.5140380859375">
                <font>
                   <Font name="Segoe UI" size="18.0" />
                </font>
             </Text>
-         </children>
-      </Pane>
+         </children></Pane>
       <DatePicker fx:id="startDatePicker" layoutX="233.0" layoutY="218.0" prefHeight="25.0" prefWidth="205.0" />
       <TextField fx:id="startTimeTextField" layoutX="454.0" layoutY="218.0" prefHeight="25.0" prefWidth="205.0" promptText="hh:mm:ss" style="-fx-border-radius: 10px; -fx-border-color: #3f4d67; -fx-background-color: transparent;">
          <font>
@@ -96,7 +95,7 @@
          </font>
       </TextField>
       <DatePicker fx:id="endDatePicker" layoutX="233.0" layoutY="272.0" prefHeight="25.0" prefWidth="205.0" />
-      <TableView fx:id="tableView" layoutX="235.0" layoutY="334.0" prefHeight="159.0" prefWidth="476.0" stylesheets="@../styles/table.css">
+      <TableView fx:id="tableView" layoutX="235.0" layoutY="334.0" prefHeight="159.0" prefWidth="427.0" stylesheets="@../styles/table.css">
          <columns>
             <TableColumn fx:id="indexColumn" prefWidth="31.200008392333984" text="#" />
             <TableColumn fx:id="hoVaTenColumn" prefWidth="119.19998168945312" text="Họ và tên" />
@@ -129,7 +128,7 @@
             <Font name="Segoe UI Italic" size="14.0" />
          </font>
       </TextField>
-      <Button fx:id="addCSVCBtn" layoutX="257.0" layoutY="559.0" mnemonicParsing="false" onAction="#addCSVC" prefHeight="28.0" prefWidth="127.0" style="-fx-background-color: #3f4d67;" text="Cơ sở vật chất" textFill="WHITE">
+      <Button fx:id="addCSVCBtn" layoutX="42.0" layoutY="559.0" mnemonicParsing="false" onAction="#addCSVC" prefHeight="28.0" prefWidth="127.0" style="-fx-background-color: #3f4d67;" text="Cơ sở vật chất" textFill="WHITE">
          <font>
             <Font name="Segoe UI" size="14.0" />
          </font>

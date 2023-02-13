@@ -8,7 +8,7 @@
 
 <AnchorPane prefHeight="534.0" prefWidth="887.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.quartermanagement.Controller.AddCSVCController">
    <children>
-      <TableView fx:id="coSoVatChatHienCoTableView" layoutX="21.0" layoutY="59.0" prefHeight="387.0" prefWidth="206.0">
+      <TableView fx:id="coSoVatChatHienCoTableView" layoutX="21.0" layoutY="59.0" prefHeight="387.0" prefWidth="206.0" stylesheets="@../styles/table.css">
         <columns>
           <TableColumn fx:id="tenDoDungColumn" prefWidth="123.20001220703125" text="Tên đồ dùng" />
           <TableColumn fx:id="soLuongColumn" prefWidth="79.20001220703125" text="Số lượng" />
@@ -23,8 +23,8 @@
             <TableColumn fx:id="soLuongKhaDungColumn" prefWidth="192.0" text="Số lượng khả dụng" />
          </columns>
       </TableView>
-      <Button layoutX="21.0" layoutY="473.0" mnemonicParsing="false" onAction="#delete" prefHeight="26.0" prefWidth="59.0" text="Xoá" />
-      <Button layoutX="797.0" layoutY="486.0" mnemonicParsing="false" onAction="#back" text="Quay lại" />
+      <Button layoutX="21.0" layoutY="473.0" mnemonicParsing="false" onAction="#delete" prefHeight="26.0" prefWidth="59.0" style="-fx-background-color: #3f4d67;" text="Xoá" textFill="WHITE" />
+      <Button layoutX="797.0" layoutY="486.0" mnemonicParsing="false" onAction="#back" style="-fx-background-color: #3f4d67;" text="Quay lại" textFill="WHITE" />
       <Label fx:id="tenHoatDong" layoutX="158.0" layoutY="7.0" prefHeight="44.0" prefWidth="206.0" text="Label" />
       <Label fx:id="tenHoatDong1" layoutX="32.0" layoutY="7.0" prefHeight="44.0" prefWidth="95.0" text="Tên hoạt động: " />
    </children>
