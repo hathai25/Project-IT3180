@@ -96,4 +96,10 @@ public class LichHoatDongServices {
         preparedStatement.setString(1, String.valueOf(selected.getMaHoatDong()));
         return preparedStatement.executeUpdate();
     }
+
+    public static ResultSet getLichHoatDongGanNhat(Connection conn) throws SQLException {
+        String SELECT_QUERY = "SELECT TenHoatDong, ThoiGianBatDau FROM `lichhoatdong` WHERE ThoiGianBatDau > NOW() ORDER BY ThoiGianBatDau ASC";
+        PreparedStatement preparedStatement = conn.prepareStatement(SELECT_QUERY);
+        return preparedStatement.executeQuery();
+    }
 }

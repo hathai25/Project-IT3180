@@ -1,6 +1,7 @@
 package com.quartermanagement.Controller;
 
 import com.quartermanagement.Services.CoSoVatChatServices;
+import com.quartermanagement.Services.LichHoatDongServices;
 import com.quartermanagement.Services.NhanKhauServices;
 import com.quartermanagement.Services.SoHoKhauServices;
 import com.quartermanagement.Utils.ViewUtils;
@@ -12,12 +13,19 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
+
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
+import static com.quartermanagement.Constants.DBConstants.*;
 import static com.quartermanagement.Constants.FXMLConstants.*;
 import static com.quartermanagement.Utils.Utils.toUpperFirstLetter;
 
@@ -29,12 +37,18 @@ public class AdminController implements Initializable {
     @FXML
     private Label nhankhauLabel, hokhauLabel, usernameLabel;
     @FXML
+    private Text lichHoatDongLabel, thoiGianLabel;
+    @FXML
     private BarChart facilityChart;
     //Save user role
     private static final Preferences userPreferences = Preferences.userRoot();
     public static final String userRole = userPreferences.get("role", "");
     public static final String userName = userPreferences.get("username", "");
     private final ViewUtils viewUtils = new ViewUtils();
+    private Connection conn = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+
+    public AdminController() throws SQLException {
+    }
 
     public void switchToDashboard(ActionEvent event) throws IOException {
         viewUtils.changeScene(event, ADMIN_VIEW_FXML);
@@ -62,6 +76,17 @@ public class AdminController implements Initializable {
         nhankhauLabel.setText("" + NhanKhauServices.getTotalNhanKhau());
         hokhauLabel.setText("" + SoHoKhauServices.getTotalSoHoKhau());
         usernameLabel.setText(toUpperFirstLetter(userName));
+
+        ResultSet result = null;
+        try {
+            result = LichHoatDongServices.getLichHoatDongGanNhat(conn);
+            if (result.next()) {
+                lichHoatDongLabel.setText(result.getString(1));
+                thoiGianLabel.setText(result.getString(2));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         XYChart.Series dataSeries = new XYChart.Series();
         for (Map.Entry<String, Integer> entry : CoSoVatChatServices.getLeastFiveFacility().entrySet()) {
